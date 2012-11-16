@@ -1,0 +1,34 @@
+<!-- 
+  Starts kinect_follower and P3-AT.
+-->
+<launch>
+    <!--
+    OPENNI+NITE TRACKER NODE
+    ==========================================================================
+    -->
+    <node pkg="openni_tracker" type="openni_tracker" name="openni_tracker"
+        required="true" output="screen" />
+    
+    <!-- 
+    KINECT FOLLOWER NODES
+    ==========================================================================
+    -->
+    <node pkg="kinect_follower" type="kinect_follower" name="kinect_follower"
+        required="true" output="screen"/>
+    <node pkg="kinect_follower" type="tf_broadcaster"
+        name="tf_broadcaster" required="true" output="screen" />
+
+    <!-- Start p2os driver -->
+    <node pkg="p2os_driver" type="p2os" name="p2os" required="true" output="screen">
+        <rosparam>
+            port  : "/dev/ttyUSB1"
+            pulse : 1
+            use_sonar : true
+        </rosparam>
+    </node>
+    
+    <!-- Start p2os dashboard -->
+    <node pkg="p2os_dashboard" type="p2os_dashboard" name="p2os_dashboard"
+        required="true" output="screen" />    
+         
+</launch>

@@ -1,0 +1,19 @@
+<package>
+  <description brief="kinect_follower">
+
+     Activity for the Imperial College Robotics Summer School 2012.
+     P3-AT follows user using data from streamed from Kinect.
+
+  </description>
+  <author>Miguel Sarabia</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <depend package="roscpp"/>
+  <depend package="rospy"/>
+  <depend package="p2os_driver"/>
+  <depend package="tf"/>
+  <depend package="geometry_msgs" />
+
+</package>
+
+
