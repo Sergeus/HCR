@@ -126,7 +126,20 @@ utterance_loop()
     cont_ad_t *cont;
     char word[256];
 
-    /* Initialize continuous listening module */
+    /* 
+     * Initialize continuous listening module
+     * start recording from audio device
+     * calibrate silence filter
+     */
+
+    /** 
+     *  cont_ad_init(ad, adfunc)
+     *  Initialize a continuous listening/silence filtering object.
+     * 
+     *  Parameters:
+     *    ad - An audio device to read from, or NULL to operate in block mode.
+     *    adfunc - The function used to read audio from ad, or NULL to operate in block mode. This is usually ad_read()
+     */
     if ((cont = cont_ad_init(ad, ad_read)) == NULL)
         E_FATAL("cont_ad_init failed\n");
     if (ad_start_rec(ad) < 0)
@@ -140,7 +153,17 @@ utterance_loop()
         fflush(stdout);
         fflush(stderr);
 
+
         /* Await data for next utterance */
+
+        /**
+         *  cont_ad_read(r, buf, max)
+         *
+         *  Parameters:
+         *    r - In: Object pointer returned by cont_ad_init
+         *    buf - In/Out: In block mode, contains input data. On return, buf contains A/D data returned by this function, if any.
+         *    max - In: Maximum number of samples to be filled into buf. NOTE: max must be at least 256; otherwise the functions returns -1.
+         */
         while ((k = cont_ad_read(cont, adbuf, 4096)) == 0)
             sleep_msec(100);
 
@@ -150,6 +173,17 @@ utterance_loop()
         /*
          * Non-zero amount of data received; start recognition of new utterance.
          * NULL argument to uttproc_begin_utt => automatic generation of utterance-id.
+         */
+
+        /**
+         *  Start utterance processing.
+         *
+         *  This function should be called before any utterance data is passed to the decoder.
+         *  It marks the start of a new utterance and reinitializes internal data structures.
+         * 
+         *  Parameters:
+         *    ps - Decoder to be started.
+         *    uttid - String uniquely identifying this utterance. If NULL, one will be created.
          */
         if (ps_start_utt(ps, NULL) < 0)
             E_FATAL("ps_start_utt() failed\n");
