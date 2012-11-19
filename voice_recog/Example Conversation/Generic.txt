@@ -1,0 +1,28 @@
+Robot Conversation
+
+Robot: Hello, what is your name? 
+
+User: My name is Chris
+
+Robot: Hello Chris.  I am Robot.  { Optional Q } Are you interested in find out more about me ?
+
+User: Yes/No
+
+Print a fucking ticket.
+
+* Optional Qs
+
+Robot: Where are you going? 
+User: History Museum/ V&A/ Victoria and Albert
+	Robot: 	That is all about the past.  Concern yourself with the future.
+User: Science Museum
+	Robot: 	Ahh my home.  I have many friends there
+User: Lecture/University/College/School/Tutorial 
+	Robot:	I can teach you everything there is to know.  A to Z. From Android to Robot.
+	Robot:	I can teach you everything there is to know.  But I cannot go up stairs.
+User: Work
+	Robot:	That is not important.  Your true work is yet to be begun.
+User: Underground/Tube
+	Robot:	
+User: Home
+
