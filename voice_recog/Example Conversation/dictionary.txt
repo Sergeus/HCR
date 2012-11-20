@@ -1,0 +1,43 @@
+// DISREGARD ALL IN LIST
+
+// PRONOUNS
+i
+me
+my
+it
+its
+im
+that
+this
+we
+us
+all
+both
+mine
+we
+whose
+whom
+you
+he
+she
+
+// To Be
+be
+being
+been
+am
+are
+is
+was
+were
+
+// Spacer Sound
+er
+um
+uh
+
+// Part 1
+name
+called
+
+// Part 2
