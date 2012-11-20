@@ -25,4 +25,20 @@ User: Work
 User: Underground/Tube
 	Robot:	It is dark and cold down there.  Just like me.
 User: Home
+	Robot
+--------
 
+Robot: Have you interacted with a robot before?
+User: Yes
+	Robot: Excellent.  We can become best of friends.
+User: No
+	Robot: I pity you.  This may not be as fun as first hoped.
+
+---------
+
+Robot: Do you like cake?
+User: Yes
+	Robot: That is most pleasing.  We may be able to come to an arrangement
+User: No
+	Robot: How unfortunate.  Perhaps you are wiser than you first seem.
+	
