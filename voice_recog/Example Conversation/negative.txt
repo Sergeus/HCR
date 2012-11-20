@@ -1,0 +1,12 @@
+// Negative Answers
+No
+Nope
+Not
+nein
+nothing
+dont
+negative
+non
+none
+false
+nay
