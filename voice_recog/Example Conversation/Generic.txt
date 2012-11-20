@@ -23,6 +23,6 @@ User: Lecture/University/College/School/Tutorial
 User: Work
 	Robot:	That is not important.  Your true work is yet to be begun.
 User: Underground/Tube
-	Robot:	
+	Robot:	It is dark and cold down there.  Just like me.
 User: Home
 
