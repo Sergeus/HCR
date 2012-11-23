@@ -40,18 +40,16 @@ int main(int argc, char* argv[])
 
     while( ros::ok() )
     {
-        // TODO: Measure the where is the kinect situated with respect to the
+        // Measure the where is the kinect situated with respect to the
         // robot. Remember x = forwards, y = left, z= up.
         // Then write a transform broadcaster from "openni_depth_frame" to
         // "base_link". The values of the transform are the ones you just
         // measured.
-        // HINT: Use the solution of tf_tutorial/step2 to fill in the code.
-        // HINT: Remember ROS uses metres as distance unit.
-
+        
         tf::StampedTransform transform;
 
-        // Kinect offset (will change depending on your setup)
-        transform.setOrigin( tf::Vector3(0.25, 0.0, 0.18) );
+        // Kinect offset (will change depending on setup)
+        transform.setOrigin( tf::Vector3(1.15, 0.0, 0.18) ); //(top height, 1.15)
 
         // No rotation in this case
         tf::Quaternion q;
