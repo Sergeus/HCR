@@ -1,0 +1,4 @@
+gstreamer_pocketsphinx:
+  debian: gstreamer0.10-pocketsphinx
+  ubuntu: gstreamer0.10-pocketsphinx
+

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/305/trunk/rharmony/pocketsphinx
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/206/trunk/rharmony/pocketsphinx/mainpage.dox
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/206/trunk/rharmony/pocketsphinx/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/206/trunk/rharmony/pocketsphinx/Makefile
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/223/trunk/rharmony/pocketsphinx/manifest.xml
+END
