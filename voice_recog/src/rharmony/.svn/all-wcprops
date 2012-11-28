@@ -3,12 +3,6 @@ svn:wc:ra_dav:version-url
 V 32
 /svn/!svn/ver/305/trunk/rharmony
 END
-stack.xml
-K 25
-svn:wc:ra_dav:version-url
-V 42
-/svn/!svn/ver/223/trunk/rharmony/stack.xml
-END
 rosdep.yaml
 K 25
 svn:wc:ra_dav:version-url
@@ -26,4 +20,10 @@ K 25
 svn:wc:ra_dav:version-url
 V 41
 /svn/!svn/ver/206/trunk/rharmony/Makefile
+END
+stack.xml
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/223/trunk/rharmony/stack.xml
 END

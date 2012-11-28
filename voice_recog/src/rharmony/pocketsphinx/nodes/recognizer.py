@@ -34,12 +34,12 @@ class recognizer(object):
     def __init__(self):
         """ Initialize the speech pipeline components. """
         rospy.init_node('recognizer')
-        self.pub = rospy.Publisher('~output',String)
+        self.pub = rospy.Publisher('ps_out',String)
         rospy.on_shutdown(self.shutdown)
 
         # services to start/stop recognition
-        rospy.Service("~start", Empty, self.start)
-        rospy.Service("~stop", Empty, self.stop)
+        rospy.Service("ps_start", Empty, self.start)
+        rospy.Service("ps_stop", Empty, self.stop)
 
         # configure pipeline
         self.pipeline = gst.parse_launch('gconfaudiosrc ! audioconvert ! audioresample '
@@ -52,18 +52,21 @@ class recognizer(object):
         asr.set_property('dsratio', 1)
 
         # parameters for lm and dic
-        try:
-            lm_ = rospy.get_param('~lm')
-        except:
-            rospy.logerr('Please specify a language model file')
-            return
-        try:
-            dict_ = rospy.get_param('~dict')
-        except:
-            rospy.logerr('Please specify a dictionary')
-            return
-        asr.set_property('lm',lm_)
-        asr.set_property('dict',dict_)
+        #try:
+        #    lm_ = rospy.get_param('~lm')
+        #    print lm_
+        #except:
+        #    rospy.logerr('Please specify a language model file')
+        #    return
+        #try:
+        #    dict_ = rospy.get_param('~dict')
+        #    print dict_
+        #except:
+        #    rospy.logerr('Please specify a dictionary')
+        #    return
+
+        asr.set_property('lm','/home/chris/ros_workspace/sandbox/knowledge_base/8835.lm')
+        asr.set_property('dict','/home/chris/ros_workspace/sandbox/knowledge_base/8835.dic')
 
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
@@ -119,5 +122,6 @@ class recognizer(object):
         self.pub.publish(msg)
 
 if __name__=="__main__":
+    print ##################################################### lol
     r = recognizer()
 
