@@ -73,7 +73,7 @@ class recognizer(object):
         bus.connect('message::application', self.application_message)
         self.start(None)
         gtk.main()
-        
+
     def shutdown(self):
         """ Shutdown the GTK thread. """
         gtk.main_quit()

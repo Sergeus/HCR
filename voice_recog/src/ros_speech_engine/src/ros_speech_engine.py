@@ -2,6 +2,7 @@
 import roslib; roslib.load_manifest('ros_speech_engine')
 import rospy
 from std_msgs.msg import String
+import time
 
 class Utterance:
 
@@ -37,9 +38,13 @@ class Utterance:
 
 class PocketSphinx:
 
+    text = "NULL"
+
     def start(self):
         # Will eventually start recogniser
         print "Started PocketSphinx node"
+        foo = self.callback
+        rospy.Subscriber("ps_out", String, foo)
         return True
 
     def stop(self):
@@ -49,7 +54,17 @@ class PocketSphinx:
 
     def listen(self):
         # Will eventually listen to mic
-        return raw_input('Input: ')
+        # return raw_input('Input: ')
+        self.text = "NULL"
+
+        while self.text == "NULL":
+            time.sleep(1)
+
+        return self.text
+
+    def callback(self, data):
+        print data.data
+        self.text = data.data
 
 class SpeechSynthesis:
 
