@@ -34,5 +34,9 @@ Getting the whole system to work can be a bit fiddly. Here are a few notes and l
   * Currently uses CMU flite (Might be a better alternative: need to look into this)
   * Can be obtained here: http://www.speech.cs.cmu.edu/flite/
  * Had difficulties getting it working as a c++ ROS node, so current system is a bit hacky in that it is a python node that calls `flite` through the command line
+ 
+ *__Changing Acoustic Model__
+To use the model in pocketsphinx, simply point to it with the -hmm option:
+ pocketsphinx_continuous -hmm <your_new_model_folder> -lm your_lm -dict your_dict.
 
 
