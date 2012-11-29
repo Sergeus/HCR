@@ -1,9 +1,9 @@
 // Postive Answers
-Yeah
-Yes
-Affirmative
-Aye
-Indeed
+yeah
+yes
+affirmative
+aye
+indeed
 course
 sure
 probably
