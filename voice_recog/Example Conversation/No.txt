@@ -1,7 +1,7 @@
 // Negative Answers
-No
-Nope
-Not
+no
+nope
+not
 nein
 nothing
 dont

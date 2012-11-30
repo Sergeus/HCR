@@ -27,9 +27,12 @@ import gst
 
 from std_msgs.msg import String
 from std_srvs.srv import *
+#from pocketsphinx.srv import string
 
 class recognizer(object):
     """ GStreamer based speech recognizer. """
+
+    base_dir = "/home/chris/ros_workspace/sandbox/knowledge_base/"
 
     def __init__(self):
         """ Initialize the speech pipeline components. """
@@ -40,6 +43,7 @@ class recognizer(object):
         # services to start/stop recognition
         rospy.Service("ps_start", Empty, self.start)
         rospy.Service("ps_stop", Empty, self.stop)
+        #rospy.Service("ps_change_lm", string, self.change_model)
 
         # configure pipeline
         self.pipeline = gst.parse_launch('gconfaudiosrc ! audioconvert ! audioresample '
@@ -65,8 +69,10 @@ class recognizer(object):
         #    rospy.logerr('Please specify a dictionary')
         #    return
 
-        asr.set_property('lm','/home/chris/ros_workspace/sandbox/knowledge_base/8835.lm')
-        asr.set_property('dict','/home/chris/ros_workspace/sandbox/knowledge_base/8835.dic')
+        temp_lm = self.base_dir + "test3.lm"
+        temp_dic = self.base_dir + "test3.dic"
+        asr.set_property('lm', temp_lm)
+        asr.set_property('dict',temp_dic)
 
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
@@ -87,6 +93,15 @@ class recognizer(object):
         #vader = self.pipeline.get_by_name('vad')
         #vader.set_property('silent', True)
         return EmptyResponse()
+
+    #def change_model(self, name):
+    #    self.stop()
+    #    temp_lm = self.base_dir + name.msg + ".lm"
+    #    temp_dic = self.base_dir + name.msg + ".dic"
+    #    asr = self.pipeline.get_by_name('asr')
+    #    asr.set_property('lm', temp_lm)
+    #    asr.set_property('dict',temp_dic)
+    #    self.start(None)
 
     def asr_partial_result(self, asr, text, uttid):
         """ Forward partial result signals on the bus to the main thread. """
@@ -122,6 +137,5 @@ class recognizer(object):
         self.pub.publish(msg)
 
 if __name__=="__main__":
-    print ##################################################### lol
     r = recognizer()
 

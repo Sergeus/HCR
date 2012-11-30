@@ -1,0 +1,69 @@
+Language model created by QuickLM on Thu Nov 29 09:57:05 EST 2012
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 11 sentences and 13 words
+
+\data\
+ngram 1=13
+ngram 2=22
+ngram 3=11
+
+\1-grams:
+-0.7782 </s> -0.3010
+-0.7782 <s> -0.2218
+-1.8195 DONT -0.2218
+-1.8195 FALSE -0.2218
+-1.8195 NAY -0.2218
+-1.8195 NEGATIVE -0.2218
+-1.8195 NEIN -0.2218
+-1.8195 NO -0.2218
+-1.8195 NON -0.2218
+-1.8195 NONE -0.2218
+-1.8195 NOPE -0.2218
+-1.8195 NOT -0.2218
+-1.8195 NOTHING -0.2218
+
+\2-grams:
+-1.3424 <s> DONT 0.0000
+-1.3424 <s> FALSE 0.0000
+-1.3424 <s> NAY 0.0000
+-1.3424 <s> NEGATIVE 0.0000
+-1.3424 <s> NEIN 0.0000
+-1.3424 <s> NO 0.0000
+-1.3424 <s> NON 0.0000
+-1.3424 <s> NONE 0.0000
+-1.3424 <s> NOPE 0.0000
+-1.3424 <s> NOT 0.0000
+-1.3424 <s> NOTHING 0.0000
+-0.3010 DONT </s> -0.3010
+-0.3010 FALSE </s> -0.3010
+-0.3010 NAY </s> -0.3010
+-0.3010 NEGATIVE </s> -0.3010
+-0.3010 NEIN </s> -0.3010
+-0.3010 NO </s> -0.3010
+-0.3010 NON </s> -0.3010
+-0.3010 NONE </s> -0.3010
+-0.3010 NOPE </s> -0.3010
+-0.3010 NOT </s> -0.3010
+-0.3010 NOTHING </s> -0.3010
+
+\3-grams:
+-0.3010 <s> DONT </s>
+-0.3010 <s> FALSE </s>
+-0.3010 <s> NAY </s>
+-0.3010 <s> NEGATIVE </s>
+-0.3010 <s> NEIN </s>
+-0.3010 <s> NO </s>
+-0.3010 <s> NON </s>
+-0.3010 <s> NONE </s>
+-0.3010 <s> NOPE </s>
+-0.3010 <s> NOT </s>
+-0.3010 <s> NOTHING </s>
+
+\end\

@@ -2,6 +2,7 @@
 import roslib; roslib.load_manifest('ros_speech_engine')
 import rospy
 from std_msgs.msg import String
+#from ros_speech_engine.srv import string
 import time
 
 class Utterance:
@@ -62,6 +63,14 @@ class PocketSphinx:
 
         return self.text
 
+    #def change_model(self, name):
+    #    rospy.wait_for_service('ps_change_lm')
+    #    try:
+    #        temp = rospy.ServiceProxy('ps_change_lm', string)
+    #        temp(name)
+    #    except rospy.ServiceException, e:
+    #        print "Service call failed: %s"%e
+
     def callback(self, data):
         print data.data
         self.text = data.data
@@ -111,6 +120,7 @@ if __name__ == '__main__':
 
             if state == "ASK_NAME":
 
+                #ps.change_model("names")
                 ss.speak("Hello, what is your name?")
                 name = "NULL"
                 state = "RECOG_NAME"
@@ -126,6 +136,7 @@ if __name__ == '__main__':
 
             elif state == "ASK_INTERESTED":
 
+                #ps.change_model("yesno")
                 ss.speak("Hello " + name + ", would you be interested in finding out more about this experiment?")
                 state = "RECOG_INTERESTED"
 

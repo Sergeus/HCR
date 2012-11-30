@@ -1,3 +1,89 @@
+i
+me
+my
+it
+its
+im
+that
+this
+we
+us
+all
+both
+mine
+we
+whose
+whom
+you
+he
+she
+be
+being
+been
+am
+are
+is
+was
+were
+name
+called
+think
+oh
+no
+nope
+not
+nein
+nothing
+dont
+negative
+non
+none
+false
+nay
+yeah
+yes
+affirmative
+aye
+indeed
+course
+sure
+probably
+maybe
+okay
+yep
+certainly
+indubitably
+fine
+si
+ja
+roger
+history museum
+v and a museum
+victoria and albert museum
+science museum
+natural history museum
+work
+lectures
+university
+imperial college
+school
+underground
+tube
+south kensington
+picaddilly line
+district line
+earls court
+gloucester road
+food
+shopping
+train
+gym
+ethos
+hyde park
+royal albert hall
+union
+home
+halls
 jack 
 sophie 
 daniel 
