@@ -37,6 +37,11 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+# Temp files #
+##############
+*~
+*__init*
+
 # Stupid directories #
 ######################
 [Bb]in/
