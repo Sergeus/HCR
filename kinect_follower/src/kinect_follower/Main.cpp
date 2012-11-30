@@ -27,6 +27,7 @@
 #include <tf/transform_listener.h>
 #include <geometry_msgs/Twist.h>
 #include <vector>
+#include "kinect_follower/HeadCoordinates.h"
 
 std::vector<std::string> vectorOfTorsos();
 
@@ -51,11 +52,19 @@ std::vector<std::string> vectorOfTorsos()
 	return torsos;
 }
 
+std::string getHeadFromTorso(std::string torso) {
+	std::string head = "head_";
+	for (int i=6; i < torso.size(); i++) { // hard coded length of string "torso_"
+		head += torso[i];
+	}
+	return head;
+}
+
 bool existsValidtf(std::vector<std::string> originFrame, tf::TransformListener &tfl, std::string destFrame, 
 	double timeout) 
 {
 	//std::cout << "Exists started" << std::endl;
-	for (int index = 0; index < originFrame.size() - 1; index++) {
+	for (int index = 0; index < originFrame.size(); index++) {
 		std::string torso = originFrame[index];
 		//std::cout << "Testing torso: " << torso << std::endl;  
 		if (tfl.waitForTransform(
@@ -163,7 +172,7 @@ std::string findValidtf(std::vector<std::string> originFrame, tf::TransformListe
 	std::string foundTorso;
 	double foundDistance = 10000000;
 	//std::cout << "Valid tf started." << std::endl; 
-	for (int i = 0; i < originFrame.size() - 1; i++) {
+	for (int i = 0; i < originFrame.size(); i++) {
 		std::string torso = originFrame[i];
 		//std::cout << "Testing torso: " << torso << std::endl;  
 		if (tfl.waitForTransform(
@@ -225,11 +234,15 @@ int main(int argc, char* argv[])
 
     //Advertise cmd_vel
     ros::Publisher pub = nodeHandle.advertise<geometry_msgs::Twist>(
-                "cmd_vel", 10
+                "cmd_vel", 20
                 );
 
+    ros::Publisher headPub = nodeHandle.advertise<kinect_follower::HeadCoordinates>(
+		"kinect_heads", 20
+		);
+
     // Maximum time for transform to be available
-    const double timeout = 0.1;
+    const double timeout = 0.05;
     
     // Fill in the values of originFrame and destFrame
     const std::vector<std::string> originFrame = vectorOfTorsos();
@@ -288,7 +301,6 @@ int main(int argc, char* argv[])
 
 		tfl.transformPoint( destFrame, input, output );
 
-
 		// Now we use the transformed point to calculate the
 		// required translational and rotational speeds.
 
@@ -329,6 +341,29 @@ int main(int argc, char* argv[])
 		    		linearSpeed = 0;
 
 		}
+
+		// Now we need to work out the head coordinates
+		std::string currentHead = getHeadFromTorso(currentTorso);
+
+		geometry_msgs::PointStamped headInput;
+		headInput.header.frame_id = currentHead;
+		headInput.header.stamp = ros::Time(0);
+
+		headInput.point.x = 0.0;
+		headInput.point.y = 0.0;
+		headInput.point.z = 0.0;
+
+		geometry_msgs::PointStamped headOutput;
+
+		tfl.transformPoint( destFrame, headInput, headOutput );
+
+		kinect_follower::HeadCoordinates headMsg;
+		headMsg.x = headOutput.point.y;
+		headMsg.y = headOutput.point.z;
+
+		std::cout << "Publishing head coords at x: " << headMsg.x << " y: " << headMsg.y << "." << std::endl;
+
+		headPub.publish(headMsg);
 
 		// Now we have to pack the information in a Twist message.
 		// Because the robot only moves in the plane we do not need to fill
