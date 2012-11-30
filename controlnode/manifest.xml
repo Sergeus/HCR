@@ -8,6 +8,9 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/controlnode</url>
+  <depend package="roscpp"/>
+  <depend package="roslib"/>
+  <depend package="rostime"/>
 
 </package>
 
