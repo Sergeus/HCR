@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/305/trunk/rharmony
+END
+rosdep.yaml
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/214/trunk/rharmony/rosdep.yaml
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/206/trunk/rharmony/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/206/trunk/rharmony/Makefile
+END
+stack.xml
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/223/trunk/rharmony/stack.xml
+END

@@ -1,0 +1,16 @@
+<package>
+  <description brief="ros_speech_engine">
+
+     ros_speech_engine
+
+  </description>
+  <author>Chris Socha</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/ros_speech_engine</url>
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+
+</package>
+
+

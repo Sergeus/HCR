@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/302/trunk/rharmony/pocketsphinx/nodes
+END
+recognizer.py
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/206/trunk/rharmony/pocketsphinx/nodes/recognizer.py
+END
+voice_cmd_vel.py
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/302/trunk/rharmony/pocketsphinx/nodes/voice_cmd_vel.py
+END

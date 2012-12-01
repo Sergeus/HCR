@@ -1,0 +1,45 @@
+Language model created by QuickLM on Tue Nov 27 08:37:08 EST 2012
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 5 sentences and 7 words
+
+\data\
+ngram 1=7
+ngram 2=10
+ngram 3=5
+
+\1-grams:
+-0.7782 </s> -0.3010
+-0.7782 <s> -0.2218
+-1.4771 CHRIS -0.2218
+-1.4771 CHRISTOPHER -0.2218
+-1.4771 NO -0.2218
+-1.4771 OLIVER -0.2218
+-1.4771 YES -0.2218
+
+\2-grams:
+-1.0000 <s> CHRIS 0.0000
+-1.0000 <s> CHRISTOPHER 0.0000
+-1.0000 <s> NO 0.0000
+-1.0000 <s> OLIVER 0.0000
+-1.0000 <s> YES 0.0000
+-0.3010 CHRIS </s> -0.3010
+-0.3010 CHRISTOPHER </s> -0.3010
+-0.3010 NO </s> -0.3010
+-0.3010 OLIVER </s> -0.3010
+-0.3010 YES </s> -0.3010
+
+\3-grams:
+-0.3010 <s> CHRIS </s>
+-0.3010 <s> CHRISTOPHER </s>
+-0.3010 <s> NO </s>
+-0.3010 <s> OLIVER </s>
+-0.3010 <s> YES </s>
+
+\end\

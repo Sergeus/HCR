@@ -31,10 +31,6 @@ is
 was
 were
 
-// Spacer Sound
-er
-um
-uh
 
 // Part 1
 name

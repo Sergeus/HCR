@@ -1,0 +1,16 @@
+<package>
+  <description brief="A simple wrapper around pocketsphinx speech recognizer.">
+    A simple wrapper around the pocket sphinx speech recognizer, using gstreamer. 
+  </description>
+  <author>Michael Ferguson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/pocketsphinx</url>
+  <depend package="rospy"/>
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/><!-- only needed for demo -->
+  <depend package="std_srvs"/>
+  <rosdep name="gstreamer_pocketsphinx"/>
+</package>
+
+
