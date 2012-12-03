@@ -1,4 +1,5 @@
-#include <ros/ros.h> 
+#include "ros/ros.h"
+// #include "std_msgs/startstop.h"
 
 enum behavModesEnum { MODE1, MODE2, MODE3 };
 behavModesEnum currentBehaviour = MODE1;
@@ -14,12 +15,14 @@ int main(int argc, char **argv)
     
     ros::NodeHandle n;
     
-    // ros:Rate loop_rate(10);
+    ros::Rate loop_rate(1);
 
+    int count = 0;
     while (ros::ok())
     {
-        ROS_INFO("TEST LOOP");
-
+    
+        ROS_INFO("TEST LOOP (%d)", count);
+        count++;
         switch ( currentState )
         {
             case IDLE :
@@ -37,6 +40,8 @@ int main(int argc, char **argv)
 
             stateChanged = false;
         }
+        
+        loop_rate.sleep();
     }
 
     return 0;
