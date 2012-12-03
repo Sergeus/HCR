@@ -38,6 +38,11 @@ ehthumbs.db
 Thumbs.db
 *.swp
 
+# Temp files #
+##############
+*~
+*__init*
+
 # Stupid directories #
 ######################
 [Bb]in/

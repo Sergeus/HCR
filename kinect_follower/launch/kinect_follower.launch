@@ -23,7 +23,7 @@
         <rosparam>
             port  : "/dev/ttyUSB1"
             pulse : 1
-            use_sonar : true
+            use_sonar : false
         </rosparam>
     </node>
     
