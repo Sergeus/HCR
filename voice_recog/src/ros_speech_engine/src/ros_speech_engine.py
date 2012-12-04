@@ -198,8 +198,8 @@ if __name__ == '__main__':
 
                 response = Utterance(ps.listen())
                 
-                print "Yes reponse: " + reponse.containsYes()
-                print "No reponse: " + reponse.containsNo()
+                print "Yes reponse: " + response.containsYes()
+                print "No reponse: " + response.containsNo()
                 if response.containsYes():
                     print "SUCCESS: Ticket printed"
                     state = "ASK_NAME"
