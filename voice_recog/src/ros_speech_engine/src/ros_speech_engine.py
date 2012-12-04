@@ -210,9 +210,7 @@ if __name__ == '__main__':
             elif state == "RECOG_INTERESTED":
 
                 response = Utterance(ps.listen())
-                
-                print "Yes reponse: " + response.containsYes()
-                print "No reponse: " + response.containsNo()
+               
                 if response.containsYesNo() == Yes:
                     print "SUCCESS: Ticket printed"
                     state = "ASK_NAME"
