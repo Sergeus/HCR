@@ -32,7 +32,20 @@ class Utterance:
             return False
         else:
             return True
+            
+    def containsYesNo(self):
+        words = self.text.split()
+        temp = "/home/chris/ros_workspace/sandbox/ros_speech_engine/src/"
 
+        for word in words:
+            if word in open(temp + 'yes.txt').read():
+                return Yes
+        for word in words:
+            if word in open(temp + 'no.txt').read():
+                return No
+                
+        return "NULL"
+        
     def getName(self):
         return self.extractWord('names.txt')
     
@@ -180,9 +193,9 @@ if __name__ == '__main__':
             
                 meeting = Utterance(ps.listen())
                 
-                if meeting.containsYes():
+                if meeting.containsYesNo() == Yes:
                     ss.speak("I think we might become best of friends sooner than I thought...")
-                elif meeting.containsNo():
+                elif meeting.containsYesNo() == No:
                     ss.speak("That is most unfortunate.  You have missed out...")
                 else:
                     ss.speak("Your words confuse me.")
@@ -200,10 +213,10 @@ if __name__ == '__main__':
                 
                 print "Yes reponse: " + response.containsYes()
                 print "No reponse: " + response.containsNo()
-                if response.containsYes():
+                if response.containsYesNo() == Yes:
                     print "SUCCESS: Ticket printed"
                     state = "ASK_NAME"
-                elif response.containsNo():
+                elif response.containsYesNo() == No:
                     print "SUCCESS: Ticket not printed"
                     state = "ASK_NAME"
                 else:
