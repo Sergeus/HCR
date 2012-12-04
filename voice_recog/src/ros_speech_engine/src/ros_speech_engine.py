@@ -128,16 +128,57 @@ if __name__ == '__main__':
             elif state == "RECOG_NAME":
                
                 name = Utterance(ps.listen()).getName()
- 
-                if name != "NULL" :
-                    state = "ASK_INTERESTED"
+				
+				if name != "NULL" :
+					state = "HELLO_NAME"
+				else:
+                    state = "ERROR"
+				
+			elif state == "HELLO_NAME"
+			
+                ss.speak("Hello " + name)
+				
+				randomNum = random.randint(0, 1)
+				if randomNum == 0:
+					state = "ASK_LOCATION"
+				else
+					state = "ASK_MEETING"
+              
+			elif state == "ASK_LOCATION":
+				
+				ss.speak("Where are you going to?")
+				location = "NULL"
+                state = "RECOG_LOCATION"
+			
+			elif state == "RECOG_LOCATION"
+			
+				location = Utterance(ps.listen()).getName()
+				state = "ASK_INTERESTED"
+			
+			elif state == "ASK_MEETING":
+				
+				ss.speak("Have you ever met a robot before?")
+				meeting = "NULL"
+                state = "RECOG_MEETING"
+			
+			elif state == "RECOG_MEETING"
+			
+				meeting = Utterance(ps.listen()).getName()
+				
+				if response.containsYes():
+                    print "SUCCESS: Ticket printed"
+                    state = "ASK_NAME"
+                elif response.containsNo():
+                    print "SUCCESS: Ticket not printed"
+                    state = "ASK_NAME"
                 else:
                     state = "ERROR"
-
+				state = "ASK_INTERESTED"		
+							
             elif state == "ASK_INTERESTED":
 
                 #ps.change_model("yesno")
-                ss.speak("Hello " + name + ", would you be interested in finding out more about this experiment?")
+                ss.speak("Would you be interested in finding out more about this experiment?")
                 state = "RECOG_INTERESTED"
 
             elif state == "RECOG_INTERESTED":
