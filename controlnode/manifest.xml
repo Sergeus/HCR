@@ -1,0 +1,17 @@
+<package>
+  <description brief="controlnode">
+
+     This package implements and state machine to coordinate the CHARLES robot. 
+
+  </description>
+  <author>Jonathan Ely</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/controlnode</url>
+  <depend package="roscpp"/>
+  <depend package="roslib"/>
+  <depend package="rostime"/>
+
+</package>
+
+
