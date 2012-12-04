@@ -169,7 +169,7 @@ bool isValidClosesttf(std::string frame, tf::TransformListener &tfl, std::string
 std::string findValidtf(std::vector<std::string> originFrame, tf::TransformListener &tfl, std::string destFrame, 
 	double timeout) 
 {
-	std::string foundTorso;
+	std::string foundTorso = "";
 	double foundDistance = 10000000;
 	//std::cout << "Valid tf started." << std::endl; 
 	for (int i = 0; i < originFrame.size(); i++) {
@@ -241,6 +241,14 @@ int main(int argc, char* argv[])
 		"kinect_heads", 20
 		);
 
+    ros::Publisher LostPersonPub = nodeHandle.advertise<kinect_follower::activityStatus>(
+		"kinectLostActivity", 20
+		);
+
+    ros::Publisher FoundPersonPub = nodeHandle.advertise<kinect_follower::activityStatus>(
+		"kinectFoundActivity", 20
+		);
+
     // Maximum time for transform to be available
     const double timeout = 0.05;
     
@@ -266,10 +274,44 @@ int main(int argc, char* argv[])
         // Check if transform exists
 	else if (existsValidtf(originFrame, tfl, destFrame, timeout)) {
 		currentTorso = findValidtf(originFrame, tfl, destFrame, timeout);
-		okay = true;
-		std::cout << "Tracking new torso " << currentTorso << "." << std::endl;
+		if (currentTorso.compare("") != 0) {
+			okay = true;
+			std::cout << "Tracking new torso " << currentTorso << "." << std::endl;
+
+			kinect_follower::activityStatus statusMsg;
+
+			statusMsg.activity = "found";
+
+			FoundPersonPub.publish(statusMsg);
+		}
+		else {
+			kinect_follower::activityStatus statusMsg;
+
+			statusMsg.activity = "lost";
+
+			LostPersonPub.publish(statusMsg);
+
+			geometry_msgs::Twist msg;
+
+			msg.linear.x = 0;
+			msg.angular.z = 0;
+
+			std::cout << "Found no valid tf to track, so not moving." << std::endl;
+
+			//Finally the message gets sent
+			pub.publish(msg);
+
+			ros::spinOnce();
+			nodeRate.sleep();
+		}
 	}
 	else {
+		kinect_follower::activityStatus statusMsg;
+
+		statusMsg.activity = "lost";
+
+		LostPersonPub.publish(statusMsg);
+		
 		geometry_msgs::Twist msg;
 
 		msg.linear.x = 0;
@@ -360,6 +402,7 @@ int main(int argc, char* argv[])
 		kinect_follower::HeadCoordinates headMsg;
 		headMsg.x = headOutput.point.y;
 		headMsg.y = headOutput.point.z;
+		headMsg.z = headOutput.point.x;
 
 		std::cout << "Publishing head coords at x: " << headMsg.x << " y: " << headMsg.y << "." << std::endl;
 
