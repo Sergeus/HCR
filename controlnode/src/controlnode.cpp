@@ -1,13 +1,41 @@
+#include <iostream>
+#include <stdio.h>
+#include <time.h>
+#include <string>
 #include "ros/ros.h"
-// #include "std_msgs/startstop.h"
+// #include "kinect_follower/activityStatus.h"
+#include "controlnode/activityStatus.h"
+#include "controlnode/startstop.h"
 
-enum behavModesEnum { MODE1, MODE2, MODE3 };
+#define TICKETINTERVAL 30
+
+using namespace std;
+
+enum behavModesEnum { MODE0, MODE1, MODE2, MODE3 };
 behavModesEnum currentBehaviour = MODE1;
 
-enum statesEnum { IDLE, FOLLOWING, CONVERSING, PRINTING };
+enum statesEnum { IDLE, FOLLOWING, SPEAKING, CONVERSING, PRINTING };
 statesEnum currentState = IDLE;
 
 bool stateChanged = true;
+
+void printTicket()
+{
+    time_t epochTime = time(NULL);
+    ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
+}
+
+void testFunction(const controlnode::startstop::ConstPtr& msg)
+{
+    ROS_INFO("TESTFUNCTION CALLED");
+
+}
+
+void publishMessage(string ss)
+{
+    controlnode::startstop msg;
+    msg.operation = ss;
+}
 
 int main(int argc, char **argv)
 {
@@ -15,32 +43,93 @@ int main(int argc, char **argv)
     
     ros::NodeHandle n;
     
+    ros::Subscriber sub = n.subscribe("test", 1000, testFunction);
+    ros::Publisher testPub = n.advertise<controlnode::startstop>("pubtopic", 1000); 
+    controlnode::startstop msg;
+
     ros::Rate loop_rate(1);
+    
+    // Initialise state
+    switch (currentBehaviour)
+    {
+        case MODE0 :
+            currentState = IDLE;
+            break;
+        case MODE1 :
+            currentState = FOLLOWING;
+            break;
+        case MODE2 :
+            currentState = FOLLOWING;
+            break;
+        case MODE3 :
+            currentState = FOLLOWING;
+            break;
+    }
 
     int count = 0;
+
     while (ros::ok())
     {
-    
         ROS_INFO("TEST LOOP (%d)", count);
         count++;
+        // cout << currentState; 
+
         switch ( currentState )
         {
             case IDLE :
+                ROS_INFO("Current state, IDLE");
+                switch ( currentBehaviour )
+                {
+                    case MODE0 :
+                        // Print every TICKETINTERVAL seconds
+                        if ((time(NULL) % TICKETINTERVAL) == 0)
+                            printTicket();
+                        break;
+                }
+                
                 break;
+            
             case FOLLOWING :
+                ROS_INFO("Current state, FOLLOWING");
+                switch (currentBehaviour)
+                {
+                    case MODE1 :
+                        // if person found
+                        msg.operation = "testing";
+                        testPub.publish(msg);
+                        ROS_INFO("PUBLISHING");
+                        // currentState = SPEAKING;
+                        break;
+                    case MODE2 :
+                        currentState = CONVERSING;
+                    default :
+                        currentState = IDLE;
+                        break;
+                }
                 break;
+
+            case SPEAKING :
+                ROS_INFO("Current state, SPEAKING");
+                break;
+
             case CONVERSING :
+                ROS_INFO("Current state, CONVERSING"); 
+                currentState = PRINTING;
                 break;
+
             case PRINTING :
+                ROS_INFO("Current state, PRINTING");
+                printTicket();
+                currentState = IDLE;
                 break;
         }
 
         // If the state has changed send necessary messages
-        if ( stateChanged ) {
-
-            stateChanged = false;
-        }
+        // if ( stateChanged ) {
+        //     stateChanged = false;
+        // }
         
+        ros::spinOnce();
         loop_rate.sleep();
     }
 
