@@ -20,16 +20,16 @@ class Utterance:
         return self.extractWord('locations.txt') != "NULL"
 
     def containsYes(self):
-        if self.extractWord('yes.txt') == True :
-            return True
-        else:
+        if self.extractWord('yes.txt') == "NULL" :
             return False
+        else:
+            return True
 
     def containsNo(self):
-        if self.extractWord('no.txt') == True :
-            return True
-        else:
+        if self.extractWord('no.txt') == "NULL" :
             return False
+        else:
+            return True
 
     def getName(self):
         return self.extractWord('names.txt')
@@ -163,8 +163,8 @@ if __name__ == '__main__':
             elif state == "RECOG_LOCATION":
             
                 location = Utterance(ps.listen())
-#                switch(location):
-#                    case
+                if location == (
+                  case
                 state = "ASK_INTERESTED"
             
             elif state == "ASK_MEETING":
