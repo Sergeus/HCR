@@ -27,7 +27,7 @@ class Utterance:
         
 
     def containsNo(self):
-        return self.extractWord('no.txt') != "NULL"
+        if self.extractWord('no.txt') != "NULL":
             return True
         else :
             return False
