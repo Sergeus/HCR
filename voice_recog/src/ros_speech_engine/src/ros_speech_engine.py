@@ -20,12 +20,14 @@ class Utterance:
         return self.extractWord('locations.txt') != "NULL"
 
     def containsYes(self):
+        print self.extractWord('yes.txt')
         if self.extractWord('yes.txt') == "NULL" :
             return False
         else:
             return True
 
     def containsNo(self):
+        print self.extractWord('no.txt')
         if self.extractWord('no.txt') == "NULL" :
             return False
         else:
