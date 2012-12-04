@@ -20,32 +20,17 @@ class Utterance:
         return self.extractWord('locations.txt') != "NULL"
 
     def containsYes(self):
-      #  print self.extractWord('yes.txt')
-        if self.extractWord('yes.txt') == "NULL" :
-            return False
-        else:
+        if self.extractWord('yes.txt') == True :
             return True
+        else:
+            return False
 
     def containsNo(self):
-      #  print self.extractWord('no.txt')
-        if self.extractWord('no.txt') == "NULL" :
-            return False
-        else:
+        if self.extractWord('no.txt') == True :
             return True
-            
-    def containsYesNo(self):
-        words = self.text.split()
-        temp = "/home/chris/ros_workspace/sandbox/ros_speech_engine/src/"
+        else:
+            return False
 
-        for word in words:
-            if word in open(temp + 'yes.txt').read():
-                return "Yes"
-        for word in words:
-            if word in open(temp + 'no.txt').read():
-                return "No"
-                
-        return "NULL"
-        
     def getName(self):
         return self.extractWord('names.txt')
     
@@ -178,8 +163,8 @@ if __name__ == '__main__':
             elif state == "RECOG_LOCATION":
             
                 location = Utterance(ps.listen())
- #               if location == (
- #                 case
+#                switch(location):
+#                    case
                 state = "ASK_INTERESTED"
             
             elif state == "ASK_MEETING":
@@ -193,9 +178,9 @@ if __name__ == '__main__':
             
                 meeting = Utterance(ps.listen())
                 
-                if meeting.containsYesNo() == Yes:
+                if meeting.containsYes():
                     ss.speak("I think we might become best of friends sooner than I thought...")
-                elif meeting.containsYesNo() == No:
+                elif meeting.containsNo():
                     ss.speak("That is most unfortunate.  You have missed out...")
                 else:
                     ss.speak("Your words confuse me.")
@@ -210,11 +195,11 @@ if __name__ == '__main__':
             elif state == "RECOG_INTERESTED":
 
                 response = Utterance(ps.listen())
-               
-                if response.containsYesNo() == "Yes":
+
+                if response.containsYes():
                     print "SUCCESS: Ticket printed"
                     state = "ASK_NAME"
-                elif response.containsYesNo() == "No":
+                elif response.containsNo():
                     print "SUCCESS: Ticket not printed"
                     state = "ASK_NAME"
                 else:
