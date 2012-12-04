@@ -153,7 +153,7 @@ if __name__ == '__main__':
 				location = "NULL"
                 state = "RECOG_LOCATION"
 			
-			elif state == "RECOG_LOCATION"
+			elif state == "RECOG_LOCATION":
 			
 				location = Utterance(ps.listen())
 #				switch(location):
@@ -163,10 +163,11 @@ if __name__ == '__main__':
 			elif state == "ASK_MEETING":
 				
 				ss.speak("Have you ever met a robot before?")
+				
 				meeting = "NULL"
                 state = "RECOG_MEETING"
 			
-			elif state == "RECOG_MEETING"
+			elif state == "RECOG_MEETING":
 			
 				meeting = Utterance(ps.listen())
 				
