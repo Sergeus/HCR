@@ -39,10 +39,10 @@ class Utterance:
 
         for word in words:
             if word in open(temp + 'yes.txt').read():
-                return Yes
+                return "Yes"
         for word in words:
             if word in open(temp + 'no.txt').read():
-                return No
+                return "No"
                 
         return "NULL"
         
@@ -211,10 +211,10 @@ if __name__ == '__main__':
 
                 response = Utterance(ps.listen())
                
-                if response.containsYesNo() == Yes:
+                if response.containsYesNo() == "Yes":
                     print "SUCCESS: Ticket printed"
                     state = "ASK_NAME"
-                elif response.containsYesNo() == No:
+                elif response.containsYesNo() == "No":
                     print "SUCCESS: Ticket not printed"
                     state = "ASK_NAME"
                 else:
