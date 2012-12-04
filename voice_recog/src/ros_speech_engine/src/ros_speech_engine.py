@@ -20,11 +20,18 @@ class Utterance:
         return self.extractWord('locations.txt') != "NULL"
 
     def containsYes(self):
-        return self.extractWord('yes.txt') != "NULL"
+        if self.extractWord('yes.txt') != "NULL":
+            return True
+        else :
+            return False
+        
 
     def containsNo(self):
         return self.extractWord('no.txt') != "NULL"
-
+            return True
+        else :
+            return False
+            
     def getName(self):
         return self.extractWord('names.txt')
     
@@ -172,9 +179,9 @@ if __name__ == '__main__':
             
                 meeting = Utterance(ps.listen())
                 
-                if meeting.containsYes():
+                if meeting.containsYes() == True:
                     ss.speak("I think we might become best of friends sooner than I thought...")
-                elif meeting.containsNo():
+                elif meeting.containsNo() == True:
                     ss.speak("That is most unfortunate.  You have missed out...")
                 else:
                     ss.speak("Your words confuse me.")
@@ -190,10 +197,10 @@ if __name__ == '__main__':
 
                 response = Utterance(ps.listen())
 
-                if response.containsYes():
+                if response.containsYes()  == True:
                     print "SUCCESS: Ticket printed"
                     state = "ASK_NAME"
-                elif response.containsNo():
+                elif response.containsNo() == True:
                     print "SUCCESS: Ticket not printed"
                     state = "ASK_NAME"
                 else:
