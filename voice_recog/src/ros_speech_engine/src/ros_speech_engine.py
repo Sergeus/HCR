@@ -4,6 +4,7 @@ import rospy
 from std_msgs.msg import String
 #from ros_speech_engine.srv import string
 import time
+import random
 
 class Utterance:
 
@@ -137,14 +138,14 @@ if __name__ == '__main__':
                 else:
                     state = "ERROR"
                 
-            elif state == "HELLO_NAME"
+            elif state == "HELLO_NAME":
             
                 ss.speak("Hello " + name)
                 
                 randomNum = random.randint(0, 1)
                 if randomNum == 0:
                     state = "ASK_LOCATION"
-                else
+                else:
                     state = "ASK_MEETING"
               
             elif state == "ASK_LOCATION":
@@ -171,9 +172,9 @@ if __name__ == '__main__':
             
                 meeting = Utterance(ps.listen())
                 
-                if response.containsYes():
+                if meeting.containsYes():
                     ss.speak("I think might become best of friends sooner than I thought...")
-                elif response.containsNo():
+                elif meeting.containsNo():
                     ss.speak("That is most unfortunate.  You have missed out...")
                 else:
                     ss.speak("Your words confuse me.")
