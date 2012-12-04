@@ -22,13 +22,13 @@ class Utterance:
     def containsYes(self):
         if self.extractWord('yes.txt') == True :
             return True
-        else
+        else:
             return False
 
     def containsNo(self):
         if self.extractWord('no.txt') == True :
             return True
-        else
+        else:
             return False
 
     def getName(self):
