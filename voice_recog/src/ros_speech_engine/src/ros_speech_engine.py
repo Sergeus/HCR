@@ -165,8 +165,8 @@ if __name__ == '__main__':
             elif state == "RECOG_LOCATION":
             
                 location = Utterance(ps.listen())
-                if location == (
-                  case
+ #               if location == (
+ #                 case
                 state = "ASK_INTERESTED"
             
             elif state == "ASK_MEETING":
