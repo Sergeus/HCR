@@ -26,10 +26,10 @@ class Utterance:
 
     def getName(self):
         return self.extractWord('names.txt')
-	
+    
     def getLocation(self):
-		return self.extractWord('location.txt')
-		
+        return self.extractWord('location.txt')
+        
     def extractWord(self, fname):
         words = self.text.split()
         temp = "/home/chris/ros_workspace/sandbox/ros_speech_engine/src/" + fname
@@ -131,54 +131,54 @@ if __name__ == '__main__':
             elif state == "RECOG_NAME":
                
                 name = Utterance(ps.listen()).getName()
-				
-				if name != "NULL" :
-					state = "HELLO_NAME"
-				else:
+                
+                if name != "NULL" :
+                    state = "HELLO_NAME"
+                else:
                     state = "ERROR"
-				
-			elif state == "HELLO_NAME"
-			
+                
+            elif state == "HELLO_NAME"
+            
                 ss.speak("Hello " + name)
-				
-				randomNum = random.randint(0, 1)
-				if randomNum == 0:
-					state = "ASK_LOCATION"
-				else
-					state = "ASK_MEETING"
+                
+                randomNum = random.randint(0, 1)
+                if randomNum == 0:
+                    state = "ASK_LOCATION"
+                else
+                    state = "ASK_MEETING"
               
-			elif state == "ASK_LOCATION":
-				
-				ss.speak("Where are you going to?")
-				location = "NULL"
+            elif state == "ASK_LOCATION":
+                
+                ss.speak("Where are you going to?")
+                location = "NULL"
                 state = "RECOG_LOCATION"
-			
-			elif state == "RECOG_LOCATION":
-			
-				location = Utterance(ps.listen())
-#				switch(location):
-#					case
-				state = "ASK_INTERESTED"
-			
-			elif state == "ASK_MEETING":
-				
-				ss.speak("Have you ever met a robot before?")
-				
-				meeting = "NULL"
+            
+            elif state == "RECOG_LOCATION":
+            
+                location = Utterance(ps.listen())
+#                switch(location):
+#                    case
+                state = "ASK_INTERESTED"
+            
+            elif state == "ASK_MEETING":
+                
+                ss.speak("Have you ever met a robot before?")
+                
+                meeting = "NULL"
                 state = "RECOG_MEETING"
-			
-			elif state == "RECOG_MEETING":
-			
-				meeting = Utterance(ps.listen())
-				
-				if response.containsYes():
+            
+            elif state == "RECOG_MEETING":
+            
+                meeting = Utterance(ps.listen())
+                
+                if response.containsYes():
                     ss.speak("I think might become best of friends sooner than I thought...")
                 elif response.containsNo():
                     ss.speak("That is most unfortunate.  You have missed out...")
                 else:
                     ss.speak("Your words confuse me.")
-				state = "ASK_INTERESTED"		
-							
+                state = "ASK_INTERESTED"        
+                            
             elif state == "ASK_INTERESTED":
 
                 #ps.change_model("yesno")
