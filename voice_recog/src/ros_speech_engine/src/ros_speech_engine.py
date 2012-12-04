@@ -26,7 +26,10 @@ class Utterance:
 
     def getName(self):
         return self.extractWord('names.txt')
-
+	
+	def getLocation(self)
+		return self.extractWord('location.txt')
+		
     def extractWord(self, fname):
         words = self.text.split()
         temp = "/home/chris/ros_workspace/sandbox/ros_speech_engine/src/" + fname
@@ -152,7 +155,9 @@ if __name__ == '__main__':
 			
 			elif state == "RECOG_LOCATION"
 			
-				location = Utterance(ps.listen()).getName()
+				location = Utterance(ps.listen())
+#				switch(location):
+#					case
 				state = "ASK_INTERESTED"
 			
 			elif state == "ASK_MEETING":
@@ -163,16 +168,14 @@ if __name__ == '__main__':
 			
 			elif state == "RECOG_MEETING"
 			
-				meeting = Utterance(ps.listen()).getName()
+				meeting = Utterance(ps.listen())
 				
 				if response.containsYes():
-                    print "SUCCESS: Ticket printed"
-                    state = "ASK_NAME"
+                    ss.speak("I think might become best of friends sooner than I thought...")
                 elif response.containsNo():
-                    print "SUCCESS: Ticket not printed"
-                    state = "ASK_NAME"
+                    ss.speak("That is most unfortunate.  You have missed out...")
                 else:
-                    state = "ERROR"
+                    ss.speak("Your words confuse me.")
 				state = "ASK_INTERESTED"		
 							
             elif state == "ASK_INTERESTED":
