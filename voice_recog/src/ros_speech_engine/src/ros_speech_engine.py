@@ -27,7 +27,7 @@ class Utterance:
     def getName(self):
         return self.extractWord('names.txt')
 	
-	def getLocation(self)
+    def getLocation(self):
 		return self.extractWord('location.txt')
 		
     def extractWord(self, fname):
