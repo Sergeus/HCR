@@ -103,8 +103,7 @@ class SpeechSynthesis:
         ## Sends text to TTS
         call(["flite", "-t", sentence])
 
-def trySpeechAgain():
-    # Retries a question if the robot doesnt understand
+
 # Main functional loop
 if __name__ == '__main__':
 
@@ -234,7 +233,7 @@ if __name__ == '__main__':
                 elif response.containsNo() == True:
                     print "UNLUCKY: Ticket not printed"
                 else:
-                    ss.speak("I am not sure what you said. Here is a ticket")
+                    print "SUCCESS: Ticket printed"
                     
                 state = "ASK_NAME"
             elif state == "ERROR":
