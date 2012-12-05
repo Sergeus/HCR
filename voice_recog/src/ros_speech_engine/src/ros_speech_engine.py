@@ -52,8 +52,8 @@ class PocketSphinx:
 
     text = "NULL"
     
-    def __init__(self, topic)
-    self.topic = topic
+    def __init__(self, topic):
+        self.topic = topic
 
     def start(self):
         # Will eventually start recogniser
@@ -170,7 +170,7 @@ if __name__ == '__main__':
             
                 location = Utterance(ps_other.listen()).getLocation()
                 if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university")or  (location =="college"):
-                    ss.speak("All your learning are belong to me")
+                    ss.speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
                 elif location == (location == "underground") or (location == "tube") or (location == "station") :
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
                 else :
