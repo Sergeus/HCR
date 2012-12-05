@@ -237,10 +237,10 @@ void loseAllTorsos(ros::Publisher &pub) {
 		statusMsg.activity = torsos[i];
 
 		pub.publish(statusMsg);
-
-		std::cout << "Forcing loss of " << torsos[i] << "." << std::endl;
 	}
 	ros::spinOnce();
+
+	std::cout << "Forcing loss of all torsos." << std::endl;
 }
 
 int main(int argc, char* argv[])

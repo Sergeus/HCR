@@ -1,0 +1,16 @@
+<package>
+  <description brief="charles">
+
+     charles
+
+  </description>
+  <author>Human</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/charles</url>
+  <depend package="controlnode"/>
+  <depend package="kinect_follower"/>
+
+</package>
+
+
