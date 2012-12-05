@@ -205,7 +205,7 @@ if __name__ == '__main__':
                     print "SUCCESS: Ticket printed"
                 elif response.containsNo() == True:
                     print "UNLUCKY: Ticket not printed"
-                else
+                else:
                     ss.speak("I am not sure what you said. Here is a ticket")
                     
                 state = "ASK_NAME"
