@@ -164,7 +164,7 @@ if __name__ == '__main__':
             elif state == "RECOG_LOCATION":
             
                 location = Utterance(ps.listen()).getLocation()
-                if location == "Imperial" or "school" or "lectures" or "university" :
+                if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university") :
                     ss.speak("All your learning are belong to me")
                 elif location == "underground" or "tube" or "station" :
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
