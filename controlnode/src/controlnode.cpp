@@ -12,7 +12,7 @@
 using namespace std;
 
 enum behavModesEnum { MODE0, MODE1, MODE2, MODE3 };
-behavModesEnum currentBehaviour = MODE0;
+behavModesEnum currentBehaviour = MODE2;
 
 enum statesEnum { IDLE, FOLLOWING, SPEAKING, CONVERSING, PRINTING };
 statesEnum currentState = IDLE;
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
     
     ros::Subscriber sub = n.subscribe("test", 1000, testFunction);
-    ros::Publisher testPub = n.advertise<controlnode::startstop>("pubtopic", 1000); 
+    ros::Publisher kinectSS = n.advertise<controlnode::startstop>("kinectSS", 1000); 
     controlnode::startstop msg;
 
     ros::Rate loop_rate(1);
@@ -82,6 +82,7 @@ int main(int argc, char **argv)
                 {
                     case IDLE :
                         ROS_INFO("MODE: 0; STATE: IDLE");
+                        publishMessage(kinectSS, "STOP");
                         if ((time(NULL) % TICKETINTERVAL) == 0)
                             currentState = PRINTING;
                         break;
@@ -103,6 +104,7 @@ int main(int argc, char **argv)
                 {
                     case FOLLOWING :
                         ROS_INFO("MODE: 1; STATE: FOLLOWING");
+                        publishMessage(kinectSS, "START");
                         break;
                     
                     case PRINTING :
@@ -122,6 +124,7 @@ int main(int argc, char **argv)
                 {
                     case FOLLOWING :
                         ROS_INFO("MODE: 2; STATE: FOLLOWING");
+                        publishMessage(kinectSS, "START");
                         break;
                     
                     case SPEAKING :
@@ -146,6 +149,7 @@ int main(int argc, char **argv)
                 {
                     case FOLLOWING :
                         ROS_INFO("MODE: 3; STATE: FOLLOWING");
+                        publishMessage(kinectSS, "START");
                         break;
                     
                     case CONVERSING :
