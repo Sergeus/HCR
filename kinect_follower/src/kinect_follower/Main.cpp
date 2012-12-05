@@ -166,7 +166,7 @@ bool isValidClosesttf(std::string frame, tf::TransformListener &tfl, std::string
 			output.point.y * output.point.y
 			);
 
-		return IsCloserTorsoExists(frame, frameDistance, destFrame, tfl, timeout);
+		return !IsCloserTorsoExists(frame, frameDistance, destFrame, tfl, timeout);
 	}
 }
 
@@ -226,7 +226,21 @@ void enableRotation(const messages::startstop& msg)
 	enabled = true;
     else
 	enabled = false;
+}
 
+void loseAllTorsos(ros::Publisher &pub) {
+	std::vector<std::string> torsos = vectorOfTorsos();
+
+	for (int i=0; i < torsos.size(); i++) {
+		messages::activityStatus statusMsg;
+
+		statusMsg.activity = torsos[i];
+
+		pub.publish(statusMsg);
+
+		std::cout << "Forcing loss of " << torsos[i] << "." << std::endl;
+	}
+	ros::spinOnce();
 }
 
 int main(int argc, char* argv[])
@@ -283,6 +297,7 @@ int main(int argc, char* argv[])
 	bool okay = false;
 
 	if (isValidClosesttf(currentTorso, tfl, destFrame, timeout)) {
+		std::cout << "Continuing to track " << currentTorso << "." << std::endl;
 		okay = true;
 	}
         // Check if transform exists
@@ -311,7 +326,7 @@ int main(int argc, char* argv[])
 			msg.linear.x = 0;
 			msg.angular.z = 0;
 
-			std::cout << "Found no valid tf to track, so not moving." << std::endl;
+			std::cout << "Tf became invalid, so not moving." << std::endl;
 
 			//Finally the message gets sent
 			pub.publish(msg);
@@ -321,6 +336,8 @@ int main(int argc, char* argv[])
 		}
 	}
 	else {
+		loseAllTorsos(LostPersonPub);
+
 		messages::activityStatus statusMsg;
 
 		statusMsg.activity = currentTorso;
