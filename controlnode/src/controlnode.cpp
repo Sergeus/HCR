@@ -32,7 +32,7 @@ bool participantPresent()
     {
         std::cout << *it;
     }
-    std::cout << endl;
+    std::cout << std::endl;
     if (torsos.size() > 0)
         return true;
     else
