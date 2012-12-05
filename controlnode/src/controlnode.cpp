@@ -4,15 +4,15 @@
 #include <string>
 #include "ros/ros.h"
 // #include "kinect_follower/activityStatus.h"
-#include "controlnode/activityStatus.h"
-#include "controlnode/startstop.h"
+// #include "controlnode/activityStatus.h"
+#include "messages/startstop.h"
 
 #define TICKETINTERVAL 30
 
-using namespace std;
+//using namespace std;
 
 enum behavModesEnum { MODE0, MODE1, MODE2, MODE3 };
-behavModesEnum currentBehaviour = MODE2;
+behavModesEnum currentBehaviour = MODE0;
 
 enum statesEnum { IDLE, FOLLOWING, SPEAKING, CONVERSING, PRINTING };
 statesEnum currentState = IDLE;
@@ -23,15 +23,15 @@ void printTicket()
     ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
 }
 
-void testFunction(const controlnode::startstop::ConstPtr& msg)
-{
-    ROS_INFO("TESTFUNCTION CALLED");
+void testFunction(const messages::startstop::ConstPtr& msg)
+ {
+     ROS_INFO("TESTFUNCTION CALLED");
+ 
+ }
 
-}
-
-void publishMessage(ros::Publisher pub, string operation)
+void publishMessage(ros::Publisher pub, std::string operation)
 {
-    controlnode::startstop msg;
+    messages::startstop msg;
     msg.operation = operation;
     pub.publish(msg);
     ROS_INFO("PUBLISHING");
@@ -43,12 +43,31 @@ int main(int argc, char **argv)
     
     ros::NodeHandle n;
     
-    ros::Subscriber sub = n.subscribe("test", 1000, testFunction);
-    ros::Publisher kinectSS = n.advertise<controlnode::startstop>("kinectSS", 1000); 
-    controlnode::startstop msg;
+    // ros::Subscriber sub = n.subscribe("test", 1000, testFunction);
+    ros::Publisher kinectSS = n.advertise<messages::startstop>("kinectSS", 1000); 
+    messages::startstop msg;
 
     ros::Rate loop_rate(1);
     
+    // Set mode from command line
+    switch (atoi(argv[1]))
+    {
+        case 0:
+            currentBehaviour = MODE0;
+            break;
+        case 1:
+            currentBehaviour = MODE1;
+            break;
+        case 2:
+            currentBehaviour = MODE2;
+            break;
+        case 3:
+            currentBehaviour = MODE3;
+            break;
+        default :
+            currentBehaviour = MODE0;
+    }
+
     // Initialise state
     switch (currentBehaviour)
     {
