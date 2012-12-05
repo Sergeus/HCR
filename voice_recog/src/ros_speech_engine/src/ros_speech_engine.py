@@ -194,7 +194,7 @@ if __name__ == '__main__':
                         state = "ASK_INTERESTED"
                     else:
                          ss.speak("I am sorry.  Could you say that again?")
-                         attempt++
+                         attempt = attempt + 1
                 else:
                     ss.speak("Your words confuse me.")
                     state = "ASK_INTERESTED"        
