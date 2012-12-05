@@ -181,9 +181,9 @@ if __name__ == '__main__':
                 ss.speak("Do you like cake?")
                 cake = "NULL"
                 state = "RECOG_CAKE"
-            
-            elif state == "RECOG_CAKE":  
                 attempt = 0
+                
+            elif state == "RECOG_CAKE":  
                 cake = Utterance(ps.listen())
                 state = "ASK_INTERESTED"
                 if attempt > 1 :
