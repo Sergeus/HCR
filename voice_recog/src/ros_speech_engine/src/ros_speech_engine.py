@@ -186,7 +186,7 @@ if __name__ == '__main__':
             elif state == "RECOG_CAKE":  
                 cake = Utterance(ps.listen())
                 state = "ASK_INTERESTED"
-                if attempt > 1 :
+                if attempt < 2 :
                     if cake.containsYes() == True:
                         ss.speak("That is so very pleasing.  We may be able to come to an arrangement")
                     elif cake.containsNo() == True:
