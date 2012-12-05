@@ -29,6 +29,9 @@
 #include <vector>
 #include "kinect_follower/HeadCoordinates.h"
 #include "kinect_follower/activityStatus.h"
+#include "controlnode/startstop.h"
+
+bool enabled = true;
 
 std::vector<std::string> vectorOfTorsos();
 
@@ -217,6 +220,15 @@ std::string findValidtf(std::vector<std::string> originFrame, tf::TransformListe
 	return foundTorso;
 } 
 
+void enableRotation(const controlnode::startstop::ConstPtr& msg)
+{
+    if (msg.operation.compare("START") == 0) {
+	enabled = true;
+    else
+	enabled = false;
+
+}
+
 int main(int argc, char* argv[])
 {
     // WARNING: Safety-critical constants, please do not modify.
@@ -263,7 +275,6 @@ int main(int argc, char* argv[])
 
     while( ros::ok() )
     {
-        // WARNING:The default values are safety-critical, please do not modify.
         double linearSpeed = 0.0;
         double angularSpeed = 0.0;
 
@@ -274,6 +285,7 @@ int main(int argc, char* argv[])
 	}
         // Check if transform exists
 	else if (existsValidtf(originFrame, tfl, destFrame, timeout)) {
+		std::string lostTorso = currentTorso;
 		currentTorso = findValidtf(originFrame, tfl, destFrame, timeout);
 		if (currentTorso.compare("") != 0) {
 			okay = true;
@@ -281,14 +293,14 @@ int main(int argc, char* argv[])
 
 			kinect_follower::activityStatus statusMsg;
 
-			statusMsg.activity = "found";
+			statusMsg.activity = currentTorso;
 
 			FoundPersonPub.publish(statusMsg);
 		}
 		else {
 			kinect_follower::activityStatus statusMsg;
 
-			statusMsg.activity = "lost";
+			statusMsg.activity = lostTorso;
 
 			LostPersonPub.publish(statusMsg);
 
@@ -309,7 +321,7 @@ int main(int argc, char* argv[])
 	else {
 		kinect_follower::activityStatus statusMsg;
 
-		statusMsg.activity = "lost";
+		statusMsg.activity = currentTorso;
 
 		LostPersonPub.publish(statusMsg);
 		
@@ -327,7 +339,9 @@ int main(int argc, char* argv[])
 		nodeRate.sleep();
 	}
 
-	if (okay) {
+	ros::spinOnce();
+
+	if (okay && enabled) {
 		// Here we transform the point (0,0,0) wrt the user's torso
 		// to a point wrt to the base of the robot.
 
