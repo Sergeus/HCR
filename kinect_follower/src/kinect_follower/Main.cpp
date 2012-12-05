@@ -27,9 +27,9 @@
 #include <tf/transform_listener.h>
 #include <geometry_msgs/Twist.h>
 #include <vector>
-#include "kinect_follower/HeadCoordinates.h"
-#include "kinect_follower/activityStatus.h"
-#include "controlnode/startstop.h"
+#include "messages/HeadCoordinates.h"
+#include "messages/activityStatus.h"
+#include "messages/startstop.h"
 
 bool enabled = true;
 
@@ -250,15 +250,15 @@ int main(int argc, char* argv[])
                 "cmd_vel", 20
                 );
 
-    ros::Publisher headPub = nodeHandle.advertise<kinect_follower::HeadCoordinates>(
+    ros::Publisher headPub = nodeHandle.advertise<messages::HeadCoordinates>(
 		"kinect_heads", 20
 		);
 
-    ros::Publisher LostPersonPub = nodeHandle.advertise<kinect_follower::activityStatus>(
+    ros::Publisher LostPersonPub = nodeHandle.advertise<messages::activityStatus>(
 		"kinectLostActivity", 20
 		);
 
-    ros::Publisher FoundPersonPub = nodeHandle.advertise<kinect_follower::activityStatus>(
+    ros::Publisher FoundPersonPub = nodeHandle.advertise<messages::activityStatus>(
 		"kinectFoundActivity", 20
 		);
 
@@ -291,14 +291,14 @@ int main(int argc, char* argv[])
 			okay = true;
 			std::cout << "Tracking new torso " << currentTorso << "." << std::endl;
 
-			kinect_follower::activityStatus statusMsg;
+			messages::activityStatus statusMsg;
 
 			statusMsg.activity = currentTorso;
 
 			FoundPersonPub.publish(statusMsg);
 		}
 		else {
-			kinect_follower::activityStatus statusMsg;
+			messages::activityStatus statusMsg;
 
 			statusMsg.activity = lostTorso;
 
@@ -319,7 +319,7 @@ int main(int argc, char* argv[])
 		}
 	}
 	else {
-		kinect_follower::activityStatus statusMsg;
+		messages::activityStatus statusMsg;
 
 		statusMsg.activity = currentTorso;
 
