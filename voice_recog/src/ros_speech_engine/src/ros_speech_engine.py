@@ -125,10 +125,12 @@ if __name__ == '__main__':
 
         state = "ASK_NAME"
         name = "NULL"
-
+        
+        random.seed()
+         
         # While we have user's attention
         while True:
-
+        
             if state == "ASK_NAME":
 
                 #ps.change_model("names")
@@ -141,14 +143,15 @@ if __name__ == '__main__':
                 name = Utterance(ps.listen()).getName()
                 
                 if name != "NULL" :
-                    state = "HELLO_NAME"
-                else:
-                    state = "ERROR"
+                    ss.speak("Hello " + name + ".  My name is CHARLES.")
+                else :    
+                    ss.speak("Hello.  My name is CHARLES")
                 
-            elif state == "HELLO_NAME":
-            
-                ss.speak("Hello " + name + ".  My name is CHARLES.")
-                random.seed()
+                state = "CHOOSE_STATE"
+                
+            elif state == "CHOOSE_STATE":
+                            
+               
                 randomNum = random.randint(0, 2)
                 if randomNum == 0:
                     state = "ASK_LOCATION"
