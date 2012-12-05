@@ -1,0 +1,4 @@
+#!/bin/bash
+roscore > /dev/null &
+roslaunch kinect_follower kinect_follower.launch &
+rosrun controlnode controlnode $1 
