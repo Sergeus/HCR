@@ -26,6 +26,13 @@ void printTicket()
 bool participantPresent()
 {
     ROS_INFO("NUMBER of people is %d", torsos.size());
+    std::set<std::string>::iterator it;
+    std::cout << "torsos present: ";
+    for(it=torsos.begin(); it!=torsos.end(); it++)
+    {
+        std::cout << *it;
+    }
+    std::cout << endl;
     if (torsos.size() > 0)
         return true;
     else
