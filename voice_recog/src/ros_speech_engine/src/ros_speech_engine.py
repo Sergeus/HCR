@@ -148,7 +148,7 @@ if __name__ == '__main__':
             elif state == "HELLO_NAME":
             
                 ss.speak("Hello " + name)
-                
+                random.seed()
                 randomNum = random.randint(0, 1)
                 if randomNum == 0:
                     state = "ASK_LOCATION"
@@ -163,9 +163,13 @@ if __name__ == '__main__':
             
             elif state == "RECOG_LOCATION":
             
-                location = Utterance(ps.listen())
-#                switch(location):
-#                    case
+                location = Utterance(ps.listen()).getLocation()
+                if location == "Imperial" || "school" || "lectures" || "university" :
+                    ss.speak("All your learning are belong to me")
+                elif location == "underground" || "tube" || "station" :
+                    ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
+                else :
+                    ss.speak("That sounds most exciting.  However, I cannot travel up stairs.")
                 state = "ASK_INTERESTED"
             
             elif state == "ASK_MEETING":
@@ -199,13 +203,12 @@ if __name__ == '__main__':
 
                 if response.containsYes()  == True:
                     print "SUCCESS: Ticket printed"
-                    state = "ASK_NAME"
                 elif response.containsNo() == True:
-                    print "SUCCESS: Ticket not printed"
-                    state = "ASK_NAME"
-                else:
-                    state = "ERROR"
-
+                    print "UNLUCKY: Ticket not printed"
+                else
+                    ss.speak("I am not sure what you said. Here is a ticket")
+                    
+                state = "ASK_NAME"
             elif state == "ERROR":
                 print "Error state"
                 break
