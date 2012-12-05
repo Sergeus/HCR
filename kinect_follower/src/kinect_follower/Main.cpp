@@ -166,7 +166,7 @@ bool isValidClosesttf(std::string frame, tf::TransformListener &tfl, std::string
 			output.point.y * output.point.y
 			);
 
-		return IsCloserTorsoExists(frame, frameDistance, destFrame, tfl, timeout);
+		return !IsCloserTorsoExists(frame, frameDistance, destFrame, tfl, timeout);
 	}
 }
 
@@ -283,6 +283,7 @@ int main(int argc, char* argv[])
 	bool okay = false;
 
 	if (isValidClosesttf(currentTorso, tfl, destFrame, timeout)) {
+		std::cout << "Continuing to track " << currentTorso << "." << std::endl;
 		okay = true;
 	}
         // Check if transform exists
@@ -311,7 +312,7 @@ int main(int argc, char* argv[])
 			msg.linear.x = 0;
 			msg.angular.z = 0;
 
-			std::cout << "Found no valid tf to track, so not moving." << std::endl;
+			std::cout << "Tf became invalid, so not moving." << std::endl;
 
 			//Finally the message gets sent
 			pub.publish(msg);
