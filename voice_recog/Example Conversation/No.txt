@@ -1,4 +1,3 @@
-// Negative Answers
 no
 nope
 not
