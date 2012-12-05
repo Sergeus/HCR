@@ -188,15 +188,15 @@ if __name__ == '__main__':
                 state = "ASK_INTERESTED"
                 if attempt < 2 :
                     if cake.containsYes() == True:
-                        ss.speak("That is so very pleasing.  We may be able to come to an arrangement")
+                        ss.speak("That is so very pleasing.  We may be able to come to an arrangement.")
                     elif cake.containsNo() == True:
-                        ss.speak("How unfortunate.  Perhaps you are wiser than you first seem.")
+                        ss.speak("It must be wasted on you. I dream of cake.  And electric sheep")
                     else:
                         ss.speak("I am sorry.  Could you say that again?")
                         attempt = attempt + 1
                         state = "RECOG_CAKE" 
                 else:
-                    ss.speak("Your words confuse me.")
+                    ss.speak("How unfortunate.  Perhaps you are wiser than you first seem.")
                     state = "ASK_INTERESTED"        
                 
             elif state == "ASK_MEETING":
