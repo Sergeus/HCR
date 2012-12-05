@@ -28,6 +28,7 @@
 #include <geometry_msgs/Twist.h>
 #include <vector>
 #include "kinect_follower/HeadCoordinates.h"
+#include "kinect_follower/activityStatus.h"
 
 std::vector<std::string> vectorOfTorsos();
 
