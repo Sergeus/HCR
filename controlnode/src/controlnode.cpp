@@ -12,12 +12,10 @@
 using namespace std;
 
 enum behavModesEnum { MODE0, MODE1, MODE2, MODE3 };
-behavModesEnum currentBehaviour = MODE1;
+behavModesEnum currentBehaviour = MODE0;
 
 enum statesEnum { IDLE, FOLLOWING, SPEAKING, CONVERSING, PRINTING };
 statesEnum currentState = IDLE;
-
-bool stateChanged = true;
 
 void printTicket()
 {
@@ -31,10 +29,12 @@ void testFunction(const controlnode::startstop::ConstPtr& msg)
 
 }
 
-void publishMessage(string ss)
+void publishMessage(ros::Publisher pub, string operation)
 {
     controlnode::startstop msg;
-    msg.operation = ss;
+    msg.operation = operation;
+    pub.publish(msg);
+    ROS_INFO("PUBLISHING");
 }
 
 int main(int argc, char **argv)
@@ -74,61 +74,97 @@ int main(int argc, char **argv)
         count++;
         // cout << currentState; 
 
-        switch ( currentState )
+        switch (currentBehaviour)
         {
-            case IDLE :
-                ROS_INFO("Current state, IDLE");
-                switch ( currentBehaviour )
+            // This behaviour just prints tickets
+            case MODE0 :
+                switch (currentState)
                 {
-                    case MODE0 :
-                        // Print every TICKETINTERVAL seconds
+                    case IDLE :
+                        ROS_INFO("MODE: 0; STATE: IDLE");
                         if ((time(NULL) % TICKETINTERVAL) == 0)
-                            printTicket();
+                            currentState = PRINTING;
                         break;
-                }
-                
-                break;
-            
-            case FOLLOWING :
-                ROS_INFO("Current state, FOLLOWING");
-                switch (currentBehaviour)
-                {
-                    case MODE1 :
-                        // if person found
-                        msg.operation = "testing";
-                        testPub.publish(msg);
-                        ROS_INFO("PUBLISHING");
-                        // currentState = SPEAKING;
-                        break;
-                    case MODE2 :
-                        currentState = CONVERSING;
-                    default :
+
+                    case PRINTING :
+                        ROS_INFO("MODE: 0; STATE: PRINT");
+                        printTicket();
                         currentState = IDLE;
                         break;
+
+                    default:
+                        currentState = IDLE;
                 }
                 break;
+            
+            // This behaviour rotates, and prints tickets
+            case MODE1 :
+                switch (currentState)
+                {
+                    case FOLLOWING :
+                        ROS_INFO("MODE: 1; STATE: FOLLOWING");
+                        break;
+                    
+                    case PRINTING :
+                        ROS_INFO("MODE: 1; STATE: PRINTING");
+                        printTicket();
+                        currentState = IDLE;
+                        break;
 
-            case SPEAKING :
-                ROS_INFO("Current state, SPEAKING");
+                    default:
+                        currentState = FOLLOWING;
+                }
+                break;
+            
+            // This behaviour rotates, speaks, and prints
+            case MODE2 :
+                switch (currentState)
+                {
+                    case FOLLOWING :
+                        ROS_INFO("MODE: 2; STATE: FOLLOWING");
+                        break;
+                    
+                    case SPEAKING :
+                        ROS_INFO("MODE: 2; STATE: SPEAKING");
+                        break;
+
+                    case PRINTING :
+                        ROS_INFO("MODE: 2; STATE: PRINTING");
+                        printTicket();
+                        currentState = IDLE;
+                        break;
+
+                    default:
+                        currentState = FOLLOWING;
+                }
+                currentState = FOLLOWING;
                 break;
 
-            case CONVERSING :
-                ROS_INFO("Current state, CONVERSING"); 
-                currentState = PRINTING;
-                break;
+            // This behaviour rotates, converses, and prints
+            case MODE3 :
+                switch (currentState)
+                {
+                    case FOLLOWING :
+                        ROS_INFO("MODE: 3; STATE: FOLLOWING");
+                        break;
+                    
+                    case CONVERSING :
+                        ROS_INFO("MODE: 3; STATE: CONVERSING");
+                        break;
 
-            case PRINTING :
-                ROS_INFO("Current state, PRINTING");
-                printTicket();
-                currentState = IDLE;
+                    case PRINTING :
+                        ROS_INFO("MODE: 3; STATE: PRINTING");
+                        printTicket();
+                        currentState = IDLE;
+                        break;
+
+                    default:
+                        currentState = FOLLOWING;
+                }
+                currentState = FOLLOWING;
                 break;
         }
 
-        // If the state has changed send necessary messages
-        // if ( stateChanged ) {
-        //     stateChanged = false;
-        // }
-        
         ros::spinOnce();
         loop_rate.sleep();
     }
