@@ -26,6 +26,13 @@ void printTicket()
 bool participantPresent()
 {
     ROS_INFO("NUMBER of people is %d", torsos.size());
+    std::set<std::string>::iterator it;
+    std::cout << "torsos present: ";
+    for(it=torsos.begin(); it!=torsos.end(); it++)
+    {
+        std::cout << *it;
+    }
+    std::cout << endl;
     if (torsos.size() > 0)
         return true;
     else
@@ -47,7 +54,7 @@ void publishMessage(ros::Publisher pub, std::string operation)
     messages::startstop msg;
     msg.operation = operation;
     pub.publish(msg);
-    ROS_INFO("PUBLISHING");
+    // ROS_INFO("PUBLISHING");
 }
 
 int main(int argc, char **argv)
@@ -65,7 +72,8 @@ int main(int argc, char **argv)
 
     messages::startstop msg;
 
-    ros::Rate loop_rate(0.2);
+    // ros::Rate loop_rate(0.2);
+    ros::Rate loop_rate(1);
     
     // Set mode from command line
     switch (atoi(argv[1]))
