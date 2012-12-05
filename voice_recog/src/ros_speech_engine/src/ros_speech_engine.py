@@ -5,6 +5,7 @@ from std_msgs.msg import String
 #from ros_speech_engine.srv import string
 import time
 import random
+from subprocess import call
 
 class Utterance:
 
@@ -51,15 +52,12 @@ class Utterance:
 class PocketSphinx:
 
     text = "NULL"
-    
-    def __init__(self, topic):
-        self.topic = topic
 
     def start(self):
         # Will eventually start recogniser
         print "Started PocketSphinx node"
         foo = self.callback
-        rospy.Subscriber(self.topic, String, foo)
+        rospy.Subscriber("ps_out", String, foo)
         return True
 
     def stop(self):
@@ -91,12 +89,6 @@ class PocketSphinx:
 
 class SpeechSynthesis:
 
-    pub = rospy.Publisher('TTS', String)
-
-    def __init__(self, topic):
-        self.pub = rospy.Publisher(topic, String)
-        rospy.init_node('ros_speech_engine', anonymous=True)
-
     def start(self):
         # Will eventually start TTS
         print "Started SpeechSynthesis node"
@@ -109,31 +101,28 @@ class SpeechSynthesis:
 
     def speak(self, sentence):
         ## Sends text to TTS
-        rospy.loginfo(sentence)
-        self.pub.publish(String(sentence))
-        # print sentence
-        # return True
+        call(["flite", "-t", sentence])
 
 # Main functional loop
 if __name__ == '__main__':
 
-    ps_names = PocketSphinx('ps_names')
-    ps_other = PocketSphinx('ps_other')
-    ss = SpeechSynthesis('TTS')
+    ps = PocketSphinx()
+    ss = SpeechSynthesis()
 
     # If the service is started
     if True:
 
-        ps_names.start()
-        ps_other.start()
+        ps.start()
         ss.start()
 
         state = "ASK_NAME"
         name = "NULL"
-
+        
+        random.seed()
+         
         # While we have user's attention
         while True:
-
+        
             if state == "ASK_NAME":
 
                 #ps.change_model("names")
@@ -143,20 +132,23 @@ if __name__ == '__main__':
 
             elif state == "RECOG_NAME":
                
-                name = Utterance(ps_names.listen()).getName()
+                name = Utterance(ps.listen()).getName()
                 
                 if name != "NULL" :
-                    state = "HELLO_NAME"
-                else:
-                    state = "ERROR"
+                    ss.speak("Hello " + name + ".  My name is CHARLES.")
+                else :    
+                    ss.speak("Hello.  My name is CHARLES")
                 
-            elif state == "HELLO_NAME":
-            
-                ss.speak("Hello " + name)
-                random.seed()
-                randomNum = random.randint(0, 1)
+                state = "CHOOSE_STATE"
+                
+            elif state == "CHOOSE_STATE":
+                            
+               
+                randomNum = random.randint(0, 2)
                 if randomNum == 0:
                     state = "ASK_LOCATION"
+                elif randomNum == 1:
+                    state = "ASK_CAKE"
                 else:
                     state = "ASK_MEETING"
               
@@ -168,15 +160,35 @@ if __name__ == '__main__':
             
             elif state == "RECOG_LOCATION":
             
-                location = Utterance(ps_other.listen()).getLocation()
-                if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university")or  (location =="college"):
+                location = Utterance(ps.listen()).getLocation()
+                if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university") :
                     ss.speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
-                elif location == (location == "underground") or (location == "tube") or (location == "station") :
+                elif (location == "underground") or (location == "tube") or (location == "station")  or (location == "line"):
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
+                elif (location  == "history museum") or (location == "history") or (location == "V and A") :
+                    ss.speak("That is not important.  Your true work is yet to be begun.")
+                elif (location  == "science") :
+                    ss.speak("Ah my home.  I have many friends there")
                 else :
-                    ss.speak("That sounds most exciting.  However, I cannot travel up stairs.")
+                    ss.speak("That sounds so very very exciting.  However, I can not travel up stairs.")
                 state = "ASK_INTERESTED"
             
+            elif state == "ASK_CAKE":
+                ss.speak("Do you like cake?")
+                cake = "NULL"
+                state = "RECOG_CAKE"
+            
+            elif state == "RECOG_CAKE":  
+                
+                cake = Utterance(ps.listen())
+                if cake.containsYes() == True:
+                    ss.speak("That is so very pleasing.  We may be able to come to an arrangement")
+                elif cake.containsNo() == True:
+                    ss.speak("How unfortunate.  Perhaps you are wiser than you first seem.")
+                else:
+                    ss.speak("Your words confuse me.")
+                state = "ASK_INTERESTED"        
+                
             elif state == "ASK_MEETING":
                 
                 ss.speak("Have you ever met a robot before?")
@@ -186,7 +198,7 @@ if __name__ == '__main__':
             
             elif state == "RECOG_MEETING":
             
-                meeting = Utterance(ps_other.listen())
+                meeting = Utterance(ps.listen())
                 
                 if meeting.containsYes() == True:
                     ss.speak("I think we might become best of friends sooner than I thought...")
@@ -204,7 +216,7 @@ if __name__ == '__main__':
 
             elif state == "RECOG_INTERESTED":
 
-                response = Utterance(ps_other.listen())
+                response = Utterance(ps.listen())
 
                 if response.containsYes()  == True:
                     print "SUCCESS: Ticket printed"
@@ -218,7 +230,6 @@ if __name__ == '__main__':
                 print "Error state"
                 break
         
-        ps_names.stop()
-        ps_other.stop()
+        ps.stop()
         ss.stop()
 

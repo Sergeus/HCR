@@ -1,3 +1,6 @@
 [submodule "printer"]
 	path = printer
 	url = git://github.com/webbo89/ncrdriver.git
+[submodule "RobotFace"]
+	path = RobotFace
+	url = https://github.com/webbo89/RobotFace.git

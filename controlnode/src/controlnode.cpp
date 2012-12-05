@@ -2,20 +2,20 @@
 #include <stdio.h>
 #include <time.h>
 #include <string>
+#include <set>
 #include "ros/ros.h"
-// #include "kinect_follower/activityStatus.h"
-#include "controlnode/activityStatus.h"
-#include "controlnode/startstop.h"
+#include "messages/activityStatus.h"
+#include "messages/startstop.h"
 
 #define TICKETINTERVAL 30
 
-using namespace std;
-
 enum behavModesEnum { MODE0, MODE1, MODE2, MODE3 };
-behavModesEnum currentBehaviour = MODE2;
+behavModesEnum currentBehaviour = MODE0;
 
 enum statesEnum { IDLE, FOLLOWING, SPEAKING, CONVERSING, PRINTING };
 statesEnum currentState = IDLE;
+
+std::set<std::string> torsos;
 
 void printTicket()
 {
@@ -23,15 +23,28 @@ void printTicket()
     ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
 }
 
-void testFunction(const controlnode::startstop::ConstPtr& msg)
+bool participantPresent()
 {
-    ROS_INFO("TESTFUNCTION CALLED");
-
+    ROS_INFO("NUMBER of people is %d", torsos.size());
+    if (torsos.size() > 0)
+        return true;
+    else
+        return false;
 }
 
-void publishMessage(ros::Publisher pub, string operation)
+void kinectLostCallback(const messages::activityStatus& msg)
 {
-    controlnode::startstop msg;
+    torsos.erase(msg.activity);
+}
+
+void kinectFoundCallback(const messages::activityStatus& msg)
+{
+    torsos.insert(msg.activity);
+}
+
+void publishMessage(ros::Publisher pub, std::string operation)
+{
+    messages::startstop msg;
     msg.operation = operation;
     pub.publish(msg);
     ROS_INFO("PUBLISHING");
@@ -43,12 +56,36 @@ int main(int argc, char **argv)
     
     ros::NodeHandle n;
     
-    ros::Subscriber sub = n.subscribe("test", 1000, testFunction);
-    ros::Publisher kinectSS = n.advertise<controlnode::startstop>("kinectSS", 1000); 
-    controlnode::startstop msg;
-
-    ros::Rate loop_rate(1);
+    ros::Subscriber kinectLostSub = n.subscribe("kinectLostActivity", 1000, kinectLostCallback);
+    ros::Subscriber kinectFoundSub = n.subscribe("kinectFoundActivity", 1000, kinectFoundCallback);
     
+    ros::Publisher kinectSS = n.advertise<messages::startstop>("kinectSS", 1000); 
+    ros::Publisher speakSS = n.advertise<messages::startstop>("speakSS", 1000); 
+    ros::Publisher converseSS = n.advertise<messages::startstop>("converseSS", 1000); 
+
+    messages::startstop msg;
+
+    ros::Rate loop_rate(0.2);
+    
+    // Set mode from command line
+    switch (atoi(argv[1]))
+    {
+        case 0:
+            currentBehaviour = MODE0;
+            break;
+        case 1:
+            currentBehaviour = MODE1;
+            break;
+        case 2:
+            currentBehaviour = MODE2;
+            break;
+        case 3:
+            currentBehaviour = MODE3;
+            break;
+        default :
+            currentBehaviour = MODE0;
+    }
+
     // Initialise state
     switch (currentBehaviour)
     {
@@ -70,9 +107,7 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        ROS_INFO("TEST LOOP (%d)", count);
-        count++;
-        // cout << currentState; 
+        ROS_INFO("WHILELOOP (%d)", count++);
 
         switch (currentBehaviour)
         {
@@ -105,12 +140,14 @@ int main(int argc, char **argv)
                     case FOLLOWING :
                         ROS_INFO("MODE: 1; STATE: FOLLOWING");
                         publishMessage(kinectSS, "START");
+                        if (participantPresent())
+                            currentState = PRINTING;
                         break;
                     
                     case PRINTING :
                         ROS_INFO("MODE: 1; STATE: PRINTING");
                         printTicket();
-                        currentState = IDLE;
+                        currentState = FOLLOWING;
                         break;
 
                     default:
@@ -125,16 +162,21 @@ int main(int argc, char **argv)
                     case FOLLOWING :
                         ROS_INFO("MODE: 2; STATE: FOLLOWING");
                         publishMessage(kinectSS, "START");
+                        if (!participantPresent())
+                            currentState = IDLE;
                         break;
                     
                     case SPEAKING :
                         ROS_INFO("MODE: 2; STATE: SPEAKING");
+                        if (!participantPresent())
+                            currentState = FOLLOWING;
                         break;
 
                     case PRINTING :
                         ROS_INFO("MODE: 2; STATE: PRINTING");
                         printTicket();
-                        currentState = IDLE;
+                        if (participantPresent())
+                            currentState = IDLE;
                         break;
 
                     default:
