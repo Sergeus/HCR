@@ -226,7 +226,21 @@ void enableRotation(const messages::startstop& msg)
 	enabled = true;
     else
 	enabled = false;
+}
 
+void loseAllTorsos(ros::Publisher &pub) {
+	std::vector<std::string> torsos = vectorOfTorsos();
+
+	for (int i=0; i < torsos.size(); i++) {
+		messages::activityStatus statusMsg;
+
+		statusMsg.activity = torsos[i];
+
+		pub.publish(statusMsg);
+
+		std::cout << "Forcing loss of " << torsos[i] << "." << std::endl;
+	}
+	ros::spinOnce();
 }
 
 int main(int argc, char* argv[])
@@ -322,6 +336,8 @@ int main(int argc, char* argv[])
 		}
 	}
 	else {
+		loseAllTorsos(LostPersonPub);
+
 		messages::activityStatus statusMsg;
 
 		statusMsg.activity = currentTorso;
