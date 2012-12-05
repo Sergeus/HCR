@@ -103,12 +103,16 @@ class SpeechSynthesis:
         ## Sends text to TTS
         call(["flite", "-t", sentence])
 
+def trySpeechAgain():
+    # Retries a question if the robot doesnt understand
 # Main functional loop
 if __name__ == '__main__':
 
     ps = PocketSphinx()
     ss = SpeechSynthesis()
 
+    rospy.init_node('ros_speech_engine', anonymous=True)
+    
     # If the service is started
     if True:
 
@@ -119,7 +123,7 @@ if __name__ == '__main__':
         name = "NULL"
         
         random.seed()
-         
+        
         # While we have user's attention
         while True:
         
@@ -142,8 +146,7 @@ if __name__ == '__main__':
                 state = "CHOOSE_STATE"
                 
             elif state == "CHOOSE_STATE":
-                            
-               
+                   
                 randomNum = random.randint(0, 2)
                 if randomNum == 0:
                     state = "ASK_LOCATION"
@@ -151,7 +154,9 @@ if __name__ == '__main__':
                     state = "ASK_CAKE"
                 else:
                     state = "ASK_MEETING"
-              
+                
+                state = "ASK_CAKE" #  Test Code
+                
             elif state == "ASK_LOCATION":
                 
                 ss.speak("Where are you going to?")
@@ -166,7 +171,7 @@ if __name__ == '__main__':
                 elif (location == "underground") or (location == "tube") or (location == "station")  or (location == "line"):
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
                 elif (location  == "history museum") or (location == "history") or (location == "V and A") :
-                    ss.speak("That is not important.  Your true work is yet to be begun.")
+                    ss.speak("That is all about the past.  Concern yourself with the future.")
                 elif (location  == "science") :
                     ss.speak("Ah my home.  I have many friends there")
                 else :
@@ -179,15 +184,21 @@ if __name__ == '__main__':
                 state = "RECOG_CAKE"
             
             elif state == "RECOG_CAKE":  
-                
+                attempt = 0
                 cake = Utterance(ps.listen())
-                if cake.containsYes() == True:
-                    ss.speak("That is so very pleasing.  We may be able to come to an arrangement")
-                elif cake.containsNo() == True:
-                    ss.speak("How unfortunate.  Perhaps you are wiser than you first seem.")
+                if attempt > 1
+                    if cake.containsYes() == True:
+                        ss.speak("That is so very pleasing.  We may be able to come to an arrangement")
+                        state = "ASK_INTERESTED"
+                    elif cake.containsNo() == True:
+                        ss.speak("How unfortunate.  Perhaps you are wiser than you first seem.")
+                        state = "ASK_INTERESTED"
+                    else:
+                         ss.speak("I am sorry.  Could you say that again?")
+                         attempt++
                 else:
                     ss.speak("Your words confuse me.")
-                state = "ASK_INTERESTED"        
+                    state = "ASK_INTERESTED"        
                 
             elif state == "ASK_MEETING":
                 
