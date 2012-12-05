@@ -5,6 +5,7 @@ from std_msgs.msg import String
 #from ros_speech_engine.srv import string
 import time
 import random
+from subprocess import call
 
 class Utterance:
 
@@ -88,12 +89,6 @@ class PocketSphinx:
 
 class SpeechSynthesis:
 
-    pub = rospy.Publisher('TTS', String)
-
-    def __init__(self, topic):
-        self.pub = rospy.Publisher(topic, String)
-        rospy.init_node('ros_speech_engine', anonymous=True)
-
     def start(self):
         # Will eventually start TTS
         print "Started SpeechSynthesis node"
@@ -106,16 +101,13 @@ class SpeechSynthesis:
 
     def speak(self, sentence):
         ## Sends text to TTS
-        rospy.loginfo(sentence)
-        self.pub.publish(String(sentence))
-        # print sentence
-        # return True
+        call(["flite", "-t", sentence])
 
 # Main functional loop
 if __name__ == '__main__':
 
     ps = PocketSphinx()
-    ss = SpeechSynthesis('TTS')
+    ss = SpeechSynthesis()
 
     # If the service is started
     if True:
