@@ -220,9 +220,9 @@ std::string findValidtf(std::vector<std::string> originFrame, tf::TransformListe
 	return foundTorso;
 } 
 
-void enableRotation(const controlnode::startstop::ConstPtr& msg)
+void enableRotation(const messages::startstop& msg)
 {
-    if (msg.operation.compare("START") == 0) {
+    if (msg.operation.compare("START") == 0)
 	enabled = true;
     else
 	enabled = false;
@@ -261,6 +261,8 @@ int main(int argc, char* argv[])
     ros::Publisher FoundPersonPub = nodeHandle.advertise<messages::activityStatus>(
 		"kinectFoundActivity", 20
 		);
+
+    ros::Subscriber ssSub = nodeHandle.subscribe("kinectSS", 1000, enableRotation);
 
     // Maximum time for transform to be available
     const double timeout = 0.05;
@@ -414,7 +416,7 @@ int main(int argc, char* argv[])
 
 		tfl.transformPoint( destFrame, headInput, headOutput );
 
-		kinect_follower::HeadCoordinates headMsg;
+		messages::HeadCoordinates headMsg;
 		headMsg.x = headOutput.point.y;
 		headMsg.y = headOutput.point.z;
 		headMsg.z = headOutput.point.x;
