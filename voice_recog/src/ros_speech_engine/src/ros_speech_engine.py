@@ -36,7 +36,7 @@ class Utterance:
         return self.extractWord('names.txt')
     
     def getLocation(self):
-        return self.extractWord('locations.txt')
+        return self.extractWord('location.txt')
         
     def extractWord(self, fname):
         words = self.text.split()
@@ -51,15 +51,12 @@ class Utterance:
 class PocketSphinx:
 
     text = "NULL"
-    
-    def __init__(self, topic):
-        self.topic = topic
 
     def start(self):
         # Will eventually start recogniser
         print "Started PocketSphinx node"
         foo = self.callback
-        rospy.Subscriber(self.topic, String, foo)
+        rospy.Subscriber("ps_out", String, foo)
         return True
 
     def stop(self):
@@ -117,15 +114,13 @@ class SpeechSynthesis:
 # Main functional loop
 if __name__ == '__main__':
 
-    ps_names = PocketSphinx('ps_names')
-    ps_other = PocketSphinx('ps_other')
+    ps = PocketSphinx()
     ss = SpeechSynthesis('TTS')
 
     # If the service is started
     if True:
 
-        ps_names.start()
-        ps_other.start()
+        ps.start()
         ss.start()
 
         state = "ASK_NAME"
@@ -143,7 +138,7 @@ if __name__ == '__main__':
 
             elif state == "RECOG_NAME":
                
-                name = Utterance(ps_names.listen()).getName()
+                name = Utterance(ps.listen()).getName()
                 
                 if name != "NULL" :
                     state = "HELLO_NAME"
@@ -168,10 +163,10 @@ if __name__ == '__main__':
             
             elif state == "RECOG_LOCATION":
             
-                location = Utterance(ps_other.listen()).getLocation()
-                if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university")or  (location =="college"):
-                    ss.speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
-                elif location == (location == "underground") or (location == "tube") or (location == "station") :
+                location = Utterance(ps.listen()).getLocation()
+                if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university") :
+                    ss.speak("All your learning are belong to me")
+                elif location == "underground" or "tube" or "station" :
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
                 else :
                     ss.speak("That sounds most exciting.  However, I cannot travel up stairs.")
@@ -186,7 +181,7 @@ if __name__ == '__main__':
             
             elif state == "RECOG_MEETING":
             
-                meeting = Utterance(ps_other.listen())
+                meeting = Utterance(ps.listen())
                 
                 if meeting.containsYes() == True:
                     ss.speak("I think we might become best of friends sooner than I thought...")
@@ -204,7 +199,7 @@ if __name__ == '__main__':
 
             elif state == "RECOG_INTERESTED":
 
-                response = Utterance(ps_other.listen())
+                response = Utterance(ps.listen())
 
                 if response.containsYes()  == True:
                     print "SUCCESS: Ticket printed"
@@ -218,7 +213,6 @@ if __name__ == '__main__':
                 print "Error state"
                 break
         
-        ps_names.stop()
-        ps_other.stop()
+        ps.stop()
         ss.stop()
 
