@@ -1,0 +1,14 @@
+<package>
+  <description brief="messages">
+
+     messages
+
+  </description>
+  <author>viki</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/messages</url>
+
+</package>
+
+
