@@ -196,7 +196,7 @@ if __name__ == '__main__':
                         attempt = attempt + 1
                         state = "RECOG_CAKE" 
                 else:
-                    ss.speak("How unfortunate.  Perhaps you are wiser than you first seem.")
+                    ss.speak("How unfortunate.  Perhaps you are wiser than you first seemed.")
                     state = "ASK_INTERESTED"        
                 
             elif state == "ASK_MEETING":
