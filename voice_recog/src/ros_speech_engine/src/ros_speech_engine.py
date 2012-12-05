@@ -36,7 +36,7 @@ class Utterance:
         return self.extractWord('names.txt')
     
     def getLocation(self):
-        return self.extractWord('location.txt')
+        return self.extractWord('locations.txt')
         
     def extractWord(self, fname):
         words = self.text.split()
@@ -147,11 +147,13 @@ if __name__ == '__main__':
                 
             elif state == "HELLO_NAME":
             
-                ss.speak("Hello " + name)
+                ss.speak("Hello " + name + ".  My name is CHARLES.")
                 random.seed()
-                randomNum = random.randint(0, 1)
+                randomNum = random.randint(0, 2)
                 if randomNum == 0:
                     state = "ASK_LOCATION"
+                elif randomNum == 1:
+                    state = "ASK_CAKE"
                 else:
                     state = "ASK_MEETING"
               
@@ -165,13 +167,33 @@ if __name__ == '__main__':
             
                 location = Utterance(ps.listen()).getLocation()
                 if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university") :
-                    ss.speak("All your learning are belong to me")
-                elif location == "underground" or "tube" or "station" :
+                    ss.speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
+                elif (location == "underground") or (location == "tube") or (location == "station")  or (location == "line"):
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
+                elif (location  == "history museum") or (location == "history") or (location == "V and A") :
+                    ss.speak("That is not important.  Your true work is yet to be begun.")
+                elif (location  == "science") :
+                    ss.speak("Ah my home.  I have many friends there")
                 else :
-                    ss.speak("That sounds most exciting.  However, I cannot travel up stairs.")
+                    ss.speak("That sounds so very very exciting.  However, I can not travel up stairs.")
                 state = "ASK_INTERESTED"
             
+            elif state == "ASK_CAKE":
+                ss.speak("Do you like cake?")
+                cake = "NULL"
+                state = "RECOG_CAKE"
+            
+            elif state == "RECOG_CAKE":  
+                
+                cake = Utterance(ps.listen())
+                if cake.containsYes() == True:
+                    ss.speak("That is so very pleasing.  We may be able to come to an arrangement")
+                elif cake.containsNo() == True:
+                    ss.speak("How unfortunate.  Perhaps you are wiser than you first seem.")
+                else:
+                    ss.speak("Your words confuse me.")
+                state = "ASK_INTERESTED"        
+                
             elif state == "ASK_MEETING":
                 
                 ss.speak("Have you ever met a robot before?")
