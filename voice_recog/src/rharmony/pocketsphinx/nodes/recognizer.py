@@ -69,8 +69,8 @@ class recognizer(object):
         #    rospy.logerr('Please specify a dictionary')
         #    return
 
-        temp_lm = self.base_dir + "test3.lm"
-        temp_dic = self.base_dir + "test3.dic"
+        temp_lm = self.base_dir + "complete.lm"
+        temp_dic = self.base_dir + "complete.dic"
         asr.set_property('lm', temp_lm)
         asr.set_property('dict',temp_dic)
 
