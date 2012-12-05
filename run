@@ -1,4 +1,10 @@
 #!/bin/bash
-roscore > /dev/null &
-roslaunch kinect_follower kinect_follower.launch &
-rosrun controlnode controlnode $1 
+[ $# -eq 0 ] && { echo "Give me a mode (eg: \"./run 3\")"; exit 1; }
+rosmake charles &&
+    {
+        killall roscore
+        roscore > /dev/null &
+        roslaunch kinect_follower kinect_follower.launch &
+        rosrun controlnode controlnode $1 
+    }
+
