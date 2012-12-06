@@ -154,6 +154,7 @@ if __name__ == '__main__':
                     state = "ASK_CAKE"
                 else:
                     state = "ASK_MEETING"
+                state = "ASK_LOCATION"
                 
             elif state == "ASK_LOCATION":
                 
