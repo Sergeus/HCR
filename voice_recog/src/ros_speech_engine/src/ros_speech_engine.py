@@ -102,7 +102,6 @@ def conversationStateMachine(ps, ros):
     if True:
 
         state = "ASK_NAME"
-        name = None
         
         random.seed()
         iterator = 0 # iterates through different parts of a conversation
@@ -113,7 +112,6 @@ def conversationStateMachine(ps, ros):
             if state == "ASK_NAME":
 
                 speak("Hello, what is your name?")
-                name = None
                 state = "RECOG_NAME"
 
             elif state == "RECOG_NAME":
@@ -141,7 +139,6 @@ def conversationStateMachine(ps, ros):
             elif state == "ASK_LOCATION":
                 
                 speak("Where are you going to?")
-                location = None
                 state = "RECOG_LOCATION"
             
             elif state == "RECOG_LOCATION":
@@ -163,7 +160,6 @@ def conversationStateMachine(ps, ros):
             
             elif state == "ASK_CAKE":
                 speak("Do you like cake?")
-                cake = None
                 state = "RECOG_CAKE"
                 attempt = 0
                 
@@ -187,7 +183,6 @@ def conversationStateMachine(ps, ros):
                 
                 speak("Have you ever met a robot before?")
                 
-                meeting = None
                 state = "RECOG_MEETING"
                 attempt = 0
                 
