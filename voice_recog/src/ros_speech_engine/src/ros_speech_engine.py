@@ -149,6 +149,8 @@ if __name__ == '__main__':
                     speak("Ah my home.  I have many friends there")
                 elif ("history" in location) or ("V and A" in location) or ("museum" in location) or ("victoria" in location):
                     speak("That is all about the past.  Concern yourself with the future.")
+                elif ("house" in location) or ("home" in location) or ("halls" in location)
+                    speak("Home is where the heart is.  If I only had heart.")
                 else :
                     speak("That sounds so very very exciting.  However, I can not travel up stairs.")
                 state = "ASK_INTERESTED"
