@@ -6,6 +6,7 @@
 #include "ros/ros.h"
 #include "messages/activityStatus.h"
 #include "messages/startstop.h"
+#include "messages/printRequest.h"
 
 #define TICKETINTERVAL 30
 
@@ -16,10 +17,12 @@ enum statesEnum { IDLE, FOLLOWING, SPEAKING, CONVERSING, PRINTING };
 statesEnum currentState = IDLE;
 
 std::set<std::string> torsos;
+bool printRequested = false;
 
 void printTicket()
 {
     time_t epochTime = time(NULL);
+    printRequested = false;
     ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
 }
 
@@ -49,6 +52,11 @@ void kinectFoundCallback(const messages::activityStatus& msg)
     torsos.insert(msg.activity);
 }
 
+void printRequestCallback(const messages::printRequest& msg)
+{
+    printRequested = true;
+}
+
 void publishMessage(ros::Publisher pub, std::string operation)
 {
     messages::startstop msg;
@@ -65,7 +73,8 @@ int main(int argc, char **argv)
     
     ros::Subscriber kinectLostSub = n.subscribe("kinectLostActivity", 1000, kinectLostCallback);
     ros::Subscriber kinectFoundSub = n.subscribe("kinectFoundActivity", 1000, kinectFoundCallback);
-    
+    ros::Subscriber printRequestSub = n.subscribe("voicePrintRequests", 1000, printRequestCallback);
+
     ros::Publisher kinectSS = n.advertise<messages::startstop>("kinectSS", 1000); 
     ros::Publisher speakSS = n.advertise<messages::startstop>("speakSS", 1000); 
     ros::Publisher converseSS = n.advertise<messages::startstop>("converseSS", 1000); 
@@ -170,27 +179,27 @@ int main(int argc, char **argv)
                     case FOLLOWING :
                         ROS_INFO("MODE: 2; STATE: FOLLOWING");
                         publishMessage(kinectSS, "START");
-                        if (!participantPresent())
-                            currentState = IDLE;
+                        if (participantPresent())
+                            currentState = SPEAKING;
                         break;
                     
                     case SPEAKING :
                         ROS_INFO("MODE: 2; STATE: SPEAKING");
                         if (!participantPresent())
                             currentState = FOLLOWING;
+                        if (printRequested)
+                            currentState = PRINTING;
                         break;
 
                     case PRINTING :
                         ROS_INFO("MODE: 2; STATE: PRINTING");
                         printTicket();
-                        if (participantPresent())
-                            currentState = IDLE;
+                        currentState = FOLLOWING;
                         break;
 
                     default:
                         currentState = FOLLOWING;
                 }
-                currentState = FOLLOWING;
                 break;
 
             // This behaviour rotates, converses, and prints
@@ -215,7 +224,6 @@ int main(int argc, char **argv)
                     default:
                         currentState = FOLLOWING;
                 }
-                currentState = FOLLOWING;
                 break;
         }
 
