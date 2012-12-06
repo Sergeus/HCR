@@ -32,7 +32,7 @@ from std_srvs.srv import *
 class recognizer(object):
     """ GStreamer based speech recognizer. """
 
-    base_dir = "/home/chris/ros_workspace/sandbox/knowledge_base/"
+    base_dir = "../../../knowledge_base/"
 
     def __init__(self):
         """ Initialize the speech pipeline components. """

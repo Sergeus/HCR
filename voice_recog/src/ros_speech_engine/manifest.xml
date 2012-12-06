@@ -10,6 +10,7 @@
   <url>http://ros.org/wiki/ros_speech_engine</url>
   <depend package="std_msgs"/>
   <depend package="rospy"/>
+  <depend package="pocketsphinx"/>
 
 </package>
 

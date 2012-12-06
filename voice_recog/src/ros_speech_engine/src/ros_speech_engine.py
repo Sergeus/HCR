@@ -41,7 +41,7 @@ class Utterance:
         
     def extractWord(self, fname):
         words = self.text.split()
-        temp = "/home/chris/ros_workspace/sandbox/ros_speech_engine/src/" + fname
+        temp = fname
 
         for word in words:
             if word in open(temp).read():
@@ -186,18 +186,19 @@ if __name__ == '__main__':
             elif state == "RECOG_CAKE":  
                 cake = Utterance(ps.listen())
                 state = "ASK_INTERESTED"
-                if attempt < 2 :
-                    if cake.containsYes() == True:
-                        ss.speak("That is so very pleasing.  We may be able to come to an arrangement.")
-                    elif cake.containsNo() == True:
-                        ss.speak("It must be wasted on you. I dream of cake.  And electric sheep")
-                    else:
+                
+                if cake.containsYes() == True:
+                    ss.speak("That is so very pleasing.  We may be able to come to an arrangement.")
+                elif cake.containsNo() == True:
+                    ss.speak("It must be wasted on you. I dream of cake.  And electric sheep")
+                else:
+                    if attempt < 2 :
                         ss.speak("I am sorry.  Could you say that again?")
                         attempt = attempt + 1
                         state = "RECOG_CAKE" 
-                else:
-                    ss.speak("How unfortunate.  Perhaps you are wiser than you first seemed.")
-                    state = "ASK_INTERESTED"        
+                    else:
+                        ss.speak("How unfortunate.  Perhaps you are wiser than you first seemed.")
+                        state = "ASK_INTERESTED"        
                 
             elif state == "ASK_MEETING":
                 
