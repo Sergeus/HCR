@@ -8,7 +8,22 @@ import random
 import os
 from subprocess import call
 from messages.msg import startstop
-from messages.msg import printRequest
+from messages.msg import printRequest #voicePrintRequests
+
+class ROSControl:
+
+    def __init__(self):
+        print "Started Pocket"
+        foo = self.callback
+        rospy.Subscriber("voice_regogSS", startstop, foo)
+
+    def checkStatus(self):
+        return self.status
+        #STOP STARTSPEAKING STARTCONVERSING
+
+    def callback(self, data):
+        self.status = data.operation 
+
 
 class Utterance:
 
@@ -111,10 +126,23 @@ class SpeechSynthesis:
 if __name__ == '__main__':
 
     ps = PocketSphinx()
-    ss = SpeechSynthesis()
+    ros = ROSControl()
 
     rospy.init_node('ros_speech_engine', anonymous=True)
     
+    while True:
+
+        if (ros.checkStatus() == "STARTSPEAKING"):
+            #Say something
+            print "SPEAK STUFF LOL"
+        elif (ros.checkStatus() == "STARTCONVERSING"):
+            conversationStateMachine(ps, ros)
+        else:
+            time.sleep(1)
+
+
+def conversationStateMachine(ps, ros):
+
     # If the service is started
     if True:
 
@@ -127,7 +155,7 @@ if __name__ == '__main__':
         random.seed()
         
         # While we have user's attention
-        while True:
+        while (ros.checkStatus() != "STOP"):
         
             if state == "ASK_NAME":
 
