@@ -164,7 +164,7 @@ if __name__ == '__main__':
             elif state == "RECOG_LOCATION":
             
                 location = Utterance(ps.listen()).getLocation()
-                if (location == "Imperial") or (location =="school") or (location =="lectures") or (location =="university") :
+                if ("imperial" in location) or (location =="school") or (location =="lectures") or (location =="university") or (location =="college") :
                     ss.speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
                 elif (location == "underground") or (location == "tube") or (location == "station")  or (location == "line"):
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
@@ -235,7 +235,8 @@ if __name__ == '__main__':
                     print "UNLUCKY: Ticket not printed"
                 else:
                     print "SUCCESS: Ticket printed"
-                    
+                
+                ss.speak("It has been nice speaking to you.")
                 state = "ASK_NAME"
             elif state == "ERROR":
                 print "Error state"
