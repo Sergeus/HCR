@@ -254,7 +254,8 @@ if __name__ == '__main__':
     while True:
 
         if (ros.checkStatus() == "STARTSPEAKING"):
-            #Say something
+            speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?")
+            speak("Please take a ticket")
             print "SPEAK STUFF LOL"
         elif (ros.checkStatus() == "STARTCONVERSING"):
             conversationStateMachine(ps, ros)
