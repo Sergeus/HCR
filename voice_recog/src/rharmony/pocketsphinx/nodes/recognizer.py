@@ -24,6 +24,7 @@ import pygst
 pygst.require('0.10')
 gobject.threads_init()
 import gst
+import os
 
 from std_msgs.msg import String
 from std_srvs.srv import *
@@ -32,7 +33,7 @@ from std_srvs.srv import *
 class recognizer(object):
     """ GStreamer based speech recognizer. """
 
-    base_dir = "/home/human/ros_workspace/voice_recog/src/knowledge_base/"
+    base_dir = os.environ['ROS_VOICE'] + knowledge_base/"
 
     def __init__(self):
         """ Initialize the speech pipeline components. """

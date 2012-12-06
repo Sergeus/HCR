@@ -5,6 +5,7 @@ from std_msgs.msg import String
 #from ros_speech_engine.srv import string
 import time
 import random
+import os
 from subprocess import call
 
 class Utterance:
@@ -41,7 +42,7 @@ class Utterance:
         
     def extractWord(self, fname):
         words = self.text.split()
-        temp = "/home/human/ros_workspace/voice_recog/src/ros_speech_engine/src/" + fname
+        temp =  os.environ['ROS_VOICE'] + "ros_speech_engine/src/" + fname
 
         for word in words:
             if word in open(temp).read():
@@ -154,8 +155,6 @@ if __name__ == '__main__':
                 else:
                     state = "ASK_MEETING"
                 
-                state = "ASK_CAKE" #  Test Code
-                
             elif state == "ASK_LOCATION":
                 
                 ss.speak("Where are you going to?")
@@ -188,13 +187,14 @@ if __name__ == '__main__':
                 state = "ASK_INTERESTED"
                 
                 if cake.containsYes() == True:
-                    ss.speak("That is so very pleasing.  We may be able to come to an arrangement.")
+                    ss.speak("Unlucky. All the cake is gone.")
                 elif cake.containsNo() == True:
                     ss.speak("It must be wasted on you. I dream of cake.  And electric sheep")
                 else:
+                    attempt = attempt + 1
                     if attempt < 2 :
                         ss.speak("I am sorry.  Could you say that again?")
-                        attempt = attempt + 1
+                        
                         state = "RECOG_CAKE" 
                     else:
                         ss.speak("How unfortunate.  Perhaps you are wiser than you first seemed.")
