@@ -67,8 +67,6 @@ class PocketSphinx:
         return True
 
     def listen(self):
-        # Will eventually listen to mic
-        # return raw_input('Input: ')
         self.text = "NULL"
 
         while self.text == "NULL":
@@ -76,21 +74,12 @@ class PocketSphinx:
 
         return self.text
 
-    #def change_model(self, name):
-    #    rospy.wait_for_service('ps_change_lm')
-    #    try:
-    #        temp = rospy.ServiceProxy('ps_change_lm', string)
-    #        temp(name)
-    #    except rospy.ServiceException, e:
-    #        print "Service call failed: %s"%e
-
     def callback(self, data):
         print data.data
         self.text = data.data
 
 
 def speak(sentence):
-    ## Sends text to TTS
     call(["flite", "-t", sentence])
 
 
@@ -118,7 +107,6 @@ if __name__ == '__main__':
         
             if state == "ASK_NAME":
 
-                #ps.change_model("names")
                 speak("Hello, what is your name?")
                 name = "NULL"
                 state = "RECOG_NAME"
