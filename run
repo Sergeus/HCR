@@ -3,9 +3,9 @@
 rosmake charles &&
     {
 	export ROS_VOICE=/home/human/ros_workspace/voice_recog/src/        
-	xterm -geometry +0+0 -e "bash & roslaunch kinect_follower kinect_follower.launch" &
-	xterm -geometry +0-0 -e "bash & rosrun pocketsphinx recognizer.py" &
-	xterm -geometry -0-0 -e "bash & rosrun ros_speech_engine ros_speech_engine.py" & 
-	xterm -geometry -0+0 -e "bash & rosrun controlnode controlnode $1"
+	xterm -geometry +0+0 -e "bash & roslaunch kinect_follower kinect_follower.launch; bash" &
+	xterm -geometry +0-0 -e "bash & rosrun pocketsphinx recognizer.py; bash" &
+	xterm -geometry -0-0 -e "bash & rosrun ros_speech_engine ros_speech_engine.py; bash" & 
+	xterm -geometry -0+0 -e "bash & rosrun controlnode controlnode $1; bash"
     }
 
