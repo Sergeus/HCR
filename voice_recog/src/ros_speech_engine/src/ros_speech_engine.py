@@ -41,7 +41,7 @@ class Utterance:
         
     def extractWord(self, fname):
         words = self.text.split()
-        temp = "/home/chris/ros_workspace/sandbox/ros_speech_engine/src/" + fname
+        temp = fname
 
         for word in words:
             if word in open(temp).read():
