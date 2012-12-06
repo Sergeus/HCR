@@ -76,13 +76,12 @@ int main(int argc, char **argv)
     ros::Subscriber printRequestSub = n.subscribe("voicePrintRequests", 1000, printRequestCallback);
 
     ros::Publisher kinectSS = n.advertise<messages::startstop>("kinectSS", 1000); 
-    ros::Publisher speakSS = n.advertise<messages::startstop>("speakSS", 1000); 
-    ros::Publisher converseSS = n.advertise<messages::startstop>("converseSS", 1000); 
+    ros::Publisher voice_recogSS = n.advertise<messages::startstop>("voice_recogSS", 1000); 
 
     messages::startstop msg;
 
     // ros::Rate loop_rate(0.2);
-    ros::Rate loop_rate(1);
+    ros::Rate loop_rate(0.5);
     
     // Set mode from command line
     switch (atoi(argv[1]))
@@ -146,6 +145,7 @@ int main(int argc, char **argv)
                         break;
 
                     default:
+                        ROS_INFO("UNEXPECTED STATE, RESETTING");
                         currentState = IDLE;
                 }
                 break;
@@ -168,6 +168,7 @@ int main(int argc, char **argv)
                         break;
 
                     default:
+                        ROS_INFO("UNEXPECTED STATE, RESETTING");
                         currentState = FOLLOWING;
                 }
                 break;
@@ -179,12 +180,14 @@ int main(int argc, char **argv)
                     case FOLLOWING :
                         ROS_INFO("MODE: 2; STATE: FOLLOWING");
                         publishMessage(kinectSS, "START");
+                        publishMessage(voice_recogSS, "STOP");
                         if (participantPresent())
                             currentState = SPEAKING;
                         break;
                     
                     case SPEAKING :
                         ROS_INFO("MODE: 2; STATE: SPEAKING");
+                        publishMessage(voice_recogSS, "STARTSPEAKING");
                         if (!participantPresent())
                             currentState = FOLLOWING;
                         if (printRequested)
@@ -198,6 +201,7 @@ int main(int argc, char **argv)
                         break;
 
                     default:
+                        ROS_INFO("UNEXPECTED STATE, RESETTING");
                         currentState = FOLLOWING;
                 }
                 break;
@@ -209,19 +213,28 @@ int main(int argc, char **argv)
                     case FOLLOWING :
                         ROS_INFO("MODE: 3; STATE: FOLLOWING");
                         publishMessage(kinectSS, "START");
+                        publishMessage(voice_recogSS, "STOP");
+                        if (participantPresent())
+                            currentState = CONVERSING;
                         break;
                     
                     case CONVERSING :
                         ROS_INFO("MODE: 3; STATE: CONVERSING");
+                        publishMessage(voice_recogSS, "STARTCONVERSING");
+                        if (!participantPresent())
+                            currentState = FOLLOWING;
+                        if (printRequested)
+                            currentState = PRINTING;
                         break;
 
                     case PRINTING :
                         ROS_INFO("MODE: 3; STATE: PRINTING");
                         printTicket();
-                        currentState = IDLE;
+                        currentState = FOLLOWING;
                         break;
 
                     default:
+                        ROS_INFO("UNEXPECTED STATE, RESETTING");
                         currentState = FOLLOWING;
                 }
                 break;
