@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <stdio.h>
 #include <time.h>
 #include <string>
@@ -8,7 +9,10 @@
 #include "messages/startstop.h"
 #include "messages/printRequest.h"
 
-#define TICKETINTERVAL 30
+#define TICKETINTERVAL 2
+#define PRINTERUSB 0
+
+std::string messagePath = "/home/human/message.txt";
 
 enum behavModesEnum { MODE0, MODE1, MODE2, MODE3 };
 behavModesEnum currentBehaviour = MODE0;
@@ -24,6 +28,12 @@ void printTicket()
     time_t epochTime = time(NULL);
     printRequested = false;
     ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
+    std::stringstream command; 
+    command << "echo 'MODE" << currentBehaviour << " at time " << epochTime 
+            << "' >> logfile; ./ros_workspace/printer/c++/async " << PRINTERUSB << " "
+            << epochTime << " " << messagePath << " true 0 false";
+    // std::cout << "STR: "<< command.str() << std::endl;
+    system(command.str().c_str());
 }
 
 bool participantPresent()
