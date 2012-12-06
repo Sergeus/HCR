@@ -194,11 +194,9 @@ if __name__ == '__main__':
                     attempt = attempt + 1
                     if attempt < 2 :
                         ss.speak("I am sorry.  Could you say that again?")
-                        
                         state = "RECOG_CAKE" 
                     else:
-                        ss.speak("How unfortunate.  Perhaps you are wiser than you first seemed.")
-                        state = "ASK_INTERESTED"        
+                        ss.speak("How unfortunate.  Perhaps you are wiser than you first seemed.")    
                 
             elif state == "ASK_MEETING":
                 
@@ -206,22 +204,27 @@ if __name__ == '__main__':
                 
                 meeting = "NULL"
                 state = "RECOG_MEETING"
-            
+                attempt = 0
+                
             elif state == "RECOG_MEETING":
             
                 meeting = Utterance(ps.listen())
-                
+                state = "ASK_INTERESTED"   
                 if meeting.containsYes() == True:
                     ss.speak("I think we might become best of friends sooner than I thought...")
                 elif meeting.containsNo() == True:
                     ss.speak("That is most unfortunate.  You have missed out...")
                 else:
-                    ss.speak("Your words confuse me.")
-                state = "ASK_INTERESTED"        
+                    attempt = attempt + 1
+                    if attempt < 2 :
+                        ss.speak("I am sorry.  Could you say that again?")
+                         state = "RECOG_MEETING"
+                    else
+                        ss.speak("Your words confuse me.")
+                             
                             
             elif state == "ASK_INTERESTED":
 
-                #ps.change_model("yesno")
                 ss.speak("Would you be interested in finding out more about this experiment?")
                 state = "RECOG_INTERESTED"
 
