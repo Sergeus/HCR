@@ -123,6 +123,7 @@ if __name__ == '__main__':
         name = "NULL"
         
         random.seed()
+        iterator = 0 # iterates through different parts of a conversation
         
         # While we have user's attention
         while True:
@@ -148,14 +149,15 @@ if __name__ == '__main__':
             elif state == "CHOOSE_STATE":
                    
                 randomNum = random.randint(0, 2)
-                if randomNum == 0:
+                if iterator == 0:
                     state = "ASK_LOCATION"
-                elif randomNum == 1:
+                elif iterator == 1:
                     state = "ASK_CAKE"
                 else:
                     state = "ASK_MEETING"
+                iterator = (iterator + 1) % 3
                 state = "ASK_LOCATION"
-                
+
             elif state == "ASK_LOCATION":
                 
                 ss.speak("Where are you going to?")
@@ -165,14 +167,14 @@ if __name__ == '__main__':
             elif state == "RECOG_LOCATION":
             
                 location = Utterance(ps.listen()).getLocation()
-                if (("imperial" or "college" )in location) or (location =="school") or (location =="lectures") or (location =="university") :
+                if ("imperial" in location) or ("college" in location) or ("school" in location) or ("lectures" in location) or ("university" in location) :
                     ss.speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
-                elif (location == "underground") or (location == "tube") or (location == "station")  or (location == "line"):
+                elif ("underground" in location) or ("tube" in location) or ("station" in location)  or ("line" in location):
                     ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
-                elif (location  == "history museum") or (location == "history") or (location == "V and A") :
-                    ss.speak("That is all about the past.  Concern yourself with the future.")
-                elif (location  == "science") :
+                elif ("science" in location) or ("robot" in location):
                     ss.speak("Ah my home.  I have many friends there")
+                elif ("history" in location) or ("V and A" in location) or ("museum" in location) or ("victoria" in location):
+                    ss.speak("That is all about the past.  Concern yourself with the future.")
                 else :
                     ss.speak("That sounds so very very exciting.  However, I can not travel up stairs.")
                 state = "ASK_INTERESTED"
@@ -219,8 +221,8 @@ if __name__ == '__main__':
                     attempt = attempt + 1
                     if attempt < 2 :
                         ss.speak("I am sorry.  Could you say that again?")
-                         state = "RECOG_MEETING"
-                    else
+                        state = "RECOG_MEETING"
+                    else:
                         ss.speak("Your words confuse me.")
                              
                             
