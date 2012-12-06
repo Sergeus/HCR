@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('ros_speech_engine')
 import rospy
-from std_msgs.msg import String
 import time
 import random
 import os
+from std_msgs.msg import String
 from subprocess import call
 from messages.msg import startstop
-from messages.msg import printRequest #voicePrintRequests
+from messages.msg import printRequest
 
 class ROSControl:
 
@@ -16,8 +16,8 @@ class ROSControl:
         rospy.Subscriber("voice_regogSS", startstop, self.callback)
 
     def checkStatus(self):
+        # returns "STOP", "STARTSPEAKING", or "STARTCONVERSING"
         return self.status
-        #STOP STARTSPEAKING STARTCONVERSING
 
 #    def printCommand(self):
         # Publish stuff here
@@ -35,14 +35,13 @@ class Utterance:
         self.text = text
 
     def containsYes(self):
-        print self.text
-        if self.extractWord('yes.txt') != "NULL":
+        if self.extractWord('yes.txt') != None:
             return True
         else :
             return False
 
     def containsNo(self):
-        if self.extractWord('no.txt') != "NULL":
+        if self.extractWord('no.txt') != None:
             return True
         else :
             return False
@@ -73,27 +72,18 @@ class Utterance:
                         print "[INFO] Found " + word
                         return word
 
-        return "NULL"
-#        words = self.text.split()
-#        temp =  os.environ['ROS_VOICE'] + "ros_speech_engine/src/" + fname
-#
-#        for word in words:
-#            if word in open(temp).read():
-#                print "[INFO] Found " + word
-#                return word
-#    
-#        return "NULL"
+        return None 
 
 class PocketSphinx:
 
     def __init__(self):
-        self.text = "NULL"
+        self.text = None
         rospy.Subscriber("ps_out", String, self.callback)
 
     def listen(self):
-        self.text = "NULL"
+        self.text = None
 
-        while self.text == "NULL":
+        while self.text == None:
             time.sleep(1)
 
         return self.text
@@ -112,7 +102,7 @@ def conversationStateMachine(ps, ros):
     if True:
 
         state = "ASK_NAME"
-        name = "NULL"
+        name = None
         
         random.seed()
         iterator = 0 # iterates through different parts of a conversation
@@ -123,14 +113,14 @@ def conversationStateMachine(ps, ros):
             if state == "ASK_NAME":
 
                 speak("Hello, what is your name?")
-                name = "NULL"
+                name = None
                 state = "RECOG_NAME"
 
             elif state == "RECOG_NAME":
                
                 name = Utterance(ps.listen()).getName()
                 
-                if name != "NULL" :
+                if name != None :
                     speak("Hello " + name + ".  My name is CHARLES.")
                 else :    
                     speak("Hello.  My name is CHARLES")
@@ -151,7 +141,7 @@ def conversationStateMachine(ps, ros):
             elif state == "ASK_LOCATION":
                 
                 speak("Where are you going to?")
-                location = "NULL"
+                location = None
                 state = "RECOG_LOCATION"
             
             elif state == "RECOG_LOCATION":
@@ -173,7 +163,7 @@ def conversationStateMachine(ps, ros):
             
             elif state == "ASK_CAKE":
                 speak("Do you like cake?")
-                cake = "NULL"
+                cake = None
                 state = "RECOG_CAKE"
                 attempt = 0
                 
@@ -197,7 +187,7 @@ def conversationStateMachine(ps, ros):
                 
                 speak("Have you ever met a robot before?")
                 
-                meeting = "NULL"
+                meeting = None
                 state = "RECOG_MEETING"
                 attempt = 0
                 
