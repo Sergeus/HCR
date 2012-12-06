@@ -10,6 +10,7 @@
   <url>http://ros.org/wiki/charles</url>
   <depend package="controlnode"/>
   <depend package="kinect_follower"/>
+  <depend package="ros_speech_engine"/>
 
 </package>
 

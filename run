@@ -2,9 +2,9 @@
 [ $# -eq 0 ] && { echo "Give me a mode (eg: \"./run 3\")"; exit 1; }
 rosmake charles &&
     {
-        killall roscore
-        roscore > /dev/null &
-        roslaunch kinect_follower kinect_follower.launch &
-        rosrun controlnode controlnode $1 
+        xterm -e "bash & roslaunch kinect_follower kinect_follower.launch" &
+	xterm -e "bash & rosrun pocketsphinx recognizer.py" &
+	xterm -e "bash & rosrun ros_speech_engine ros_speech_engine.py" & 
+	xterm -e "bash & rosrun controlnode controlnode $1"
     }
 
