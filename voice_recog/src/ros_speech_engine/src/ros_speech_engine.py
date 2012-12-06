@@ -11,10 +11,10 @@ from messages.msg import printRequest #voicePrintRequests
 
 class ROSControl:
 
-    status = "STOP"
+#    status = "STOP"
 
     def __init__(self):
-        print "Started Pocket"
+        self.status = "STOP"
         foo = self.callback
         rospy.Subscriber("voice_regogSS", startstop, foo)
 
@@ -22,7 +22,7 @@ class ROSControl:
         return self.status
         #STOP STARTSPEAKING STARTCONVERSING
 
-    def printCommand(self):
+#    def printCommand(self):
         # Publish stuff here
 
     def callback(self, data):
@@ -31,7 +31,7 @@ class ROSControl:
 
 class Utterance:
 
-    text = "NULL"
+#    text = "NULL"
 
     def __init__(self, text):
         self.text = text
@@ -73,7 +73,10 @@ class Utterance:
 
 class PocketSphinx:
 
-    text = "NULL"
+#    text = "NULL"
+
+    def __init__(self):
+        self.text = "NULL"
 
     def start(self):
         # Will eventually start recogniser
