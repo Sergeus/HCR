@@ -131,6 +131,7 @@ if __name__ == '__main__':
                 else:
                     state = "ASK_MEETING"
                 iterator = (iterator + 1) % 3
+                print iterator
                 state = "ASK_LOCATION"
 
             elif state == "ASK_LOCATION":
