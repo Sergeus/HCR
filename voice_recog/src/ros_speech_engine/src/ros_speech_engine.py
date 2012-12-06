@@ -5,6 +5,7 @@ from std_msgs.msg import String
 #from ros_speech_engine.srv import string
 import time
 import random
+import os
 from subprocess import call
 
 class Utterance:
@@ -41,7 +42,7 @@ class Utterance:
         
     def extractWord(self, fname):
         words = self.text.split()
-        temp = "/home/human/ros_workspace/voice_recog/src/ros_speech_engine/src/" + fname
+        temp =  os.environ['ROS_VOICE'] + "ros_speech_engine/src/" + fname
 
         for word in words:
             if word in open(temp).read():
@@ -153,8 +154,6 @@ if __name__ == '__main__':
                     state = "ASK_CAKE"
                 else:
                     state = "ASK_MEETING"
-                
-                state = "ASK_CAKE" #  Test Code
                 
             elif state == "ASK_LOCATION":
                 
