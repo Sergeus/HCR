@@ -88,28 +88,16 @@ class PocketSphinx:
         print data.data
         self.text = data.data
 
-class SpeechSynthesis:
 
-    def start(self):
-        # Will eventually start TTS
-        print "Started SpeechSynthesis node"
-        return True
-
-    def stop(self):
-        # Will eventually stop TTS
-        print "Stopped SpeechSynthesis node"
-        return True
-
-    def speak(self, sentence):
-        ## Sends text to TTS
-        call(["flite", "-t", sentence])
+def speak(sentence):
+    ## Sends text to TTS
+    call(["flite", "-t", sentence])
 
 
 # Main functional loop
 if __name__ == '__main__':
 
     ps = PocketSphinx()
-    ss = SpeechSynthesis()
 
     rospy.init_node('ros_speech_engine', anonymous=True)
     
@@ -131,7 +119,7 @@ if __name__ == '__main__':
             if state == "ASK_NAME":
 
                 #ps.change_model("names")
-                ss.speak("Hello, what is your name?")
+                speak("Hello, what is your name?")
                 name = "NULL"
                 state = "RECOG_NAME"
 
@@ -140,9 +128,9 @@ if __name__ == '__main__':
                 name = Utterance(ps.listen()).getName()
                 
                 if name != "NULL" :
-                    ss.speak("Hello " + name + ".  My name is CHARLES.")
+                    speak("Hello " + name + ".  My name is CHARLES.")
                 else :    
-                    ss.speak("Hello.  My name is CHARLES")
+                    speak("Hello.  My name is CHARLES")
                 
                 state = "CHOOSE_STATE"
                 
@@ -160,7 +148,7 @@ if __name__ == '__main__':
 
             elif state == "ASK_LOCATION":
                 
-                ss.speak("Where are you going to?")
+                speak("Where are you going to?")
                 location = "NULL"
                 state = "RECOG_LOCATION"
             
@@ -168,19 +156,19 @@ if __name__ == '__main__':
             
                 location = Utterance(ps.listen()).getLocation()
                 if ("imperial" in location) or ("college" in location) or ("school" in location) or ("lectures" in location) or ("university" in location) :
-                    ss.speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
+                    speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
                 elif ("underground" in location) or ("tube" in location) or ("station" in location)  or ("line" in location):
-                    ss.speak("It is cold and dark and emotionless down there.  Not like me of course")
+                    speak("It is cold and dark and emotionless down there.  Not like me of course")
                 elif ("science" in location) or ("robot" in location):
-                    ss.speak("Ah my home.  I have many friends there")
+                    speak("Ah my home.  I have many friends there")
                 elif ("history" in location) or ("V and A" in location) or ("museum" in location) or ("victoria" in location):
-                    ss.speak("That is all about the past.  Concern yourself with the future.")
+                    speak("That is all about the past.  Concern yourself with the future.")
                 else :
-                    ss.speak("That sounds so very very exciting.  However, I can not travel up stairs.")
+                    speak("That sounds so very very exciting.  However, I can not travel up stairs.")
                 state = "ASK_INTERESTED"
             
             elif state == "ASK_CAKE":
-                ss.speak("Do you like cake?")
+                speak("Do you like cake?")
                 cake = "NULL"
                 state = "RECOG_CAKE"
                 attempt = 0
@@ -190,20 +178,20 @@ if __name__ == '__main__':
                 state = "ASK_INTERESTED"
                 
                 if cake.containsYes() == True:
-                    ss.speak("Unlucky. All the cake is gone.")
+                    speak("Unlucky. All the cake is gone.")
                 elif cake.containsNo() == True:
-                    ss.speak("It must be wasted on you. I dream of cake.  And electric sheep")
+                    speak("It must be wasted on you. I dream of cake.  And electric sheep")
                 else:
                     attempt = attempt + 1
                     if attempt < 2 :
-                        ss.speak("I am sorry.  Could you say that again?")
+                        speak("I am sorry.  Could you say that again?")
                         state = "RECOG_CAKE" 
                     else:
-                        ss.speak("How unfortunate.  Perhaps you are wiser than you first seemed.")    
+                        speak("How unfortunate.  Perhaps you are wiser than you first seemed.")    
                 
             elif state == "ASK_MEETING":
                 
-                ss.speak("Have you ever met a robot before?")
+                speak("Have you ever met a robot before?")
                 
                 meeting = "NULL"
                 state = "RECOG_MEETING"
@@ -214,21 +202,21 @@ if __name__ == '__main__':
                 meeting = Utterance(ps.listen())
                 state = "ASK_INTERESTED"   
                 if meeting.containsYes() == True:
-                    ss.speak("I think we might become best of friends sooner than I thought...")
+                    speak("I think we might become best of friends sooner than I thought...")
                 elif meeting.containsNo() == True:
-                    ss.speak("That is most unfortunate.  You have missed out...")
+                    speak("That is most unfortunate.  You have missed out...")
                 else:
                     attempt = attempt + 1
                     if attempt < 2 :
-                        ss.speak("I am sorry.  Could you say that again?")
+                        speak("I am sorry.  Could you say that again?")
                         state = "RECOG_MEETING"
                     else:
-                        ss.speak("Your words confuse me.")
+                        speak("Your words confuse me.")
                              
                             
             elif state == "ASK_INTERESTED":
 
-                ss.speak("Would you be interested in finding out more about this experiment?")
+                speak("Would you be interested in finding out more about this experiment?")
                 state = "RECOG_INTERESTED"
 
             elif state == "RECOG_INTERESTED":
@@ -242,7 +230,7 @@ if __name__ == '__main__':
                 else:
                     print "SUCCESS: Ticket printed"
                 
-                ss.speak("It has been nice speaking to you.")
+                speak("It has been nice speaking to you.")
                 state = "ASK_NAME"
             elif state == "ERROR":
                 print "Error state"
