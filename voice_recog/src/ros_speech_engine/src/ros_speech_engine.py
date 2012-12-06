@@ -11,12 +11,9 @@ from messages.msg import printRequest #voicePrintRequests
 
 class ROSControl:
 
-#    status = "STOP"
-
     def __init__(self):
         self.status = "STOP"
-        foo = self.callback
-        rospy.Subscriber("voice_regogSS", startstop, foo)
+        rospy.Subscriber("voice_regogSS", startstop, self.callback)
 
     def checkStatus(self):
         return self.status
@@ -25,29 +22,24 @@ class ROSControl:
 #    def printCommand(self):
         # Publish stuff here
 
+    def resetStatus():
+        self.status = "STOP"
+
     def callback(self, data):
         self.status = data.operation 
 
 
 class Utterance:
 
-#    text = "NULL"
-
     def __init__(self, text):
         self.text = text
 
-    def containsName(self):
-        return self.extractWord('names.txt') != "NULL"
-
-    def containsLocation(self):
-        return self.extractWord('locations.txt') != "NULL"
-
     def containsYes(self):
+        print self.text
         if self.extractWord('yes.txt') != "NULL":
             return True
         else :
             return False
-        
 
     def containsNo(self):
         if self.extractWord('no.txt') != "NULL":
@@ -62,33 +54,41 @@ class Utterance:
         return self.extractWord('locations.txt')
         
     def extractWord(self, fname):
-        words = self.text.split()
         temp =  os.environ['ROS_VOICE'] + "ros_speech_engine/src/" + fname
 
-        for word in words:
-            if word in open(temp).read():
-                return word
-    
+        words = self.text.split()
+
+        lines = open(temp).readlines()
+
+        for line in lines:
+
+            lineWords = line.split()
+
+            for lineWord in lineWords:
+
+                for word in words:
+
+                    if word == lineWord:
+
+                        print "[INFO] Found " + word
+                        return word
+
         return "NULL"
+#        words = self.text.split()
+#        temp =  os.environ['ROS_VOICE'] + "ros_speech_engine/src/" + fname
+#
+#        for word in words:
+#            if word in open(temp).read():
+#                print "[INFO] Found " + word
+#                return word
+#    
+#        return "NULL"
 
 class PocketSphinx:
 
-#    text = "NULL"
-
     def __init__(self):
         self.text = "NULL"
-
-    def start(self):
-        # Will eventually start recogniser
-        print "Started PocketSphinx node"
-        foo = self.callback
-        rospy.Subscriber("ps_out", String, foo)
-        return True
-
-    def stop(self):
-        # Will eventually stop recogniser
-        print "Stopped PocketSphinx node"
-        return True
+        rospy.Subscriber("ps_out", String, self.callback)
 
     def listen(self):
         self.text = "NULL"
@@ -110,8 +110,6 @@ def conversationStateMachine(ps, ros):
 
     # If the service is started
     if True:
-
-        ps.start()
 
         state = "ASK_NAME"
         name = "NULL"
@@ -242,9 +240,6 @@ def conversationStateMachine(ps, ros):
                 print "Error state"
                 break
         
-        ps.stop()
-
-
 
 # Main functional loop
 if __name__ == '__main__':
@@ -259,9 +254,10 @@ if __name__ == '__main__':
         if (ros.checkStatus() == "STARTSPEAKING"):
             speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?")
             speak("Please take a ticket")
-            print "SPEAK STUFF LOL"
+            ros.resetStatus()
         elif (ros.checkStatus() == "STARTCONVERSING"):
             conversationStateMachine(ps, ros)
+            ros.resetStatus()
         else:
             time.sleep(1)
 
