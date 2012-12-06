@@ -7,6 +7,8 @@ import time
 import random
 import os
 from subprocess import call
+from messages.msg import startstop
+from messages.msg import printRequest
 
 class Utterance:
 
