@@ -12,6 +12,8 @@ from messages.msg import printRequest #voicePrintRequests
 
 class ROSControl:
 
+    status = "STOP"
+
     def __init__(self):
         print "Started Pocket"
         foo = self.callback
@@ -98,26 +100,6 @@ class PocketSphinx:
 
 def speak(sentence):
     call(["flite", "-t", sentence])
-
-
-# Main functional loop
-if __name__ == '__main__':
-
-    ps = PocketSphinx()
-    ros = ROSControl()
-
-    rospy.init_node('ros_speech_engine', anonymous=True)
-    
-    while True:
-
-        if (ros.checkStatus() == "STARTSPEAKING"):
-            #Say something
-            print "SPEAK STUFF LOL"
-        elif (ros.checkStatus() == "STARTCONVERSING"):
-            conversationStateMachine(ps, ros)
-        else:
-            time.sleep(1)
-
 
 def conversationStateMachine(ps, ros):
 
@@ -256,4 +238,26 @@ def conversationStateMachine(ps, ros):
                 break
         
         ps.stop()
+
+
+
+# Main functional loop
+if __name__ == '__main__':
+
+    ps = PocketSphinx()
+    ros = ROSControl()
+
+    rospy.init_node('ros_speech_engine', anonymous=True)
+    
+    while True:
+
+        if (ros.checkStatus() == "STARTSPEAKING"):
+            #Say something
+            print "SPEAK STUFF LOL"
+        elif (ros.checkStatus() == "STARTCONVERSING"):
+            conversationStateMachine(ps, ros)
+        else:
+            time.sleep(1)
+
+
 
