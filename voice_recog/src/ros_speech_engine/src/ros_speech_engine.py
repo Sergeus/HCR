@@ -2,7 +2,6 @@
 import roslib; roslib.load_manifest('ros_speech_engine')
 import rospy
 from std_msgs.msg import String
-#from ros_speech_engine.srv import string
 import time
 import random
 import os
@@ -22,6 +21,9 @@ class ROSControl:
     def checkStatus(self):
         return self.status
         #STOP STARTSPEAKING STARTCONVERSING
+
+    def printCommand(self):
+        # Publish stuff here
 
     def callback(self, data):
         self.status = data.operation 
