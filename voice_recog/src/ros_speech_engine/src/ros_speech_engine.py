@@ -123,7 +123,6 @@ if __name__ == '__main__':
                 
             elif state == "CHOOSE_STATE":
                    
-                randomNum = random.randint(0, 2)
                 if iterator == 0:
                     state = "ASK_LOCATION"
                 elif iterator == 1:
