@@ -94,7 +94,6 @@ if __name__ == '__main__':
     if True:
 
         ps.start()
-        ss.start()
 
         state = "ASK_NAME"
         name = "NULL"
@@ -225,5 +224,4 @@ if __name__ == '__main__':
                 break
         
         ps.stop()
-        ss.stop()
 
