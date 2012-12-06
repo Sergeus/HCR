@@ -9,6 +9,7 @@
 #include "messages/startstop.h"
 #include "messages/printRequest.h"
 
+#define REFRESHFREQ 1
 #define TICKETINTERVAL 10
 #define PRINTERUSB 2
 
@@ -25,14 +26,23 @@ bool printRequested = false;
 
 void printTicket()
 {
+    static time_t lastPrint = time(NULL);
     time_t epochTime = time(NULL);
+
     std::stringstream command; 
     command << "echo 'MODE" << currentBehaviour << " at time " << epochTime 
-            << "' >> /home/human/charleslog; /home/human/ros_workspace/printer/c++/async " << PRINTERUSB << " "
-            << epochTime << " " << messagePath << " true 0 false";
-    //std::cout << "STR: "<< command.str() << std::endl;
-    system(command.str().c_str());
-    ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
+            << "' >> /home/human/charleslog; /home/human/ros_workspace/printer/c++/async " 
+            << PRINTERUSB << " " << epochTime << " " << messagePath << " true 0 false";
+    
+    if ((int)difftime(epochTime,lastPrint) >= TICKETINTERVAL)
+    {
+        //std::cout << "STR: "<< command.str() << std::endl;
+        system(command.str().c_str());
+        ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
+    } else {
+        ROS_INFO("TOO RECENT, NO PRINT"); 
+    }
+
     printRequested = false;
 }
 
@@ -90,8 +100,7 @@ int main(int argc, char **argv)
 
     messages::startstop msg;
 
-    ros::Rate loop_rate(0.2);
-    //ros::Rate loop_rate(0.5);
+    ros::Rate loop_rate(REFRESHFREQ);
     
     // Set mode from command line
     switch (atoi(argv[1]))
