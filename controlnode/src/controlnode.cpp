@@ -9,8 +9,8 @@
 #include "messages/startstop.h"
 #include "messages/printRequest.h"
 
-#define TICKETINTERVAL 2
-#define PRINTERUSB 0
+#define TICKETINTERVAL 10
+#define PRINTERUSB 2
 
 std::string messagePath = "/home/human/message.txt";
 
@@ -26,14 +26,14 @@ bool printRequested = false;
 void printTicket()
 {
     time_t epochTime = time(NULL);
-    printRequested = false;
-    ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
     std::stringstream command; 
     command << "echo 'MODE" << currentBehaviour << " at time " << epochTime 
-            << "' >> logfile; ./ros_workspace/printer/c++/async " << PRINTERUSB << " "
+            << "' >> /home/human/charleslog; /home/human/ros_workspace/printer/c++/async " << PRINTERUSB << " "
             << epochTime << " " << messagePath << " true 0 false";
-    // std::cout << "STR: "<< command.str() << std::endl;
+    //std::cout << "STR: "<< command.str() << std::endl;
     system(command.str().c_str());
+    ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
+    printRequested = false;
 }
 
 bool participantPresent()
@@ -90,8 +90,8 @@ int main(int argc, char **argv)
 
     messages::startstop msg;
 
-    // ros::Rate loop_rate(0.2);
-    ros::Rate loop_rate(0.5);
+    ros::Rate loop_rate(0.2);
+    //ros::Rate loop_rate(0.5);
     
     // Set mode from command line
     switch (atoi(argv[1]))
