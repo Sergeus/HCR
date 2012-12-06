@@ -32,12 +32,13 @@ void printTicket()
     std::stringstream command; 
     command << "echo 'MODE" << currentBehaviour << " at time " << epochTime 
             << "' >> /home/human/charleslog; /home/human/ros_workspace/printer/c++/async " 
-            << PRINTERUSB << " " << epochTime << " " << messagePath << " true 0 false";
+            << PRINTERUSB << " " << epochTime << " " << messagePath << " true 0 true";
     
     if ((int)difftime(epochTime,lastPrint) >= TICKETINTERVAL)
     {
         //std::cout << "STR: "<< command.str() << std::endl;
         system(command.str().c_str());
+	lastPrint = epochTime;
         ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
     } else {
         ROS_INFO("TOO RECENT, NO PRINT"); 
@@ -138,6 +139,7 @@ int main(int argc, char **argv)
             break;
     }
 
+    printTicket(); // This sets the lastPrint time but will not print
     int count = 0;
 
     while (ros::ok())
