@@ -236,7 +236,7 @@ if __name__ == '__main__':
                 else:
                     print "SUCCESS: Ticket printed"
                 
-                ss.speak("It has been nice speaking to you.  
+                ss.speak("It has been nice speaking to you.")
                 state = "ASK_NAME"
             elif state == "ERROR":
                 print "Error state"
