@@ -272,8 +272,10 @@ int main(int argc, char **argv)
                         ROS_INFO("MODE: 3; STATE: CONVERSING");
                         
                         if ((int)difftime(time(NULL),lastConversation)>=TICKETINTERVAL)
+                        {
                             publishMessage(voice_recogSS, "STARTCONVERSING");
-                        else
+                            lastConversation = time(NULL);
+                        } else
                             ROS_INFO("LAST CONVERSATION WAS TOO RECENT");
 
                         if (!participantPresent())
