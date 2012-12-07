@@ -19,6 +19,7 @@ class ROSControl:
         self.pub = rospy.Publisher('conversationFinished', conversationFinished)
 
     def finishConversation(self):
+        rospy.loginfo("Finished conversation")
         self.pub.publish()
 
     def checkStatus(self):
@@ -107,9 +108,15 @@ class PocketSphinx:
         rospy.loginfo("Waiting for utterance from PocketSphinx")
         self.text = None
 
+        i = 0
         while self.text == None:
-            rospy.loginfo("waiting...")
+            rospy.loginfo("waiting..." + str(i))
             time.sleep(1)
+      
+            if i==30:
+                return None
+            else:
+                i += 1             
 
         return self.text
 
@@ -131,7 +138,7 @@ def retry(attempt, success_state, fail_state, fail_text, emotion):
         speak(fail_text, emotion) 
         return success_state 
 
-def conversationStateMachine(ps, ros, ):
+def conversationStateMachine(ps, ros):
    
     state = "ASK_NAME"
     attempt = 0
@@ -140,7 +147,7 @@ def conversationStateMachine(ps, ros, ):
     iterator = 0 # iterates through different parts of a conversation
     
     # While we have user's attention
-    while (ros.checkStatus() != "STOP"):
+    while (True):
     
         if state == "ASK_NAME":
 
@@ -148,8 +155,12 @@ def conversationStateMachine(ps, ros, ):
             state = "RECOG_NAME"
 
         elif state == "RECOG_NAME":
-           
-            name = Utterance(ps.listen()).getName()
+          
+            result= ps.listen()
+            if result == None:
+                break
+ 
+            name = Utterance(result).getName()
            
             if name != None :
                 speak("Hello " + name + ".  My name is CHARLES.", "happy")
@@ -175,8 +186,12 @@ def conversationStateMachine(ps, ros, ):
             state = "RECOG_LOCATION"
         
         elif state == "RECOG_LOCATION":
-        
-            location = Utterance(ps.listen()).getLocation()
+            
+            result= ps.listen()
+            if result == None:
+                break
+
+            location = Utterance(result).getLocation()
             state = "ASK_INTERESTED"
 
             if location != None:
@@ -204,7 +219,11 @@ def conversationStateMachine(ps, ros, ):
             
         elif state == "RECOG_CAKE":  
            
-            cake = Utterance(ps.listen())
+            result = ps.listen()
+            if result == None:
+                break
+
+            cake = Utterance(result)
             state = "ASK_INTERESTED"
             
             if cake.containsYes() == True:
@@ -224,7 +243,11 @@ def conversationStateMachine(ps, ros, ):
             
         elif state == "RECOG_MEETING":
         
-            meeting = Utterance(ps.listen())
+            result = ps.listen()
+            if result == None:
+                break
+
+            meeting = Utterance(result)
             state = "ASK_INTERESTED"   
             
             if meeting.containsYes() == True:
@@ -242,7 +265,11 @@ def conversationStateMachine(ps, ros, ):
 
         elif state == "RECOG_INTERESTED":
 
-            response = Utterance(ps.listen())
+            result = ps.listen()
+            if result == None:
+                break
+
+            response = Utterance(result)
 
             if response.containsYes()  == True:
                 print "SUCCESS: Ticket printed"
