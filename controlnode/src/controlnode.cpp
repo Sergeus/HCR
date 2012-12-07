@@ -257,7 +257,7 @@ int main(int argc, char **argv)
                     
                     case CONVERSING :
                         ROS_INFO("MODE: 3; STATE: CONVERSING");
-                        if ((int)difftime(lastConversation,time(NULL))>=TICKETINTERVAL)
+                        if ((int)difftime(time(NULL),lastConversation)>=TICKETINTERVAL)
                             publishMessage(voice_recogSS, "STARTCONVERSING");
                         else
                             ROS_INFO("LAST CONVERSATION WAS TOO RECENT");
