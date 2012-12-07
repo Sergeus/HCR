@@ -242,13 +242,15 @@ def conversationStateMachine(ps, ros, ):
             if response.containsYes()  == True:
                 print "SUCCESS: Ticket printed"
                 Printer().requestPrint()
+                speak("Please take a ticket. It has been nice speaking to you.","happy")
             elif response.containsNo() == True:
                 print "UNLUCKY: Ticket not printed"
+                speak("Oh well. I tried.  Nice speaking to you anyway.","sad")
             else:
                 print "SUCCESS: Ticket printed"
                 Printer().requestPrint()
-            
-            speak("It has been nice speaking to you.", "happy")
+                speak("It has been nice speaking to you.", "happy")
+           
             state = "ASK_NAME"
         elif state == "ERROR":
             print "Error state"
