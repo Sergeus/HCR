@@ -8,6 +8,7 @@ from std_msgs.msg import String
 from subprocess import call
 from messages.msg import startstop
 from messages.msg import printRequest
+from messages.msg import faceRequests
 
 class ROSControl:
 
@@ -19,7 +20,7 @@ class ROSControl:
         # returns "STOP", "STARTSPEAKING", or "STARTCONVERSING"
         return self.status
 
-    def resetStatus():
+    def resetStatus(self):
         self.status = "STOP"
 
     def callback(self, data):
@@ -32,6 +33,17 @@ class Printer:
 
     def requestPrint(self):
         self.pub.publish()
+
+class FaceController():
+
+    def __init__(self):
+        self.pub = rospy.Publisher('faceRequests', faceRequests)
+
+    def setFace(self, emotion, talking):
+        if talking == True:
+            self.pub.publish(str(emotion), 1)
+        else:
+            self.pub.publish(str(emotion), 0)
 
 class Utterance:
 
@@ -240,19 +252,23 @@ if __name__ == '__main__':
 
     ps = PocketSphinx()
     ros = ROSControl()
+    face = FaceController()
 
     rospy.init_node('ros_speech_engine', anonymous=True)
     
     while True:
 
         if (ros.checkStatus() == "STARTSPEAKING"):
+            face.setFace("normal", True)
             speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?")
             speak("Please take a ticket")
+            face.setFace("normal", False)
             ros.resetStatus()
         elif (ros.checkStatus() == "STARTCONVERSING"):
             conversationStateMachine(ps, ros)
             ros.resetStatus()
         else:
+            face.setFace("normal", False)
             time.sleep(1)
 
 
