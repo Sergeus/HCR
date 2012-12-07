@@ -256,7 +256,7 @@ def conversationStateMachine(ps, ros):
                 speak("That is most unfortunate.  You have missed out...", "sad")
             else:
                 attempt = attempt + 1
-                state = retry(attempt, "ASK_INTERESTED", "RECOG_MEETING", "This will make the experiance more enoyable.  For me anyway.");
+                state = retry(attempt, "ASK_INTERESTED", "RECOG_MEETING", "This will make the experiance more enjoyable.  For me anyway.","happy");
                         
         elif state == "ASK_INTERESTED":
 
