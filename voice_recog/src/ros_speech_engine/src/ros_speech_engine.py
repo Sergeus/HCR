@@ -30,6 +30,7 @@ class ROSControl:
         self.status = "STOP"
 
     def callback(self, data):
+        rospy.loginfo("!!!!!!!!! Callback from central controller: " + str(data.operation))
         self.status = data.operation 
 
 class Printer:
