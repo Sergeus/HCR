@@ -32,6 +32,7 @@ class Printer:
         self.pub = rospy.Publisher('voicePrintRequests', printRequest)
 
     def requestPrint(self):
+        rospy.loginfo("Requested print")
         self.pub.publish()
 
 class FaceController():
@@ -40,6 +41,7 @@ class FaceController():
         self.pub = rospy.Publisher('faceRequests', faceRequests)
 
     def setFace(self, emotion, talking):
+        rospy.loginfo("Publishing faceRequest. emotion:" + str(emotion) + " talking:" + str(talking))
         if talking == True:
             self.pub.publish(str(emotion), 1)
         else:
@@ -97,9 +99,11 @@ class PocketSphinx:
         rospy.Subscriber("ps_out", String, self.callback)
 
     def listen(self):
+        rospy.loginfo("Waiting for utterance from PocketSphinx")
         self.text = None
 
         while self.text == None:
+            rospy.loginfo("waiting...")
             time.sleep(1)
 
         return self.text
@@ -263,11 +267,13 @@ if __name__ == '__main__':
     while True:
 
         if (ros.checkStatus() == "STARTSPEAKING"):
+            rospy.loginfo("Started speaking")
             speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?", "curious")
             speak("Please take a ticket", "happy")
             Printer().requestPrint()
             ros.resetStatus()
         elif (ros.checkStatus() == "STARTCONVERSING"):
+            rospy.loginfo("Starting conversation")
             conversationStateMachine(ps, ros)
             ros.resetStatus()
         else:
