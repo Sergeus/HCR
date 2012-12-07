@@ -9,12 +9,17 @@ from subprocess import call
 from messages.msg import startstop
 from messages.msg import printRequest
 from messages.msg import faceRequests
+from messages.msg import conversationFinished
 
 class ROSControl:
 
     def __init__(self):
         self.status = "STOP"
         rospy.Subscriber("voice_recogSS", startstop, self.callback)
+        self.pub = rospy.Publisher('conversationFinished', conversationFinished)
+
+    def finishConversation(self):
+        self.pub.publish()
 
     def checkStatus(self):
         # returns "STOP", "STARTSPEAKING", or "STARTCONVERSING"
@@ -176,7 +181,7 @@ def conversationStateMachine(ps, ros, ):
 
             if location != None:
                 if ("imperial" in location) or ("college" in location) or ("school" in location) or ("lectures" in location) or ("university" in location) :
-                    speak("I can teach you everything there is to know.  A to Z. From Android to Robot.", "happy")
+                    speak("I can teach you everything there is to know.  From Ay, to Zed. From Android to Robot.", "happy")
                 elif ("underground" in location) or ("tube" in location) or ("station" in location)  or ("line" in location):
                     speak("It is cold and dark and emotionless down there.  Not like me of course", "happy")
                 elif ("science" in location) or ("robot" in location):
@@ -274,10 +279,12 @@ if __name__ == '__main__':
             speak("Please take a ticket for more information.", "happy")
             Printer().requestPrint()
             ros.resetStatus()
+            ros.finishConversation()
         elif (ros.checkStatus() == "STARTCONVERSING"):
             rospy.loginfo("Starting conversation")
             conversationStateMachine(ps, ros)
             ros.resetStatus()
+            ros.finishConversation()
         else:
             face.setFace("normal", False)
             time.sleep(1)
