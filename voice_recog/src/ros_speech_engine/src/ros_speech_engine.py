@@ -154,7 +154,7 @@ def conversationStateMachine(ps, ros):
     
         if state == "ASK_NAME":
 
-            speak("Hello, what is your name?", "curious")
+            speak("Hello, what is your name?", "anticipation")
             state = "RECOG_NAME"
 
         elif state == "RECOG_NAME":
@@ -185,7 +185,7 @@ def conversationStateMachine(ps, ros):
 
         elif state == "ASK_LOCATION":
             
-            speak("Where are you going to?", "curious")
+            speak("Where are you going to?", "anticipation")
             state = "RECOG_LOCATION"
         
         elif state == "RECOG_LOCATION":
@@ -211,11 +211,11 @@ def conversationStateMachine(ps, ros):
                 else :
                     speak("That sounds so very very exciting.  However, I can not travel up stairs.", "sad")
             else:
-                speak("That sounds so very very exciting.  However, I can not travel up stairs.", "sad")
+                speak("That sounds so very very exciting.  However, I can not travel up stairs.", "confused")
 
         elif state == "ASK_CAKE":
 
-            speak("Do you like cake?", "curious")
+            speak("Do you like cake?", "anticipation")
 
             state = "RECOG_CAKE"
             attempt = 0
@@ -239,7 +239,7 @@ def conversationStateMachine(ps, ros):
             
         elif state == "ASK_MEETING":
             
-            speak("Have you ever met a robot before?", "curious")
+            speak("Have you ever met a robot before?", "anticipation")
             
             state = "RECOG_MEETING"
             attempt = 0
@@ -263,7 +263,7 @@ def conversationStateMachine(ps, ros):
                         
         elif state == "ASK_INTERESTED":
 
-            speak("Would you be interested in finding out more about this experiment?", "curious")
+            speak("Would you be interested in finding out more about this experiment?", "anticipation")
             state = "RECOG_INTERESTED"
 
         elif state == "RECOG_INTERESTED":
