@@ -140,12 +140,15 @@ int main(int argc, char **argv)
     }
 
     printTicket(); // This sets the lastPrint time but will not print
+    time_t lastSpeech = time(NULL);
     int count = 0;
 
     while (ros::ok())
     {
         ROS_INFO("WHILELOOP (%d)", count++);
 
+        ros::spinOnce();
+        
         switch (currentBehaviour)
         {
             // This behaviour just prints tickets
@@ -208,7 +211,8 @@ int main(int argc, char **argv)
                     
                     case SPEAKING :
                         ROS_INFO("MODE: 2; STATE: SPEAKING");
-                        publishMessage(voice_recogSS, "STARTSPEAKING");
+                        if ((int)timediff(lastSpeech, time(NULL)) >= (TICKETINTERVAL +2))
+                            publishMessage(voice_recogSS, "STARTSPEAKING");
                         if (!participantPresent())
                             currentState = FOLLOWING;
                         if (printRequested)
@@ -261,7 +265,6 @@ int main(int argc, char **argv)
                 break;
         }
 
-        ros::spinOnce();
         loop_rate.sleep();
     }
 
