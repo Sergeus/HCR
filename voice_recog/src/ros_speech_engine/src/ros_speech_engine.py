@@ -265,6 +265,7 @@ if __name__ == '__main__':
         if (ros.checkStatus() == "STARTSPEAKING"):
             speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?", "curious")
             speak("Please take a ticket", "happy")
+            Printer().requestPrint()
             ros.resetStatus()
         elif (ros.checkStatus() == "STARTCONVERSING"):
             conversationStateMachine(ps, ros)
