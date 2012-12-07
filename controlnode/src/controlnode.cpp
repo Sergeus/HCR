@@ -78,11 +78,13 @@ void kinectFoundCallback(const messages::activityStatus& msg)
 
 void printRequestCallback(const messages::printRequest& msg)
 {
+    ROS_INFO("PRINT REQUESTED");
     printRequested = true;
 }
 
 void endConversationCallback(const messages::conversationFinished& msg)
 {
+    ROS_INFO("CONVERSATION ENDED");
     lastConversation = time(NULL);
     inConversation = false;
 }
