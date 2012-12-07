@@ -12,6 +12,7 @@
   <depend package="kinect_follower"/>
   <depend package="ros_speech_engine"/>
   <depend package="ROSFace"/>
+  <depend package="printListener"/>
 
 </package>
 

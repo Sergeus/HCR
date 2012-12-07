@@ -10,7 +10,7 @@
 #include "messages/printRequest.h"
 #include "messages/conversationFinished.h"
 
-#define REFRESHFREQ 1
+#define REFRESHFREQ 10
 #define TICKETINTERVAL 20
 #define PRINTERUSB 2
 
@@ -25,7 +25,7 @@ statesEnum currentState = IDLE;
 std::set<std::string> torsos;
 bool printRequested = false;
 time_t lastConversation = time(NULL);
-bool inConversatoin = false;
+bool inConversation = false;
 
 void printTicket()
 {
