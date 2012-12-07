@@ -17,13 +17,14 @@ void printCallback(const messages::printReceipt& msg)
     time_t epochTime = time(NULL);
 
     std::stringstream command; 
-    command << "echo 'MODE" << msg.mode << " at time " << epochTime 
+    // command << "echo 'MODE" << msg.mode << " at time " << epochTime 
+    command << "echo 'MODE" << " at time " << epochTime 
             << "' >> /home/human/charleslog; /home/human/ros_workspace/printer/c++/async " 
             << PRINTERUSB << " " << epochTime << " " << messagePath << " true 0 true";
     
     if ((int)difftime(epochTime,lastPrint) >= TICKETINTERVAL)
     {
-        //std::cout << "STR: "<< command.str() << std::endl;
+        // std::cout << "STR: "<< command.str() << std::endl;
         system(command.str().c_str());
         lastPrint = epochTime;
         ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   

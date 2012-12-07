@@ -8,7 +8,7 @@ rosmake charles &&
 	xterm -geometry +0-0 -e "bash & rosrun pocketsphinx recognizer.py; bash" &
 	xterm -geometry -0-0 -e "bash & rosrun ros_speech_engine ros_speech_engine.py; bash" & 
     xterm -geometry +500+500 -e "bash & rosrun ROSFace ROSFace.py; bash" &
-	xterm -geometry -0+0 -e "bash & rosrun printListener printListener & 
-                                    rosrun controlnode controlnode $1; bash"
+	xterm -geometry -0+0 -e "bash & rosrun printListener printListener; bash" & 
+	xterm -geometry -0+0 -e "bash & rosrun controlnode controlnode $1; bash"
     }
 
