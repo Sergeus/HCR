@@ -268,8 +268,8 @@ if __name__ == '__main__':
 
         if (ros.checkStatus() == "STARTSPEAKING"):
             rospy.loginfo("Started speaking")
-            speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?", "curious")
-            speak("Please take a ticket", "happy")
+            speak("Hello, my name is CHARLES.  I am part of an Imperial College robot experiment.", "happy")
+            speak("Please take a ticket for more information.", "happy")
             Printer().requestPrint()
             ros.resetStatus()
         elif (ros.checkStatus() == "STARTCONVERSING"):
