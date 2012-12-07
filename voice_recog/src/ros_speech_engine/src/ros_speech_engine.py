@@ -108,18 +108,21 @@ class PocketSphinx:
         print data.data
         self.text = data.data
 
-def speak(sentence):
+def speak(sentence, emotion):
+    face = FaceController()
+    face.setFace(emotion, True)
     call(["flite", "-t", sentence])
+    face.setFace(emotion, False)
 
-def retry(attempt, success_state, fail_state, fail_text):
+def retry(attempt, success_state, fail_state, fail_text, emotion):
     if attempt < 2 :
-        speak("I am sorry.  Could you say that again?")
+        speak("I am sorry.  Could you say that again?", emotion)
         return fail_state
     else:
-        speak(fail_text) 
+        speak(fail_text, emotion) 
         return success_state 
 
-def conversationStateMachine(ps, ros):
+def conversationStateMachine(ps, ros, ):
    
     state = "ASK_NAME"
     attempt = 0
@@ -132,17 +135,17 @@ def conversationStateMachine(ps, ros):
     
         if state == "ASK_NAME":
 
-            speak("Hello, what is your name?")
+            speak("Hello, what is your name?", "curious")
             state = "RECOG_NAME"
 
         elif state == "RECOG_NAME":
            
             name = Utterance(ps.listen()).getName()
-            
+           
             if name != None :
-                speak("Hello " + name + ".  My name is CHARLES.")
+                speak("Hello " + name + ".  My name is CHARLES.", "happy")
             else :    
-                speak("Hello.  My name is CHARLES")
+                speak("Hello.  My name is CHARLES", "happy")
             
             state = "CHOOSE_STATE"
             
@@ -159,7 +162,7 @@ def conversationStateMachine(ps, ros):
 
         elif state == "ASK_LOCATION":
             
-            speak("Where are you going to?")
+            speak("Where are you going to?", "curious")
             state = "RECOG_LOCATION"
         
         elif state == "RECOG_LOCATION":
@@ -169,23 +172,24 @@ def conversationStateMachine(ps, ros):
 
             if location != None:
                 if ("imperial" in location) or ("college" in location) or ("school" in location) or ("lectures" in location) or ("university" in location) :
-                    speak("I can teach you everything there is to know.  A to Z. From Android to Robot.")
+                    speak("I can teach you everything there is to know.  A to Z. From Android to Robot.", "happy")
                 elif ("underground" in location) or ("tube" in location) or ("station" in location)  or ("line" in location):
-                    speak("It is cold and dark and emotionless down there.  Not like me of course")
+                    speak("It is cold and dark and emotionless down there.  Not like me of course", "happy")
                 elif ("science" in location) or ("robot" in location):
-                    speak("Ah my home.  I have many friends there")
+                    speak("Ah my home.  I have many friends there", "happy")
                 elif ("history" in location) or ("V and A" in location) or ("museum" in location) or ("victoria" in location):
-                    speak("That is all about the past.  Concern yourself with the future.")
+                    speak("That is all about the past.  Concern yourself with the future.", "happy")
                 elif ("house" in location) or ("home" in location) or ("halls" in location):
-                    speak("Home is where the heart is.  If I only had heart.")
+                    speak("Home is where the heart is.  If I only had heart.", "happy")
                 else :
-                    speak("That sounds so very very exciting.  However, I can not travel up stairs.")
+                    speak("That sounds so very very exciting.  However, I can not travel up stairs.", "sad")
             else:
-                speak("That sounds so very very exciting.  However, I can not travel up stairs.")
+                speak("That sounds so very very exciting.  However, I can not travel up stairs.", "sad")
 
         elif state == "ASK_CAKE":
-            speak("Do you like cake?")
-            
+
+            speak("Do you like cake?", "curious")
+
             state = "RECOG_CAKE"
             attempt = 0
             
@@ -195,16 +199,16 @@ def conversationStateMachine(ps, ros):
             state = "ASK_INTERESTED"
             
             if cake.containsYes() == True:
-                speak("Unlucky. All the cake is gone.")
+                speak("Unlucky. All the cake is gone.", "sad")
             elif cake.containsNo() == True:
-                speak("It must be wasted on you. I dream of cake.  And electric sheep")
+                speak("It must be wasted on you. I dream of cake.  And electric sheep", "sad")
             else:
                 attempt = attempt + 1
-                state = retry(attempt, "ASK_INTERESTED", "RECOG_CAKE", "How unfortunate.  Perhaps you are wiser than you first seemed.")
+                state = retry(attempt, face, "ASK_INTERESTED", "RECOG_CAKE", "How unfortunate.  Perhaps you are wiser than you first seemed.", "sad")
             
         elif state == "ASK_MEETING":
             
-            speak("Have you ever met a robot before?")
+            speak("Have you ever met a robot before?", "curious")
             
             state = "RECOG_MEETING"
             attempt = 0
@@ -215,16 +219,16 @@ def conversationStateMachine(ps, ros):
             state = "ASK_INTERESTED"   
             
             if meeting.containsYes() == True:
-                speak("I think we might become best of friends sooner than I thought...")
+                speak("I think we might become best of friends sooner than I thought...", "happy")
             elif meeting.containsNo() == True:
-                speak("That is most unfortunate.  You have missed out...")
+                speak("That is most unfortunate.  You have missed out...", "sad")
             else:
                 attempt = attempt + 1
                 state = retry(attempt, "ASK_INTERESTED", "RECOG_MEETING", "Your words confuse me");
                         
         elif state == "ASK_INTERESTED":
 
-            speak("Would you be interested in finding out more about this experiment?")
+            speak("Would you be interested in finding out more about this experiment?", "curious")
             state = "RECOG_INTERESTED"
 
         elif state == "RECOG_INTERESTED":
@@ -240,7 +244,7 @@ def conversationStateMachine(ps, ros):
                 print "SUCCESS: Ticket printed"
                 Printer().requestPrint()
             
-            speak("It has been nice speaking to you.")
+            speak("It has been nice speaking to you.", "happy")
             state = "ASK_NAME"
         elif state == "ERROR":
             print "Error state"
@@ -259,10 +263,8 @@ if __name__ == '__main__':
     while True:
 
         if (ros.checkStatus() == "STARTSPEAKING"):
-            face.setFace("normal", True)
-            speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?")
-            speak("Please take a ticket")
-            face.setFace("normal", False)
+            speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?", "curious")
+            speak("Please take a ticket", "happy")
             ros.resetStatus()
         elif (ros.checkStatus() == "STARTCONVERSING"):
             conversationStateMachine(ps, ros)
