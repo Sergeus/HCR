@@ -181,7 +181,7 @@ def conversationStateMachine(ps, ros, ):
 
             if location != None:
                 if ("imperial" in location) or ("college" in location) or ("school" in location) or ("lectures" in location) or ("university" in location) :
-                    speak("I can teach you everything there is to know.  A to Z. From Android to Robot.", "happy")
+                    speak("I can teach you everything there is to know.  From Ay, to Zed. From Android to Robot.", "happy")
                 elif ("underground" in location) or ("tube" in location) or ("station" in location)  or ("line" in location):
                     speak("It is cold and dark and emotionless down there.  Not like me of course", "happy")
                 elif ("science" in location) or ("robot" in location):
@@ -233,7 +233,7 @@ def conversationStateMachine(ps, ros, ):
                 speak("That is most unfortunate.  You have missed out...", "sad")
             else:
                 attempt = attempt + 1
-                state = retry(attempt, "ASK_INTERESTED", "RECOG_MEETING", "Your words confuse me");
+                state = retry(attempt, "ASK_INTERESTED", "RECOG_MEETING", "This will make the experiance more enoyable.  For me anyway.");
                         
         elif state == "ASK_INTERESTED":
 
@@ -247,13 +247,15 @@ def conversationStateMachine(ps, ros, ):
             if response.containsYes()  == True:
                 print "SUCCESS: Ticket printed"
                 Printer().requestPrint()
+                speak("Please take a ticket. It has been nice speaking to you.","happy")
             elif response.containsNo() == True:
                 print "UNLUCKY: Ticket not printed"
+                speak("Oh well. I tried.  Nice speaking to you anyway.","sad")
             else:
                 print "SUCCESS: Ticket printed"
                 Printer().requestPrint()
-            
-            speak("It has been nice speaking to you.", "happy")
+                speak("It has been nice speaking to you.", "happy")
+           
             state = "ASK_NAME"
         elif state == "ERROR":
             print "Error state"
@@ -273,8 +275,8 @@ if __name__ == '__main__':
 
         if (ros.checkStatus() == "STARTSPEAKING"):
             rospy.loginfo("Started speaking")
-            speak("Hello, my name is CHARLES.  Would you be interested in taking part in an experiment?", "curious")
-            speak("Please take a ticket", "happy")
+            speak("Hello, my name is CHARLES.  I am part of an Imperial College robot experiment.", "happy")
+            speak("Please take a ticket for more information.", "happy")
             Printer().requestPrint()
             ros.resetStatus()
             ros.finishConversation()
