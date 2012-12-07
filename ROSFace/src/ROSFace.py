@@ -3,12 +3,14 @@ import roslib; roslib.load_manifest('ROSFace')
 import rospy
 from std_msgs.msg import String
 from messages.msg import faceRequests
+from messages.msg import HeadCoordinates
 import subprocess
+import os
 
 process = None
 
-def callback(data):
-    rospy.loginfo("Chaning emotion/talking status")
+def emotionCallback(data):
+    rospy.loginfo("Changing emotion/talking status. emotion=" + str(data.emotion) + "talking" + str(data.talking))
     
     global process
 
@@ -17,13 +19,23 @@ def callback(data):
     else:
         process.stdin.write("e=" + data.emotion + ";t=false")
 
+def headCallback(data):
+    rospy.loginfo("Changing eye coordinates. ed=" + str(data.x) + ":" + str(data.y) + ":" + str(data.z))
+
+    global process
+    process.stdin.write("ed=" + str(data.x) + ":" + str(data.y) + ":" + str(data.z))
+
 def listener():
     rospy.init_node('ROSFace', anonymous=True)
 
-    rospy.Subscriber("faceRequests", faceRequests, callback)
+    rospy.Subscriber("faceRequests", faceRequests, emotionCallback)
+    rospy.Subscriber("kinect_heads", HeadCoordinates, headCallback)
 
     global process
-    process = subprocess.Popen(["nodemon", "/home/chris/HCR-Repo/HCR/RobotFace/node/app.js"], stdin=subprocess.PIPE)
+
+    directory = os.environ['ROS_FACE'] + "app.js"
+    rospy.loginfo("starting " + directory)
+    process = subprocess.Popen(["nodemon", directory], stdin=subprocess.PIPE)
     rospy.spin()
 
 if __name__ == '__main__':
