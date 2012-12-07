@@ -176,7 +176,7 @@ def conversationStateMachine(ps, ros, ):
 
             if location != None:
                 if ("imperial" in location) or ("college" in location) or ("school" in location) or ("lectures" in location) or ("university" in location) :
-                    speak("I can teach you everything there is to know.  A to Z. From Android to Robot.", "happy")
+                    speak("I can teach you everything there is to know.  From Ay, to Zed. From Android to Robot.", "happy")
                 elif ("underground" in location) or ("tube" in location) or ("station" in location)  or ("line" in location):
                     speak("It is cold and dark and emotionless down there.  Not like me of course", "happy")
                 elif ("science" in location) or ("robot" in location):
