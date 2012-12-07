@@ -211,22 +211,30 @@ int main(int argc, char **argv)
                 {
                     case FOLLOWING :
                         ROS_INFO("MODE: 2; STATE: FOLLOWING");
+                        
                         publishMessage(kinectSS, "START");
                         publishMessage(voice_recogSS, "STOP");
+                        
                         if (participantPresent())
                             currentState = SPEAKING;
+                        
+                        if (printRequested)
+                            currentState = PRINTING;
                         break;
                     
                     case SPEAKING :
                         ROS_INFO("MODE: 2; STATE: SPEAKING");
+                        
                         if ((int)difftime(time(NULL), lastSpeech) >= (TICKETINTERVAL +2))
                         {
                             lastSpeech = time(NULL);
                             publishMessage(voice_recogSS, "STARTSPEAKING");
                         } else
                             ROS_INFO("SPOKE RECENTLY, WAITING");
+                        
                         if (!participantPresent())
                             currentState = FOLLOWING;
+                        
                         if (printRequested)
                             currentState = PRINTING;
                         break;
@@ -249,14 +257,20 @@ int main(int argc, char **argv)
                 {
                     case FOLLOWING :
                         ROS_INFO("MODE: 3; STATE: FOLLOWING");
+                        
                         publishMessage(kinectSS, "START");
                         publishMessage(voice_recogSS, "STOP");
+                        
                         if (participantPresent())
                             currentState = CONVERSING;
+                        
+                        if (printRequested)
+                            currentState = PRINTING;
                         break;
                     
                     case CONVERSING :
                         ROS_INFO("MODE: 3; STATE: CONVERSING");
+                        
                         if ((int)difftime(time(NULL),lastConversation)>=TICKETINTERVAL)
                             publishMessage(voice_recogSS, "STARTCONVERSING");
                         else
