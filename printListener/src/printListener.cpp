@@ -1,9 +1,9 @@
 #include "ros/ros.h"
-#include "messages/print.h"
+#include "messages/printReceipt.h"
 
 #define TICKETINTERVAL 20
 
-void printCallback(const messages::print& msg)
+void printCallback(const messages::printReceipt& msg)
 {
     ROS_INFO("PRINT REQUESTED");
 }
