@@ -8,6 +8,7 @@
 #include "messages/activityStatus.h"
 #include "messages/startstop.h"
 #include "messages/printRequest.h"
+#include "messages/conversationFinished.h"
 
 #define REFRESHFREQ 1
 #define TICKETINTERVAL 10
@@ -23,6 +24,7 @@ statesEnum currentState = IDLE;
 
 std::set<std::string> torsos;
 bool printRequested = false;
+time_t lastConversation = time(NULL);
 
 void printTicket()
 {
@@ -78,6 +80,11 @@ void printRequestCallback(const messages::printRequest& msg)
     printRequested = true;
 }
 
+void endConversationCallback(const messages::conversationFinished& msg)
+{
+    lastConversation = time(NULL);
+}
+
 void publishMessage(ros::Publisher pub, std::string operation)
 {
     messages::startstop msg;
@@ -95,6 +102,7 @@ int main(int argc, char **argv)
     ros::Subscriber kinectLostSub = n.subscribe("kinectLostActivity", 1000, kinectLostCallback);
     ros::Subscriber kinectFoundSub = n.subscribe("kinectFoundActivity", 1000, kinectFoundCallback);
     ros::Subscriber printRequestSub = n.subscribe("voicePrintRequests", 1000, printRequestCallback);
+    ros::Subscriber endConversationSub = n.subscribe("conversationFinished", 1000, endConversationCallback);
 
     ros::Publisher kinectSS = n.advertise<messages::startstop>("kinectSS", 1000); 
     ros::Publisher voice_recogSS = n.advertise<messages::startstop>("voice_recogSS", 1000); 
@@ -245,9 +253,14 @@ int main(int argc, char **argv)
                     
                     case CONVERSING :
                         ROS_INFO("MODE: 3; STATE: CONVERSING");
-                        publishMessage(voice_recogSS, "STARTCONVERSING");
+                        if ((int)difftime(lastConversation,time(NULL))>=TICKETINTERVAL)
+                            publishMessage(voice_recogSS, "STARTCONVERSING");
+                        else
+                            ROS_INFO("LAST CONVERSATION WAS TOO RECENT");
+
                         if (!participantPresent())
                             currentState = FOLLOWING;
+                        
                         if (printRequested)
                             currentState = PRINTING;
                         break;

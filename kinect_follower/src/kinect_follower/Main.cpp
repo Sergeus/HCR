@@ -228,6 +228,15 @@ void enableRotation(const messages::startstop& msg)
 	enabled = false;
 }
 
+void conversationStart(const messages::startstop& msg) {
+	if (msg.operation.compare("START") == 0)
+		enabled = false;
+}
+
+void conversationEnd(const messages::conversationFinished& msg) {
+	enabled = true;
+}
+
 void loseAllTorsos(ros::Publisher &pub) {
 	std::vector<std::string> torsos = vectorOfTorsos();
 
@@ -277,6 +286,10 @@ int main(int argc, char* argv[])
 		);
 
     ros::Subscriber ssSub = nodeHandle.subscribe("kinectSS", 1000, enableRotation);
+
+    ros::Subscriber conversationStartSub = nodeHandle.subscribe("voice_recogSS", 1000, conversationStart);
+
+    ros::Subscriber conversationEndSub = nodeHandle.subscribe("conversationFinished", 1000, conversationEnd);
 
     // Maximum time for transform to be available
     const double timeout = 0.05;
