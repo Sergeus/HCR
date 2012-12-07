@@ -9,6 +9,7 @@
 #include "messages/startstop.h"
 #include "messages/printRequest.h"
 #include "messages/conversationFinished.h"
+#include "messages/printReceipt.h"
 
 #define REFRESHFREQ 10
 #define TICKETINTERVAL 20
@@ -27,26 +28,27 @@ bool printRequested = false;
 time_t lastConversation = time(NULL);
 bool inConversation = false;
 
-void printTicket()
+void printTicket(ros::Publisher pub)
 {
-    static time_t lastPrint = time(NULL);
-    time_t epochTime = time(NULL);
-
-    std::stringstream command; 
-    command << "echo 'MODE" << currentBehaviour << " at time " << epochTime 
-            << "' >> /home/human/charleslog; /home/human/ros_workspace/printer/c++/async " 
-            << PRINTERUSB << " " << epochTime << " " << messagePath << " true 0 true";
+    messages::printReceipt msg;
     
-    if ((int)difftime(epochTime,lastPrint) >= TICKETINTERVAL)
+    switch (currentBehaviour)
     {
-        //std::cout << "STR: "<< command.str() << std::endl;
-        system(command.str().c_str());
-	lastPrint = epochTime;
-        ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
-    } else {
-        ROS_INFO("TOO RECENT, NO PRINT"); 
+        case MODE0 :
+            msg.mode = 0;
+            break;
+        case MODE1 :
+            msg.mode = 1;
+            break;
+        case MODE2 :
+            msg.mode = 2;
+            break;
+        case MODE3 :
+            msg.mode = 3;
+            break;
     }
 
+    pub.publish(msg);
     printRequested = false;
 }
 
@@ -108,6 +110,7 @@ int main(int argc, char **argv)
     ros::Subscriber printRequestSub = n.subscribe("voicePrintRequests", 1000, printRequestCallback);
     ros::Subscriber endConversationSub = n.subscribe("conversationFinished", 1000, endConversationCallback);
 
+    ros::Publisher printReceipt = n.advertise<messages::printReceipt>("print", 1000); 
     ros::Publisher kinectSS = n.advertise<messages::startstop>("kinectSS", 1000); 
     ros::Publisher voice_recogSS = n.advertise<messages::startstop>("voice_recogSS", 1000); 
 
@@ -151,7 +154,7 @@ int main(int argc, char **argv)
             break;
     }
 
-    printTicket(); // This sets the lastPrint time but will not print
+    // printTicket(); // This sets the lastPrint time but will not print
     time_t lastSpeech = time(NULL);
     int count = 0;
 
@@ -176,7 +179,7 @@ int main(int argc, char **argv)
 
                     case PRINTING :
                         ROS_INFO("MODE: 0; STATE: PRINT");
-                        printTicket();
+                        printTicket(printReceipt);
                         currentState = IDLE;
                         break;
 
@@ -199,7 +202,7 @@ int main(int argc, char **argv)
                     
                     case PRINTING :
                         ROS_INFO("MODE: 1; STATE: PRINTING");
-                        printTicket();
+                        printTicket(printReceipt);
                         currentState = FOLLOWING;
                         break;
 
@@ -245,7 +248,7 @@ int main(int argc, char **argv)
 
                     case PRINTING :
                         ROS_INFO("MODE: 2; STATE: PRINTING");
-                        printTicket();
+                        printTicket(printReceipt);
                         currentState = FOLLOWING;
                         break;
 
@@ -292,7 +295,7 @@ int main(int argc, char **argv)
 
                     case PRINTING :
                         ROS_INFO("MODE: 3; STATE: PRINTING");
-                        printTicket();
+                        printTicket(printReceipt);
                         currentState = FOLLOWING;
                         break;
 

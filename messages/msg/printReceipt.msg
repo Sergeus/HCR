@@ -1,1 +1,1 @@
-string mode
+int8 mode
