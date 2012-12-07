@@ -11,6 +11,7 @@
   <depend package="controlnode"/>
   <depend package="kinect_follower"/>
   <depend package="ros_speech_engine"/>
+  <depend package="ROSFace"/>
 
 </package>
 
