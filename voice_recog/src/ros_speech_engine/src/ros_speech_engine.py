@@ -24,14 +24,16 @@ class ROSControl:
 
     def checkStatus(self):
         # returns "STOP", "STARTSPEAKING", or "STARTCONVERSING"
+        rospy.loginfo("## ROSControl : checkStatus() : " + str(self.status))
         return self.status
 
     def resetStatus(self):
         self.status = "STOP"
+        rospy.loginfo("## ROSControl : resetStatus() : " + str(self.status))
 
     def callback(self, data):
-        rospy.loginfo("!!!!!!!!! Callback from central controller: " + str(data.operation))
         self.status = data.operation 
+        rospy.loginfo("## ROSControl : callback() : " + str(self.status))
 
 class Printer:
 
@@ -284,7 +286,7 @@ def conversationStateMachine(ps, ros):
                 Printer().requestPrint()
                 speak("It has been nice speaking to you.", "happy")
            
-            state = "ASK_NAME"
+            break
         elif state == "ERROR":
             print "Error state"
             break
