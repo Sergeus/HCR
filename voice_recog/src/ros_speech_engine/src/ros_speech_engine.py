@@ -233,7 +233,7 @@ def conversationStateMachine(ps, ros):
                 speak("It must be wasted on you. I dream of cake.  And electric sheep", "sad")
             else:
                 attempt = attempt + 1
-                state = retry(attempt, face, "ASK_INTERESTED", "RECOG_CAKE", "How unfortunate.  Perhaps you are wiser than you first seemed.", "sad")
+                state = retry(attempt, "ASK_INTERESTED", "RECOG_CAKE", "How unfortunate.  Perhaps you are wiser than you first seemed.", "sad")
             
         elif state == "ASK_MEETING":
             
