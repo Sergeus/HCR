@@ -25,6 +25,7 @@ statesEnum currentState = IDLE;
 std::set<std::string> torsos;
 bool printRequested = false;
 time_t lastConversation = time(NULL);
+bool inConversatoin = false;
 
 void printTicket()
 {
@@ -77,12 +78,15 @@ void kinectFoundCallback(const messages::activityStatus& msg)
 
 void printRequestCallback(const messages::printRequest& msg)
 {
+    ROS_INFO("PRINT REQUESTED");
     printRequested = true;
 }
 
 void endConversationCallback(const messages::conversationFinished& msg)
 {
+    ROS_INFO("CONVERSATION ENDED");
     lastConversation = time(NULL);
+    inConversation = false;
 }
 
 void publishMessage(ros::Publisher pub, std::string operation)
@@ -271,9 +275,12 @@ int main(int argc, char **argv)
                     case CONVERSING :
                         ROS_INFO("MODE: 3; STATE: CONVERSING");
                         
-                        if ((int)difftime(time(NULL),lastConversation)>=TICKETINTERVAL)
+                        if (((int)difftime(time(NULL),lastConversation)>=TICKETINTERVAL) && !inConversation)
+                        {
                             publishMessage(voice_recogSS, "STARTCONVERSING");
-                        else
+                            lastConversation = time(NULL);
+                            inConversation = true;
+                        } else
                             ROS_INFO("LAST CONVERSATION WAS TOO RECENT");
 
                         if (!participantPresent())
