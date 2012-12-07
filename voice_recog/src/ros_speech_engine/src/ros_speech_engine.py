@@ -14,7 +14,7 @@ class ROSControl:
 
     def __init__(self):
         self.status = "STOP"
-        rospy.Subscriber("voice_regogSS", startstop, self.callback)
+        rospy.Subscriber("voice_recogSS", startstop, self.callback)
 
     def checkStatus(self):
         # returns "STOP", "STARTSPEAKING", or "STARTCONVERSING"
