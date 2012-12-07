@@ -1,0 +1,15 @@
+<package>
+  <description brief="printListener">
+
+     printListener
+
+  </description>
+  <author>viki</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/printListener</url>
+  <depend package="messages"/>
+
+</package>
+
+
