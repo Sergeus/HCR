@@ -19,15 +19,19 @@ class ROSControl:
         # returns "STOP", "STARTSPEAKING", or "STARTCONVERSING"
         return self.status
 
-#    def printCommand(self):
-        # Publish stuff here
-
     def resetStatus():
         self.status = "STOP"
 
     def callback(self, data):
         self.status = data.operation 
 
+class Printer:
+
+    def __init__(self):
+        self.pub = rospy.Publisher('voicePrintRequests', printRequest)
+
+    def requestPrint(self):
+        self.pub.publish()
 
 class Utterance:
 
@@ -217,10 +221,12 @@ def conversationStateMachine(ps, ros):
 
             if response.containsYes()  == True:
                 print "SUCCESS: Ticket printed"
+                Printer().requestPrint()
             elif response.containsNo() == True:
                 print "UNLUCKY: Ticket not printed"
             else:
                 print "SUCCESS: Ticket printed"
+                Printer().requestPrint()
             
             speak("It has been nice speaking to you.")
             state = "ASK_NAME"
