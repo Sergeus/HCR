@@ -11,7 +11,7 @@
 #include "messages/conversationFinished.h"
 
 #define REFRESHFREQ 1
-#define TICKETINTERVAL 10
+#define TICKETINTERVAL 20
 #define PRINTERUSB 2
 
 std::string messagePath = "/home/human/message.txt";
@@ -219,8 +219,12 @@ int main(int argc, char **argv)
                     
                     case SPEAKING :
                         ROS_INFO("MODE: 2; STATE: SPEAKING");
-                        if ((int)difftime(lastSpeech, time(NULL)) >= (TICKETINTERVAL +2))
+                        if ((int)difftime(time(NULL), lastSpeech) >= (TICKETINTERVAL +2))
+                        {
+                            lastSpeech = time(NULL);
                             publishMessage(voice_recogSS, "STARTSPEAKING");
+                        } else
+                            ROS_INFO("SPOKE RECENTLY, WAITING");
                         if (!participantPresent())
                             currentState = FOLLOWING;
                         if (printRequested)
