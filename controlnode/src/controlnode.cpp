@@ -211,7 +211,7 @@ int main(int argc, char **argv)
                     
                     case SPEAKING :
                         ROS_INFO("MODE: 2; STATE: SPEAKING");
-                        if ((int)timediff(lastSpeech, time(NULL)) >= (TICKETINTERVAL +2))
+                        if ((int)difftime(lastSpeech, time(NULL)) >= (TICKETINTERVAL +2))
                             publishMessage(voice_recogSS, "STARTSPEAKING");
                         if (!participantPresent())
                             currentState = FOLLOWING;
