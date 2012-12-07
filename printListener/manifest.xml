@@ -9,6 +9,7 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/printListener</url>
   <depend package="messages"/>
+  <depend package="roscpp"/>
 
 </package>
 
