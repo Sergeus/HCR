@@ -52,13 +52,13 @@ void printTicket()
 bool participantPresent()
 {
     ROS_INFO("NUMBER of people is %d", torsos.size());
-    std::set<std::string>::iterator it;
-    std::cout << "torsos present: ";
-    for(it=torsos.begin(); it!=torsos.end(); it++)
-    {
-        std::cout << *it;
-    }
-    std::cout << std::endl;
+    // std::set<std::string>::iterator it;
+    // std::cout << "torsos present: ";
+    // for(it=torsos.begin(); it!=torsos.end(); it++)
+    // {
+    //     std::cout << *it;
+    // }
+    // std::cout << std::endl;
     if (torsos.size() > 0)
         return true;
     else
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        ROS_INFO("WHILELOOP (%d)", count++);
+        // ROS_INFO("WHILELOOP (%d)", count++);
 
         ros::spinOnce();
         
