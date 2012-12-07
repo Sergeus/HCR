@@ -30,6 +30,7 @@
 #include "messages/HeadCoordinates.h"
 #include "messages/activityStatus.h"
 #include "messages/startstop.h"
+#include "messages/conversationFinished.h"
 
 bool enabled = true;
 
@@ -229,12 +230,15 @@ void enableRotation(const messages::startstop& msg)
 }
 
 void conversationStart(const messages::startstop& msg) {
-	if (msg.operation.compare("START") == 0)
+	if (msg.operation.compare("STARTCONVERSING") == 0) {
 		enabled = false;
+		std::cout << "Conversation begun, so NOT turning." << std::endl;
+	}
 }
 
 void conversationEnd(const messages::conversationFinished& msg) {
 	enabled = true;
+	std::cout << "Conversation ended, turning AGAIN." << std::endl;
 }
 
 void loseAllTorsos(ros::Publisher &pub) {
