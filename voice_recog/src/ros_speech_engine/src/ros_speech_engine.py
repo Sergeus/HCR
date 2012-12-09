@@ -80,7 +80,7 @@ class Utterance:
         return self.extractWord('locations.txt')
         
     def extractWord(self, fname):
-        temp =  os.environ['ROS_VOICE'] + "ros_speech_engine/src/" + fname
+        temp =  os.environ['ROS_DIR'] + "voice_recog/src/ros_speech_engine/src/" + fname
 
         words = self.text.split()
 

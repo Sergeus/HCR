@@ -33,7 +33,7 @@ def listener():
 
     global process
 
-    directory = os.environ['ROS_FACE'] + "app.js"
+    directory = os.environ['ROS_DIR'] + "RobotFace/node/app.js"
     rospy.loginfo("starting " + directory)
     process = subprocess.Popen(["nodemon", directory], stdin=subprocess.PIPE)
     rospy.spin()
