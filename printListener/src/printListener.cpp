@@ -11,26 +11,17 @@ std::string messagePath = "/home/human/message.txt";
 
 void printCallback(const messages::printReceipt& msg)
 {
-    ROS_INFO("PRINT REQUESTED");
-
-    static time_t lastPrint = time(NULL);
     time_t epochTime = time(NULL);
-
     std::stringstream command; 
+    
     // command << "echo 'MODE" << msg.mode << " at time " << epochTime 
     command << "echo 'MODE" << " at time " << epochTime 
             << "' >> /home/human/charleslog; /home/human/ros_workspace/printer/c++/async " 
             << PRINTERUSB << " " << epochTime << " " << messagePath << " true 0 true";
     
-    if ((int)difftime(epochTime,lastPrint) >= TICKETINTERVAL)
-    {
-        // std::cout << "STR: "<< command.str() << std::endl;
-        system(command.str().c_str());
-        lastPrint = epochTime;
-        ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
-    } else {
-        ROS_INFO("TOO RECENT, NO PRINT"); 
-    }
+    // std::cout << "STR: "<< command.str() << std::endl;
+    system(command.str().c_str());
+    ROS_INFO("TICKET PRINTED AT TIME %ld", epochTime);   
 }
 
 int main(int argc, char **argv)
