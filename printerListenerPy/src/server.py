@@ -8,7 +8,7 @@ import time
 class MyUDPHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
-        directory = "/home/chris/HCR-Repo/HCR/printer/c++/"
+        directory = os.environ['ROS_DIR'] + "printer/c++/"
         
         subprocess.call([directory + "async", "0", str(time.gmtime()), directory + "message.txt", "true", "3", "true"])
 
