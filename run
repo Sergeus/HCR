@@ -2,8 +2,7 @@
 [ $# -eq 0 ] && { echo "Give me a mode (eg: \"./run 3\")"; exit 1; }
 rosmake charles &&
     {
-	export ROS_VOICE=/home/human/ros_workspace/voice_recog/src/       
-    export ROS_FACE=/home/human/ros_workspace/RobotFace/node/
+	export ROS_DIR=/home/human/ros_workspace/       
 	xterm -geometry +0+0 -e "bash & roslaunch kinect_follower kinect_follower.launch; bash" &
 	xterm -geometry +0-0 -e "bash & rosrun pocketsphinx recognizer.py; bash" &
 	xterm -geometry -0-0 -e "bash & rosrun ros_speech_engine ros_speech_engine.py; bash" & 
