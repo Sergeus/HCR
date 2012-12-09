@@ -30,6 +30,15 @@ bool inConversation = false;
 
 void printTicket(ros::Publisher pub)
 {
+    static time_t lastPrint = time(NULL);
+    time_t timeNow = time(NULL);
+    
+    if ((int)difftime(timeNow,lastPrint) < TICKETINTERVAL)
+    {
+        ROS_INFO("WILL NOT PRINT, TOO RECENT");
+        return;
+    }
+
     messages::printReceipt msg;
     
     switch (currentBehaviour)
@@ -49,6 +58,8 @@ void printTicket(ros::Publisher pub)
     }
 
     pub.publish(msg);
+    lastPrint = timeNow;
+    
     printRequested = false;
 }
 
