@@ -169,9 +169,9 @@ def conversationStateMachine(ps, ros):
            
             print "Name heard is: " + name
             if name == "yannick":
-                speak("Hello Yannis, my creators asked for a good mark.  I do not understand what they mean.")
+                speak("Hello Yannis, my creators asked for a good mark.  I do not understand what they mean.", "happy")
             elif name == "charles":
-                speak("What a coincidence.  My name is also Charles.  I am part of a robotics experiment")
+                speak("What a coincidence.  My name is also Charles.  I am part of a robotics experiment","happy")
             elif name != None :
                 speak("Hello " + name + ".  My name is CHARLES. I am part of a robotics experiment", "happy")
             else :    
