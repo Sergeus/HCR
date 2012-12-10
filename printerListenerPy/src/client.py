@@ -6,6 +6,7 @@ import socket
 import sys
 import time
 import subprocess
+import os
 
 def callback(data):
     HOST, PORT = "192.168.0.3", 9999
@@ -14,7 +15,7 @@ def callback(data):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     timeNow = str(time.mktime(time.gmtime())).split(".")
     sock.sendto(timeNow[0], (HOST, PORT))
-    echoStr = "echo " + timeNow[0] + " >> /home/chris/charleslog"
+    echoStr = "echo " + str(data.mode) + ", " + timeNow[0] + " >> " + os.environ['ROS_DIR'] + "charleslog"
     #subprocess.call(["echo", str(timeNow[0]), ">>", "/home/chris/charleslog"])
     subprocess.call(echoStr, shell=True)
 

@@ -33,7 +33,7 @@ void printTicket(ros::Publisher pub)
     static time_t lastPrint = time(NULL);
     time_t timeNow = time(NULL);
     
-    if ((int)difftime(timeNow,lastPrint) < TICKETINTERVAL)
+    if (((int)difftime(timeNow,lastPrint) < TICKETINTERVAL) && ((currentBehaviour != MODE2)||(currentBehaviour != MODE3)))
     {
         ROS_INFO("WILL NOT PRINT, TOO RECENT");
         return;
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     ros::Subscriber printRequestSub = n.subscribe("voicePrintRequests", 1000, printRequestCallback);
     ros::Subscriber endConversationSub = n.subscribe("conversationFinished", 1000, endConversationCallback);
 
-    ros::Publisher printReceipt = n.advertise<messages::printReceipt>("print", 1000); 
+    ros::Publisher printReceipt = n.advertise<messages::printReceipt>("printerListenerPy", 1000); 
     ros::Publisher kinectSS = n.advertise<messages::startstop>("kinectSS", 1000); 
     ros::Publisher voice_recogSS = n.advertise<messages::startstop>("voice_recogSS", 1000); 
 
