@@ -477,7 +477,7 @@ int main(int argc, char* argv[])
 		tfl.transformPoint( destFrame, headInput, headOutput );
 
 		messages::HeadCoordinates headMsg;
-		headMsg.x = headOutput.point.x * 100;
+		headMsg.x = headOutput.point.x * 50;
 		headMsg.y = headOutput.point.y * 100;
 		headMsg.z = headOutput.point.z * 100;
 
