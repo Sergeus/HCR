@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
         tf::StampedTransform transform;
 
         // Kinect offset (will change depending on setup)
-        transform.setOrigin( tf::Vector3(1.15, 0.0, 0.18) ); //(top height, 1.15)
+        transform.setOrigin( tf::Vector3(1.47, 0.0, -0.18) ); //(top height, 1.15)
 
         // No rotation in this case
         tf::Quaternion q;
