@@ -238,7 +238,7 @@ def conversationStateMachine(ps, ros):
             if cake.containsYes() == True:
                 speak("Unlucky. All the cake is gone.", "sad")
             elif cake.containsNo() == True:
-                speak("It must be wasted on you. I dream of cake.  And electric sheep", "sad")
+                speak("The cake is wasted on you. I dream of cake.  And electric sheep", "sad")
             else:
                 attempt = attempt + 1
                 state = retry(attempt, "ASK_INTERESTED", "RECOG_CAKE", "How unfortunate.  Perhaps you are wiser than you first seemed.", "sad")
