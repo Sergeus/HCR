@@ -167,10 +167,14 @@ def conversationStateMachine(ps, ros):
  
             name = Utterance(result).getName()
            
-            if name != None :
-                speak("Hello " + name + ".  My name is CHARLES.", "happy")
+            if name == "Yannick":
+                speak("Hello Yannis, my creators asked for a good mark.  I do not understand what they mean.")
+            elif name == "Charles":
+                speak("What a coincidence.  My name is also Charles.  I am part of a robotics experiment")
+            elif name != None :
+                speak("Hello " + name + ".  My name is CHARLES. I am part of a robotics experiment", "happy")
             else :    
-                speak("Hello.  My name is CHARLES", "happy")
+                speak("Hello.  My name is CHARLES. I am part of a robotics experiment", "happy")
             
             state = "CHOOSE_STATE"
             
@@ -213,7 +217,7 @@ def conversationStateMachine(ps, ros):
                 else :
                     speak("That sounds so very very exciting.  However, I can not travel up stairs.", "sad")
             else:
-                speak("That sounds so very very exciting.  However, I can not travel up stairs.", "confused")
+                speak("That sounds so very very exciting.  However, it sounds inappropriate for a robot", "confused")
 
         elif state == "ASK_CAKE":
 
