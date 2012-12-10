@@ -11,6 +11,8 @@ from messages.msg import printRequest
 from messages.msg import faceRequests
 from messages.msg import conversationFinished
 
+iterator = 0
+
 class ROSControl:
 
     def __init__(self):
@@ -147,7 +149,7 @@ def conversationStateMachine(ps, ros):
     attempt = 0
 
     random.seed()
-    iterator = 0 # iterates through different parts of a conversation
+    global iterator # iterates through different parts of a conversation
     
     # While we have user's attention
     while (True):
