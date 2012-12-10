@@ -477,9 +477,9 @@ int main(int argc, char* argv[])
 		tfl.transformPoint( destFrame, headInput, headOutput );
 
 		messages::HeadCoordinates headMsg;
-		headMsg.x = headOutput.point.x;
-		headMsg.y = headOutput.point.y;
-		headMsg.z = headOutput.point.z;
+		headMsg.x = headOutput.point.x * 100;
+		headMsg.y = headOutput.point.y * 100;
+		headMsg.z = headOutput.point.z * 100;
 
 		std::cout << "Publishing head coords at x: " << headMsg.x << " y: " << headMsg.y << "." << std::endl;
 
