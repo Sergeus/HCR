@@ -167,7 +167,6 @@ def conversationStateMachine(ps, ros):
  
             name = Utterance(result).getName()
            
-            print "Name heard is: " + name
             if name == "yannick":
                 speak("Hello Yannis, my creators asked for a good mark.  I do not understand what they mean.", "happy")
             elif name == "charles":
