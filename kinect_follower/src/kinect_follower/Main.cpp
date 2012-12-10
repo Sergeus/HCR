@@ -34,6 +34,8 @@
 
 bool enabled = true;
 
+ros::Publisher pub;
+
 std::vector<std::string> vectorOfTorsos();
 
 // README: The objective of this part is to obtain the position of the user's
@@ -234,11 +236,35 @@ void conversationStart(const messages::startstop& msg) {
 		enabled = false;
 		std::cout << "Conversation begun, so NOT turning." << std::endl;
 	}
+
+	geometry_msgs::Twist msgt;
+
+	msgt.linear.x = 0;
+	msgt.angular.z = 0;
+
+	std::cout << "Tf became invalid, so not moving." << std::endl;
+
+	//Finally the message gets sent
+	pub.publish(msgt);
+
+	ros::spinOnce();
 }
 
 void conversationEnd(const messages::conversationFinished& msg) {
 	enabled = true;
 	std::cout << "Conversation ended, turning AGAIN." << std::endl;
+
+	geometry_msgs::Twist msgt;
+
+	msgt.linear.x = 0;
+	msgt.angular.z = 0;
+
+	std::cout << "Tf became invalid, so not moving." << std::endl;
+
+	//Finally the message gets sent
+	pub.publish(msgt);
+
+	ros::spinOnce();
 }
 
 void loseAllTorsos(ros::Publisher &pub) {
@@ -273,7 +299,7 @@ int main(int argc, char* argv[])
     ros::Rate nodeRate(frequency); //Node runs at 20Hz
 
     //Advertise cmd_vel
-    ros::Publisher pub = nodeHandle.advertise<geometry_msgs::Twist>(
+    pub = nodeHandle.advertise<geometry_msgs::Twist>(
                 "cmd_vel", 20
                 );
 
