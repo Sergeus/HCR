@@ -167,6 +167,7 @@ def conversationStateMachine(ps, ros):
  
             name = Utterance(result).getName()
            
+            print "Name heard is: " + name
             if name == "yannick":
                 speak("Hello Yannis, my creators asked for a good mark.  I do not understand what they mean.")
             elif name == "charles":
@@ -290,7 +291,7 @@ def conversationStateMachine(ps, ros):
             else:
                 print "SUCCESS: Ticket printed"
                 Printer().requestPrint()
-                speak("It has been nice speaking to you.", "happy")
+                speak("Please take a ticket. It has been nice speaking to you.", "happy")
            
             break
         elif state == "ERROR":
