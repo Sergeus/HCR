@@ -216,7 +216,7 @@ def conversationStateMachine(ps, ros):
                 elif ("house" in location) or ("home" in location) or ("halls" in location):
                     speak("Home is where the heart is.  If I only had heart.", "happy")
                 else :
-                    speak("That sounds so very very exciting.  However, I can not travel up stairs.", "sad")
+                    speak("That sounds so very very exciting.  However, it sounds inappropriate for a robot", "sad")
             else:
                 speak("That sounds so very very exciting.  However, it sounds inappropriate for a robot", "confused")
 
