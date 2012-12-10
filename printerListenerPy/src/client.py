@@ -8,13 +8,15 @@ import time
 import subprocess
 
 def callback(data):
-    HOST, PORT = "localhost", 9999
+    HOST, PORT = "192.168.0.3", 9999
 
     # SOCK_DGRAM is the socket type to use for UDP sockets
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    sock.sendto("PRINT-REQUEST;Time=" + str(time.gmtime()), (HOST, PORT))
-
+    timeNow = str(time.mktime(time.gmtime())).split(".")
+    sock.sendto(timeNow[0], (HOST, PORT))
+    echoStr = "echo " + timeNow[0] + " >> /home/chris/charleslog"
+    #subprocess.call(["echo", str(timeNow[0]), ">>", "/home/chris/charleslog"])
+    subprocess.call(echoStr, shell=True)
 
 def listener():
     rospy.init_node('printerListenerPy', anonymous=True)
@@ -23,4 +25,4 @@ def listener():
 
 
 if __name__ == '__main__':
-    listener()
+   listener()
