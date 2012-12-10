@@ -167,9 +167,9 @@ def conversationStateMachine(ps, ros):
  
             name = Utterance(result).getName()
            
-            if name == "Yannick":
+            if name == "yannick":
                 speak("Hello Yannis, my creators asked for a good mark.  I do not understand what they mean.")
-            elif name == "Charles":
+            elif name == "charles":
                 speak("What a coincidence.  My name is also Charles.  I am part of a robotics experiment")
             elif name != None :
                 speak("Hello " + name + ".  My name is CHARLES. I am part of a robotics experiment", "happy")
@@ -210,7 +210,7 @@ def conversationStateMachine(ps, ros):
                     speak("It is cold and dark and emotionless down there.  Not like me of course", "happy")
                 elif ("science" in location) or ("robot" in location):
                     speak("Ah my home.  I have many friends there", "happy")
-                elif ("history" in location) or ("V and A" in location) or ("museum" in location) or ("victoria" in location):
+                elif ("history" in location) or ("v and a" in location) or ("museum" in location) or ("victoria" in location):
                     speak("That is all about the past.  Concern yourself with the future.", "happy")
                 elif ("house" in location) or ("home" in location) or ("halls" in location):
                     speak("Home is where the heart is.  If I only had heart.", "happy")
