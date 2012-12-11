@@ -9,8 +9,8 @@ import subprocess
 import os
 
 def callback(data):
-    HOST, PORT = "192.168.0.3", 9999
-
+    HOST, PORT = "192.168.0.5", 9999
+    rospy.loginfo("Print request received. Sendinf UDP to " + HOST + ":" + str(PORT))
     # SOCK_DGRAM is the socket type to use for UDP sockets
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     timeNow = str(time.mktime(time.gmtime())).split(".")
