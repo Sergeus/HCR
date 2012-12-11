@@ -143,7 +143,7 @@ def retry(attempt, success_state, fail_state, fail_text, emotion):
         speak(fail_text, emotion) 
         return success_state 
 
-def conversationStateMachine(ps, ros):
+def conversationStateMachine(ps, ros, printer):
    
     state = "ASK_NAME"
     attempt = 0
@@ -282,14 +282,14 @@ def conversationStateMachine(ps, ros):
 
             if response.containsYes()  == True:
                 print "SUCCESS: Ticket printed"
-                Printer().requestPrint()
+                printer.requestPrint()
                 speak("Please take a ticket. It has been nice speaking to you.","happy")
             elif response.containsNo() == True:
                 print "UNLUCKY: Ticket not printed"
                 speak("Oh well. I tried.  Nice speaking to you anyway.","sad")
             else:
                 print "SUCCESS: Ticket printed"
-                Printer().requestPrint()
+                printer.requestPrint()
                 speak("Please take a ticket. It has been nice speaking to you.", "happy")
            
             break
@@ -304,6 +304,7 @@ if __name__ == '__main__':
     ps = PocketSphinx()
     ros = ROSControl()
     face = FaceController()
+    printer = Printer()
 
     rospy.init_node('ros_speech_engine', anonymous=True)
     
@@ -313,12 +314,14 @@ if __name__ == '__main__':
             rospy.loginfo("Started speaking")
             speak("Hello, my name is CHARLES.  I am part of an Imperial College robot experiment.", "happy")
             speak("Please take a ticket for more information.", "happy")
-            Printer().requestPrint()
+            printer.requestPrint()
+            time.sleep(1)
+            speak("Thank you", "happy")
             ros.resetStatus()
             ros.finishConversation()
         elif (ros.checkStatus() == "STARTCONVERSING"):
             rospy.loginfo("Starting conversation")
-            conversationStateMachine(ps, ros)
+            conversationStateMachine(ps, ros, printer)
             ros.resetStatus()
             ros.finishConversation()
         else:
