@@ -33,7 +33,7 @@ void printTicket(ros::Publisher pub)
     static time_t lastPrint = time(NULL);
     time_t timeNow = time(NULL);
     
-    if (((int)difftime(timeNow,lastPrint) < TICKETINTERVAL) && ((currentBehaviour != MODE2)||(currentBehaviour != MODE3)))
+    if (((int)difftime(timeNow,lastPrint) < TICKETINTERVAL) && (currentBehaviour != MODE2) && (currentBehaviour != MODE3))
     {
         ROS_INFO("WILL NOT PRINT, TOO RECENT");
         return;
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
             break;
     }
 
-    // printTicket(); // This sets the lastPrint time but will not print
+    printTicket(printReceipt); // This sets the lastPrint time but will not print
     time_t lastSpeech = time(NULL);
     int count = 0;
 
