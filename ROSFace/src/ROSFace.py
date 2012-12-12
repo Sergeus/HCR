@@ -15,9 +15,9 @@ def emotionCallback(data):
     global process
 
     if (data.talking == 1):
-        process.stdin.write("e=" + data.emotion + ";t=true")
+        process.stdin.write("e=" + data.emotion + ";t=true;m=" + data.question)
     else:
-        process.stdin.write("e=" + data.emotion + ";t=false")
+        process.stdin.write("e=" + data.emotion + ";t=false;m="+ data.question)
 
 def headCallback(data):
     rospy.loginfo("Changing eye coordinates. ed=" + str(data.x) + ":" + str(data.y) + ":" + str(data.z))
