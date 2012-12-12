@@ -2,12 +2,12 @@
 [ $# -eq 0 ] && { echo "Give me a mode (eg: \"./run 3\")"; exit 1; }
 rosmake charles &&
     {
-	export ROS_DIR=/home/human/ros_workspace/       
+	export ROS_DIR=/home/chris/ros_workspace/       
 	xterm -geometry +0+0 -e "bash & roslaunch kinect_follower kinect_follower.launch; bash" &
 	xterm -geometry +0-0 -e "bash & rosrun pocketsphinx recognizer.py; bash" &
 	xterm -geometry -0-0 -e "bash & rosrun ros_speech_engine ros_speech_engine.py; bash" & 
-    xterm -geometry +630+0 -e "bash & rosrun ROSFace ROSFace.py; bash" &
-	xterm -geometry +630-0 -e "bash & rosrun printerListenerPy client.py; bash" & 
+	xterm -geometry +450+0 -e "bash & rosrun ROSFace ROSFace.py; bash" &
+	xterm -geometry +450-0 -e "bash & rosrun printerListenerPy client.py; bash" & 
 	xterm -geometry -0+0 -e "bash & rosrun controlnode controlnode $1; bash"
     }
 mv charleslog logbackup/`date +%Y-%m-%d-%H-%M-%S`.log
