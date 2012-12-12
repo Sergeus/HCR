@@ -184,7 +184,7 @@ int main(int argc, char **argv)
                     case IDLE :
                         ROS_INFO("MODE: 0; STATE: IDLE");
                         publishMessage(kinectSS, "STOP");
-                        if ((time(NULL) % TICKETINTERVAL) == 0)
+                        if (participantPresent())
                             currentState = PRINTING;
                         break;
 
